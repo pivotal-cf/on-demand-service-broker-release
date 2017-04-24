@@ -1,0 +1,118 @@
+# Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
+# This program and the accompanying materials are made available under the terms of the under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+<%
+required_catalog_keys = ["id", "service_name", "service_description", "bindable", "plan_updatable", "plans"]
+required_plan_keys = ['name', 'plan_id', 'description', 'instance_groups']
+required_instance_group_keys = ['name', "vm_type", "instances", "networks", "azs"]
+required_credhub_keys = ['api_url','client_id', 'client_secret']
+valid_cf_service_access_values = ['enable', 'disable', 'manual']
+
+def validate_config(hash, keys, message)
+  keys.each do |key|
+    val = hash[key]
+    raise message+key if val.nil?
+    if [Array, String].include? val.class
+      raise message+key if val.empty?
+    end
+  end
+end
+
+def has_values?(field)
+  p(field).values.any?
+end
+
+def any_fields_set?(hash)
+  hash.any? { |_, v| !v.nil? }
+end
+
+def validate_releases(service_deployment)
+  if service_deployment['releases'].nil?
+    raise "Invalid service_deployment config - must specify releases"
+  end
+
+  if service_deployment['releases'].empty?
+    raise "Invalid service_deployment config - must specify at least one release"
+  end
+
+  required_release_keys = ['name', 'version', 'jobs']
+
+  service_deployment['releases'].each do |r|
+    validate_config(r, required_release_keys, "Invalid service_deployment.releases config - must specify ")
+
+    if r['version'] =~ /latest$/
+      raise "You must configure the exact release and stemcell versions in broker.service_deployment. ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported."
+    end
+  end
+end
+
+def validate_stemcell(service_deployment)
+  required_stemcell_keys = %w{os version}
+  validate_config(service_deployment['stemcell'], required_stemcell_keys, "Invalid service_deployment.stemcell config - must specify ")
+  if service_deployment['stemcell']['version'] =~ /latest$/
+    raise "You must configure the exact release and stemcell versions in broker.service_deployment. ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported."
+  end
+end
+
+service_catalog = p('service_catalog')
+plans = service_catalog['plans'] || []
+plans.delete_if { |plan| plan.nil? }
+
+validate_config(service_catalog, required_catalog_keys, "Invalid service_catalog config - must specify ")
+
+if !any_fields_set?(p('bosh.authentication.basic')) && !any_fields_set?(p('bosh.authentication.uaa'))
+  raise 'Invalid bosh config - must specify authentication'
+end
+
+if any_fields_set?(p('bosh.authentication.basic')) && any_fields_set?(p('bosh.authentication.uaa'))
+  raise 'Invalid bosh config - must only specify one type of authentication'
+end
+
+if any_fields_set?(p('credhub'))
+  validate_config(p('credhub'), required_credhub_keys,"Invalid Credhub config - must specify ")
+end
+
+service_deployment = p('service_deployment')
+validate_releases(service_deployment)
+validate_stemcell(service_deployment)
+
+plans.each do |plan|
+  validate_config(plan, required_plan_keys, "Invalid plan config - must specify ")
+
+  plan['instance_groups'].each do |instance_group|
+    validate_config(instance_group, required_instance_group_keys, "Invalid instance group config - must specify ")
+  end
+
+  if plan.has_key?('cf_service_access') && !valid_cf_service_access_values.include?(plan.fetch('cf_service_access'))
+    raise "Unsupported value '#{plan.fetch('cf_service_access')}' for cf_service_access. Choose from \"enable\", \"disable\", \"manual\""
+  end
+end
+
+if has_values?("cf.authentication.client_credentials") && has_values?("cf.authentication.user_credentials")
+  raise "Invalid CF authentication config - must specify either client or user credentials"
+end
+
+config = {
+  "broker" => {
+    "port" => p('port'),
+    "username" => p('username'),
+    "password" => p('password'),
+    "disable_ssl_cert_verification" => p('disable_ssl_cert_verification'),
+    "startup_banner" => p('startup_banner')
+  },
+  "bosh" => p('bosh'),
+  "cf" => p('cf'),
+  "service_adapter" => p('service_adapter'),
+  "service_deployment" => p('service_deployment'),
+  "service_catalog" => service_catalog
+}
+
+if any_fields_set?(p('credhub'))
+  config["credhub"] = p('credhub')
+end
+%>
+
+<%= config.to_yaml %>

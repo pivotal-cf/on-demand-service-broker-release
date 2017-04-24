@@ -1,0 +1,17 @@
+---
+curl/curl-7.50.1.tar.gz:
+  object_id: ea370f05-2cde-42fe-b6c6-78d28c872f51
+  sha: c8db732c280059f570fc39c6b49ae5c1f19ee5ef
+  size: 8894258
+go/go1.7.4.linux-amd64.tar.gz:
+  object_id: 69a74aeb-34fe-402a-9496-942eab359254
+  sha: 2e5baf03d1590e048c84d1d5b4b6f2540efaaea1
+  size: 84021919
+cf-cli/cf-cli_6.25.0_linux_x86-64.tgz:
+  object_id: 299fd826-2a5b-4351-9688-d169e03d494e
+  sha: 82728ff9fed87554a14a2e5d2b4b743b8f2885ae
+  size: 5088758
+go/go1.7.5.linux-amd64.tar.gz:
+  object_id: e5c4e7f8-3ba7-4733-aafc-ae36c893c97f
+  sha: 7c6902ce8cd3b9963082d748c50df074e4896796
+  size: 84176916

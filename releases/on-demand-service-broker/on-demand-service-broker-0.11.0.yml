@@ -1,0 +1,69 @@
+---
+packages:
+- name: broker
+  version: 4439b5e71c34b6fe01fd1fd95cd6f99bddb790fa
+  fingerprint: 4439b5e71c34b6fe01fd1fd95cd6f99bddb790fa
+  sha1: 6e1e83b8392d2c28084794e40cc80ca476a8c900
+  dependencies:
+  - go
+- name: cf-cli
+  version: 71f3939dcafa2e35c8093fa810ec7aa7713fcc51
+  fingerprint: 71f3939dcafa2e35c8093fa810ec7aa7713fcc51
+  sha1: 457a6ae31aca9f091c13b53853af0c2d1eea6d21
+  dependencies: []
+- name: common
+  version: fb806437211f6c674f742459aac901bde062daef
+  fingerprint: fb806437211f6c674f742459aac901bde062daef
+  sha1: 338faf2618adb552e9b229f4f590bee9593b7fa3
+  dependencies: []
+- name: curl
+  version: 20c3fc9083f515e526e879b3638ab0371a6f285d
+  fingerprint: 20c3fc9083f515e526e879b3638ab0371a6f285d
+  sha1: 7c88beaf1b8d1175af5fc3db8822c4823dfdf0fd
+  dependencies: []
+- name: delete-all-instances
+  version: 8c9c443852a3a466e0d2d5808b7483d8b7bc0026
+  fingerprint: 8c9c443852a3a466e0d2d5808b7483d8b7bc0026
+  sha1: 53dcf676ae75f3af6fccdcba8ff4f5315ed2afc9
+  dependencies:
+  - go
+- name: go
+  version: 07cc79626d8210de7a361e98eca1f31b423e06e7
+  fingerprint: 07cc79626d8210de7a361e98eca1f31b423e06e7
+  sha1: eb5d1b1d583d8ad7c568dfe04d4c5f82f24e5182
+  dependencies: []
+- name: upgrade-sub-deployments
+  version: 01269423a11edad3abe0399c23d31175f18cbd2a
+  fingerprint: 01269423a11edad3abe0399c23d31175f18cbd2a
+  sha1: a216dcfa0a586b51d3fac65d3a5e3b6c2b29d8ba
+  dependencies:
+  - go
+jobs:
+- name: broker
+  version: 4645c937cb2e767d0eb09f109cf13a96985aeaff
+  fingerprint: 4645c937cb2e767d0eb09f109cf13a96985aeaff
+  sha1: c0f349c6d8a9f115a7348a0639a933dc4fce612c
+- name: delete-sub-deployments
+  version: a15ce622d214276014b7bb1dccfd60e9bd4b08d5
+  fingerprint: a15ce622d214276014b7bb1dccfd60e9bd4b08d5
+  sha1: 92b64a4b535b1ac1d7d9ebefbbe40284303aee11
+- name: deregister-broker
+  version: 05a962023dc74dc345f9eae33c28888893395edc
+  fingerprint: 05a962023dc74dc345f9eae33c28888893395edc
+  sha1: 5e9cb436ebdc4ed709991fef5f5be3f386a284d2
+- name: odb-metrics
+  version: 35d9f317fa715c17c0d25d8d63fe94360f2d5256
+  fingerprint: 35d9f317fa715c17c0d25d8d63fe94360f2d5256
+  sha1: c7989db610d57efbfdccafa2c65d7a2a77cfa21c
+- name: register-broker
+  version: 5aea872bc47d5843ef24e193c46e3de83ee14ce3
+  fingerprint: 5aea872bc47d5843ef24e193c46e3de83ee14ce3
+  sha1: fe61491e66f634483ad49f1d923aac80d2d4f075
+- name: upgrade-sub-deployments
+  version: 2ec432fc566fafe18228d13f5100cc81cf7dd12f
+  fingerprint: 2ec432fc566fafe18228d13f5100cc81cf7dd12f
+  sha1: ee12b3ef6d2c07912f39721b536252adfb60fdf6
+commit_hash: 812a9fd2
+uncommitted_changes: true
+name: on-demand-service-broker
+version: 0.11.0

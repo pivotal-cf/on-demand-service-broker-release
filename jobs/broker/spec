@@ -1,0 +1,181 @@
+# Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
+# This program and the accompanying materials are made available under the terms of the under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+---
+name: broker
+templates:
+  post-start.erb: bin/post-start
+  broker-ctl.sh.erb: bin/broker-ctl.sh
+  broker.yml.erb: config/broker.yml
+
+packages:
+  - broker
+  - broker-post-start
+
+provides:
+- name: broker
+  type: broker
+  properties:
+    - port
+    - username
+    - password
+    - disable_ssl_cert_verification
+    - cf.url
+    - cf.root_ca_cert
+    - cf.authentication.url
+    - cf.authentication.client_credentials.client_id
+    - cf.authentication.client_credentials.secret
+    - cf.authentication.user_credentials.username
+    - cf.authentication.user_credentials.password
+    - service_catalog.service_name
+    - service_catalog.id
+    - service_catalog.plans
+
+properties:
+  port:
+    description: Port for the broker
+    default: 8080
+
+  username:
+    description: Broker basic auth username
+
+  password:
+    description: Broker basic auth password
+    type: password
+    parameters:
+      length: 40
+      exclude_special: true
+
+  disable_ssl_cert_verification:
+    description: Disable SSL certificate verification. DO NOT USE IN PRODUCTION
+    default: false
+
+  bosh.url:
+    description: BOSH URL
+
+  bosh.root_ca_cert:
+    description: Bosh Director Root CA certificate for broker to trust (optional)
+
+  bosh.authentication.basic.username:
+    description: BOSH director username
+
+  bosh.authentication.basic.password:
+    description: BOSH director password
+
+  bosh.authentication.uaa.url:
+    description: UAA URL for Bosh Director
+
+  bosh.authentication.uaa.client_id:
+    description: UAA client ID
+
+  bosh.authentication.uaa.client_secret:
+    description: UAA client secret
+
+  cf.url:
+    description: CF API URL
+
+  cf.root_ca_cert:
+    description: CF Root CA certificate for broker to trust (optional)
+
+  cf.authentication.url:
+    description: UAA URL for Cloud Foundry
+
+  cf.authentication.client_credentials.client_id:
+    description: UAA client ID with cloud_controller.read authority
+
+  cf.authentication.client_credentials.secret:
+    description: UAA client secret
+
+  cf.authentication.user_credentials.username:
+    description: CF admin username
+
+  cf.authentication.user_credentials.password:
+    description: CF admin password
+
+  credhub.api_url:
+    description: Credhub API url
+
+  credhub.client_id:
+    description: Credhub client ID
+
+  credhub.client_secret:
+    description: Credhub client secret
+
+  service_adapter.path:
+    description: the path to the service adapter binary located on the host with the broker
+    default: /var/vcap/packages/odb-service-adapter/bin/service-adapter
+
+  service_deployment.releases:
+    description: releases to deploy for each instance
+
+  service_deployment.stemcell.os:
+    description: stemcell OS to use for every job in the service deployment
+
+  service_deployment.stemcell.version:
+    description: stemcell version to use for every job in the service deployment
+
+  service_catalog.id:
+    description: service ID for CF marketplace
+
+  service_catalog.service_name:
+    description: service offering for CF marketplace
+
+  service_catalog.service_description:
+    description: service description for CF marketplace
+
+  service_catalog.bindable:
+    description: is service bindable?
+
+  service_catalog.plan_updatable:
+    description: are plan migrations allowed?
+
+  service_catalog.metadata.display_name:
+    default: ""
+    description: apps manager display name
+
+  service_catalog.metadata.image_url:
+    default: ""
+    description: apps manager image url
+
+  service_catalog.metadata.long_description:
+    default: ""
+    description: apps manager long description
+
+  service_catalog.metadata.provider_display_name:
+    default: ""
+    description: apps manager provider display name
+
+  service_catalog.metadata.documentation_url:
+    default: ""
+    description: apps manager documentation url
+
+  service_catalog.metadata.support_url:
+    default: ""
+    description: apps manager support url
+
+  service_catalog.dashboard_client:
+    default:
+    description: client ID for dashboard
+
+  service_catalog.requires:
+    default: []
+    description: string array of permissions required by broker
+
+  service_catalog.tags:
+    default: []
+    description: string array of tags for catalog
+
+  service_catalog.global_properties:
+    description: properties applied to every plan. if in conflict, plan properties take precedence
+
+  service_catalog.global_quotas.service_instance_limit:
+    description: the maximum number of instances that my be provisioned by on-demand broker
+
+  service_catalog.plans:
+    description: the service plans to be presented to Cloud Foundry
+
+  startup_banner:
+    default: false

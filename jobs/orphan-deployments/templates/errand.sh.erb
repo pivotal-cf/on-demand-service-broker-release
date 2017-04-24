@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+# Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
+# This program and the accompanying materials are made available under the terms of the under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+set -eu
+
+<% if_p('broker_uri') do |broker_uri| %>
+broker_uri=<%= broker_uri %>
+<% end %>
+
+if [ -z "${broker_uri:-}" ]; then
+  # We assume that if no route is registered, there is only 1 broker instance
+  broker_uri=http://<%= link('broker').instances[0].address %>:<%= link('broker').p('port') %>
+fi
+
+<%
+def escape_shell(str)
+  "'#{str.to_s.gsub(/'/, "'\\\\''")}'"
+end
+%>
+
+/var/vcap/packages/curl/bin/curl \
+  --user <%= escape_shell(link('broker').p('username')) %>:<%= escape_shell(link('broker').p('password')) %> \
+  --max-time 30 \
+  ${broker_uri}/mgmt/orphan_deployments 2>/dev/null

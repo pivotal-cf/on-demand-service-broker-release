@@ -1,0 +1,76 @@
+---
+packages:
+- name: cf-cli
+  version: 219eb7c1956a5d4ddd6728a7e6855ab8a31cb769
+  fingerprint: 219eb7c1956a5d4ddd6728a7e6855ab8a31cb769
+  sha1: 27aa3417f9a009818080160fc16e4e370709ece3
+  dependencies: []
+- name: go
+  version: be00bf503c8e249ba0ab3f21c99695372c2a9347
+  fingerprint: be00bf503c8e249ba0ab3f21c99695372c2a9347
+  sha1: d799bf83582cc5df523ad049707e79fcc39fa246
+  dependencies: []
+- name: broker
+  version: 1c86738484e5c803ecc7550ef64084310dead271
+  fingerprint: 1c86738484e5c803ecc7550ef64084310dead271
+  sha1: ba3b9bf77c4ec9407e970eff167d45b2caa03342
+  dependencies:
+  - go
+- name: register-route
+  version: 06eff9aecb155af813caf05ceaede52e25531c27
+  fingerprint: 06eff9aecb155af813caf05ceaede52e25531c27
+  sha1: b0e454e93078ba943e2725698e4174dac4ed1f77
+  dependencies:
+  - go
+- name: upgrade-sub-deployments
+  version: 3ec607fc8878ca14ec9d1d40331e488680c82156
+  fingerprint: 3ec607fc8878ca14ec9d1d40331e488680c82156
+  sha1: fdf1864cb0963e7195afe3a69ebc74d010e33b53
+  dependencies:
+  - go
+- name: sql-migrations
+  version: 0b99a6c2de8ef6aadd461b7fce51ff752b47f86f
+  fingerprint: 0b99a6c2de8ef6aadd461b7fce51ff752b47f86f
+  sha1: bd760315fda2ec774400101fca31fbda7cc36a7a
+  dependencies:
+  - go
+- name: delete-all-instances
+  version: 23da8ce60a4f8ab45adf9ab346406153c6407c20
+  fingerprint: 23da8ce60a4f8ab45adf9ab346406153c6407c20
+  sha1: 84076502e5aebd95a3fab859c74292c2814acb7d
+  dependencies:
+  - go
+- name: common
+  version: fb806437211f6c674f742459aac901bde062daef
+  fingerprint: fb806437211f6c674f742459aac901bde062daef
+  sha1: 338faf2618adb552e9b229f4f590bee9593b7fa3
+  dependencies: []
+jobs:
+- name: register-broker
+  version: 28de84a891093d921937ec40f074ff90cb5d7709
+  fingerprint: 28de84a891093d921937ec40f074ff90cb5d7709
+  sha1: 6b38048bed1a55a5e38951c7dd40ca8003c5bc11
+- name: broker
+  version: d8cde4b366a3b4bec0c8e98313c99f65af255701
+  fingerprint: d8cde4b366a3b4bec0c8e98313c99f65af255701
+  sha1: 6e93fd53ffb99379db2177374335f2ba5e3120ee
+- name: syslog-configurator
+  version: 35da4ba044c6ac2f0cefb0175a39fe93bb4a7fa4
+  fingerprint: 35da4ba044c6ac2f0cefb0175a39fe93bb4a7fa4
+  sha1: 7dbc15f54acd80dfc36b5e96de75e7ead575cbe8
+- name: deregister-broker
+  version: 57b41efeedbf9c3397854f416f2c610f91eecb89
+  fingerprint: 57b41efeedbf9c3397854f416f2c610f91eecb89
+  sha1: b3e16146444d1b37229cf1f4b7a71f6d7ff03a1f
+- name: upgrade-sub-deployments
+  version: d099d8b3e7c81e6e186a2d44a615d5ccb9d41a16
+  fingerprint: d099d8b3e7c81e6e186a2d44a615d5ccb9d41a16
+  sha1: 1b479770d5ab6d7b88bbd37de1bc73bc437850c8
+- name: delete-sub-deployments
+  version: 0682a9089f534afd156c1c491f0b84d9c7fe0a44
+  fingerprint: 0682a9089f534afd156c1c491f0b84d9c7fe0a44
+  sha1: d9449939db4ccfe75565ed31b146890857a65665
+commit_hash: 0b81af34
+uncommitted_changes: true
+name: on-demand-service-broker
+version: 0.1.2

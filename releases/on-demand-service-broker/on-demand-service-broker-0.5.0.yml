@@ -1,0 +1,72 @@
+---
+packages:
+- name: broker
+  version: a0e4e24001133324655099b47fbca5ea95a1c352
+  fingerprint: a0e4e24001133324655099b47fbca5ea95a1c352
+  sha1: e6b95be36058c838ae674f52cdbf02947c2cee0e
+  dependencies:
+  - go
+- name: cf-cli
+  version: 219eb7c1956a5d4ddd6728a7e6855ab8a31cb769
+  fingerprint: 219eb7c1956a5d4ddd6728a7e6855ab8a31cb769
+  sha1: 27aa3417f9a009818080160fc16e4e370709ece3
+  dependencies: []
+- name: common
+  version: fb806437211f6c674f742459aac901bde062daef
+  fingerprint: fb806437211f6c674f742459aac901bde062daef
+  sha1: 338faf2618adb552e9b229f4f590bee9593b7fa3
+  dependencies: []
+- name: delete-all-instances
+  version: 8c9c443852a3a466e0d2d5808b7483d8b7bc0026
+  fingerprint: 8c9c443852a3a466e0d2d5808b7483d8b7bc0026
+  sha1: 53dcf676ae75f3af6fccdcba8ff4f5315ed2afc9
+  dependencies:
+  - go
+- name: go
+  version: 022f1fe36cd80769296ff5a88d031c4edc51b69e
+  fingerprint: 022f1fe36cd80769296ff5a88d031c4edc51b69e
+  sha1: 7b6c11171a76305370deab4d74f30454fa12c374
+  dependencies: []
+- name: register-route
+  version: 06eff9aecb155af813caf05ceaede52e25531c27
+  fingerprint: 06eff9aecb155af813caf05ceaede52e25531c27
+  sha1: b0e454e93078ba943e2725698e4174dac4ed1f77
+  dependencies:
+  - go
+- name: sql-migrations
+  version: 0b99a6c2de8ef6aadd461b7fce51ff752b47f86f
+  fingerprint: 0b99a6c2de8ef6aadd461b7fce51ff752b47f86f
+  sha1: bd760315fda2ec774400101fca31fbda7cc36a7a
+  dependencies:
+  - go
+- name: upgrade-sub-deployments
+  version: 648e682bf6cccb46bd7c2ca48de3721780d689e4
+  fingerprint: 648e682bf6cccb46bd7c2ca48de3721780d689e4
+  sha1: e955e283a05e085b6fce79ba0becd79de73de01e
+  dependencies:
+  - go
+jobs:
+- name: broker
+  version: e27132d1303dc5830f580462a20b76ae3ee064e8
+  fingerprint: e27132d1303dc5830f580462a20b76ae3ee064e8
+  sha1: 61ad0b219f00d81953ff1793b75f67ce856cff09
+- name: delete-sub-deployments
+  version: 03129838c6709d35a78200f2edaf2716b30d5b3f
+  fingerprint: 03129838c6709d35a78200f2edaf2716b30d5b3f
+  sha1: bb7984c83a1868b2b0f52f02c0fdb8ea6577fbe4
+- name: deregister-broker
+  version: b7a8dbce38e8212d5f546af4e138c8f1ce7ddb4a
+  fingerprint: b7a8dbce38e8212d5f546af4e138c8f1ce7ddb4a
+  sha1: cf7debe192164fb7360b9c655fd3777cf8dbfa14
+- name: register-broker
+  version: 74e23e9adfb28b5b5f763a328dec7c408266bf00
+  fingerprint: 74e23e9adfb28b5b5f763a328dec7c408266bf00
+  sha1: a9928b3ae9d66e2520ac698a3995acd78440d6a3
+- name: upgrade-sub-deployments
+  version: 2ec432fc566fafe18228d13f5100cc81cf7dd12f
+  fingerprint: 2ec432fc566fafe18228d13f5100cc81cf7dd12f
+  sha1: ee12b3ef6d2c07912f39721b536252adfb60fdf6
+commit_hash: b2ac83b9
+uncommitted_changes: false
+name: on-demand-service-broker
+version: 0.5.0

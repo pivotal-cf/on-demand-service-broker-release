@@ -1,0 +1,42 @@
+#!/bin/bash -e
+
+# Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
+# This program and the accompanying materials are made available under the terms of the under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+
+pushd $(dirname $0)/..
+
+function sync_package() {
+  bosh_pkg=${1}
+  shift
+
+  (
+    set -e
+
+    cd packages/${bosh_pkg}
+
+    {
+      cat spec | grep -v '# gosub'
+
+      for package in $(gosub list "$@"); do
+        repo=$(echo ${2} | cut -f1-3 -d/)
+        echo ${package} | sed -e 's/\(.*\)/  - \1\/*.go # gosub/g'
+      done
+    } > spec.new
+
+    mv spec.new spec
+  )
+}
+
+sync_package broker -app github.com/pivotal-cf/on-demand-service-broker/cmd/on-demand-service-broker
+sync_package delete-all-service-instances -app github.com/pivotal-cf/on-demand-service-broker/cmd/delete-all-service-instances
+sync_package upgrade-all-service-instances -app github.com/pivotal-cf/on-demand-service-broker/cmd/upgrade-all-service-instances
+sync_package collect-service-metrics -app github.com/pivotal-cf/on-demand-service-broker/cmd/collect-service-metrics
+sync_package broker-post-start -app github.com/pivotal-cf/on-demand-service-broker/cmd/broker-post-start
+
+wait
+
+popd

@@ -1,0 +1,93 @@
+#!/bin/bash -eu
+
+# Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
+# This program and the accompanying materials are made available under the terms of the under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+
+set -o pipefail
+
+job_dir=/var/vcap/jobs/broker
+log_dir=/var/vcap/sys/log/broker
+run_dir=/var/vcap/sys/run/broker
+run_script=/var/vcap/packages/broker/bin/on-demand-service-broker
+
+pidfile=$run_dir/broker.pid
+
+script_log_tag="$(basename "$0" .sh)"
+
+ensure_dir() {
+  local dir=$1
+  mkdir -p "${dir}"
+  find -L "${dir}" | grep -v "packages" | xargs chown vcap:vcap
+  chmod 750 "${dir}"
+}
+export -f ensure_dir
+
+write_log() {
+  local log_tag=$1
+  local log_file=$2
+  local log_level=$3
+  local log_facility=user
+  logger --priority $log_facility.$log_level --tag $log_tag --stderr 2>> $log_file
+}
+export -f write_log
+
+log() {
+  local log_level=$1
+  local script_log_file=$log_dir/broker_ctl.log
+  shift
+  echo "$(date): $*" | write_log $script_log_tag $script_log_file $log_level
+}
+export -f log
+
+broker_log() {
+  local log_level=$1
+  local broker_log_tag=on-demand-service-broker
+  local broker_log_file=$log_dir/broker.log
+  write_log $broker_log_tag $broker_log_file $log_level
+}
+export -f broker_log
+
+ensure_dir $job_dir
+ensure_dir $log_dir
+ensure_dir $run_dir
+
+case $1 in
+  start)
+    log info "starting broker"
+    echo $$ > $pidfile
+    ensure_dir $run_dir
+
+    exec chpst -u vcap:vcap $run_script \
+      -configFilePath /var/vcap/jobs/broker/config/broker.yml > >(broker_log info) 2>&1
+    ;;
+
+  stop)
+    log info "stopping broker"
+
+    set +e
+    kill -9 $(cat $pidfile)
+    kill_exit_code=$?
+
+    pkill -9 -f $run_script
+    pkill_exit_code=$?
+    set -e
+
+    if [[ $kill_exit_code -ne 0 && $pkill_exit_code -ne 0 ]]; then
+      echo "Failed to stop broker process"
+      exit 1
+    fi
+
+    rm -f $pidfile
+    ;;
+
+  *)
+    log warning "operation '$1' is not supported"
+    echo "Usage: broker-ctl.sh start/stop" >&2
+    exit 1
+    ;;
+
+esac
