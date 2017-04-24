@@ -1,15 +1,15 @@
 # on-demand-service-broker-release
 A BOSH release for a [Cloud Foundry on-demand service broker](https://github.com/pivotal-cf/on-demand-service-broker).
 
-The broker deploys any service release on demand. One service instance corresponds to one BOSH deployment.
+The broker is a framework can be used to deploy any BOSH release on demand. One CF service instance corresponds to one BOSH deployment.
 
 ## User Documentation
 
-User documentation can be found [here](https://docs.pivotal.io/svc-sdk/odb).
+User documentation can be found [here](https://docs.pivotal.io/svc-sdk/odb). Documentation is targeted at service authors wishing to deploy their services on-demand and operators wanting to offer services on-demand.
 
 ## Development
 
-It must be used on a version of BOSH that supports global cloud config (246 or higher).
+ODB must be used on a version of BOSH that supports global cloud config (246 or higher).
 
 ### Dev / test tools
 * Ruby
