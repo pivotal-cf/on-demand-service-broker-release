@@ -81,6 +81,7 @@
 [submodule "src/github.com/pivotal-cf/on-demand-services-sdk"]
 	path = src/github.com/pivotal-cf/on-demand-services-sdk
 	url = git@github.com:pivotal-cf/on-demand-services-sdk.git
+	branch = master
 [submodule "src/github.com/pivotal-cf/credhub-cli"]
 	path = src/github.com/pivotal-cf/credhub-cli
 	url = git@github.com:pivotal-cf/credhub-cli.git

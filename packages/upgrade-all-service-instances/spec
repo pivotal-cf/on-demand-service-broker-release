@@ -14,10 +14,23 @@ files:
   - code.cloudfoundry.org/lager/*.go # gosub
   - github.com/coreos/go-semver/semver/*.go # gosub
   - github.com/craigfurman/herottp/*.go # gosub
+  - github.com/fatih/color/*.go # gosub
   - github.com/gorilla/mux/*.go # gosub
+  - github.com/howeyc/gopass/*.go # gosub
+  - github.com/mattn/go-colorable/*.go # gosub
+  - github.com/mattn/go-isatty/*.go # gosub
   - github.com/pborman/uuid/*.go # gosub
   - github.com/pivotal-cf/brokerapi/*.go # gosub
   - github.com/pivotal-cf/brokerapi/auth/*.go # gosub
+  - github.com/pivotal-cf/credhub-cli/actions/*.go # gosub
+  - github.com/pivotal-cf/credhub-cli/client/*.go # gosub
+  - github.com/pivotal-cf/credhub-cli/commands/*.go # gosub
+  - github.com/pivotal-cf/credhub-cli/config/*.go # gosub
+  - github.com/pivotal-cf/credhub-cli/errors/*.go # gosub
+  - github.com/pivotal-cf/credhub-cli/models/*.go # gosub
+  - github.com/pivotal-cf/credhub-cli/repositories/*.go # gosub
+  - github.com/pivotal-cf/credhub-cli/util/*.go # gosub
+  - github.com/pivotal-cf/credhub-cli/version/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/adapterclient/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/authorizationheader/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/boshclient/*.go # gosub
@@ -26,11 +39,13 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/cloud_foundry_client/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/cmd/upgrade-all-service-instances/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/config/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/credstore/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/loggerfactory/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/mgmtapi/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/upgrader/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/upgrader/broker_response/*.go # gosub
   - github.com/pivotal-cf/on-demand-services-sdk/bosh/*.go # gosub
   - github.com/pivotal-cf/on-demand-services-sdk/serviceadapter/*.go # gosub
+  - golang.org/x/crypto/ssh/terminal/*.go # gosub
   - gopkg.in/go-playground/validator.v8/*.go # gosub
   - gopkg.in/yaml.v2/*.go # gosub
