@@ -7,7 +7,7 @@ The broker is a framework can be used to deploy any BOSH release on demand. One 
 
 User documentation can be found [here](https://docs.pivotal.io/svc-sdk/odb). Documentation is targeted at service authors wishing to deploy their services on-demand and operators wanting to offer services on-demand.
 
-## BOSH Releases Artifcacts
+## BOSH Release Artifacts
 
 ODB releases artifacts can be found on [PivNet](https://network.pivotal.io/products/on-demand-services-sdk). ODB 0.15.2+ are licensed under Apache 2.0. 
 
