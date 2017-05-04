@@ -7,7 +7,7 @@
 <%=
   config = {
     "polling_interval" => p("polling_interval"),
-    "polling_initial_offset" => 5,
+    "polling_initial_offset" => p("polling_initial_offset"),
     "disable_ssl_cert_verification" => link("broker").p("disable_ssl_cert_verification"),
     "service_catalog" => {
       "id" => link("broker").p("service_catalog.id")

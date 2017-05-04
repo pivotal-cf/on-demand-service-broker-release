@@ -25,7 +25,7 @@ RSpec.describe 'delete-all-service-instances config' do
   end
 
   context'with the broker link' do
-    let(:manifest_file) { File.open 'spec/fixtures/delete_all_without_polling_interval.yml' }
+    let(:manifest_file) { File.open 'spec/fixtures/delete_all_without_polling_configured.yml' }
 
     let(:broker_link) do
       {
@@ -90,17 +90,25 @@ RSpec.describe 'delete-all-service-instances config' do
       expect(config.fetch('cf').fetch('authentication').fetch('user_credentials').fetch('password')).to eq('some-password')
     end
 
-    context 'when the polling interval is not configured' do
+    context 'when the polling is not configured' do
       it 'sets the default polling interval' do
         expect(config.fetch('polling_interval')).to eq(60)
       end
+
+      it 'sets the default polling offset' do
+        expect(config.fetch('polling_initial_offset')).to eq(5)
+      end
     end
 
-    context 'when the polling interval is configured' do
-      let(:manifest_file) { File.open 'spec/fixtures/delete_all_with_polling_interval.yml' }
+    context 'when the polling is configured' do
+      let(:manifest_file) { File.open 'spec/fixtures/delete_all_with_polling_configured.yml' }
 
       it 'sets the configured polling interval' do
         expect(config.fetch('polling_interval')).to eq(101)
+      end
+
+      it 'sets the configured polling offset' do
+        expect(config.fetch('polling_initial_offset')).to eq(10)
       end
     end
   end

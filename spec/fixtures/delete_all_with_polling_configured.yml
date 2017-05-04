@@ -10,3 +10,4 @@ instance_groups:
   - name: delete-all-service-instances
     properties:
       polling_interval: 101
+      polling_initial_offset: 10

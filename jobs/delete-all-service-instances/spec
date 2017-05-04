@@ -22,3 +22,6 @@ properties:
   polling_interval:
     description: "interval in seconds when waiting for service instance to be deleted"
     default: 60
+  polling_initial_offset:
+    description: "offset in seconds before starting to poll Cloud Foundry to check if the instance has been deleted"
+    default: 5
