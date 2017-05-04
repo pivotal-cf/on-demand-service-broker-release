@@ -36,6 +36,7 @@ sync_package delete-all-service-instances -app github.com/pivotal-cf/on-demand-s
 sync_package upgrade-all-service-instances -app github.com/pivotal-cf/on-demand-service-broker/cmd/upgrade-all-service-instances
 sync_package collect-service-metrics -app github.com/pivotal-cf/on-demand-service-broker/cmd/collect-service-metrics
 sync_package broker-post-start -app github.com/pivotal-cf/on-demand-service-broker/cmd/broker-post-start
+sync_package orphan-deployments -app github.com/pivotal-cf/on-demand-service-broker/cmd/orphan-deployments
 
 wait
 

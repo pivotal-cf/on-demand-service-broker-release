@@ -33,11 +33,8 @@ RSpec.describe 'orphan-deployments errand' do
     let(:manifest_file) { 'spec/fixtures/orphan_deployments_with_special_characters.yml' }
 
     it 'escapes the broker credentials' do
-      expect(rendered_template).to include "--user '%username'\\''\"t:%!':'%password'\\''\"t:%!'"
-    end
-
-    it 'sets a timeout for the request' do
-      expect(rendered_template).to include "--max-time 30"
+      expect(rendered_template).to include "-brokerUsername '%username'\\''\"t:%!'"
+      expect(rendered_template).to include "-brokerPassword '%password'\\''\"t:%!'"
     end
   end
 end

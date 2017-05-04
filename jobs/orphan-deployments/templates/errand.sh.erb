@@ -23,7 +23,7 @@ def escape_shell(str)
 end
 %>
 
-/var/vcap/packages/curl/bin/curl \
-  --user <%= escape_shell(link('broker').p('username')) %>:<%= escape_shell(link('broker').p('password')) %> \
-  --max-time 30 \
-  ${broker_uri}/mgmt/orphan_deployments 2>/dev/null
+/var/vcap/packages/orphan-deployments/bin/orphan-deployments \
+  -brokerUsername <%= escape_shell(link('broker').p('username')) %> \
+  -brokerPassword <%= escape_shell(link('broker').p('password')) %> \
+  -brokerUrl "${broker_uri}"

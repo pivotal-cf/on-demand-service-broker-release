@@ -8,7 +8,7 @@
 name: orphan-deployments
 
 packages:
-- curl
+- orphan-deployments
 
 templates:
   errand.sh.erb: /bin/run
