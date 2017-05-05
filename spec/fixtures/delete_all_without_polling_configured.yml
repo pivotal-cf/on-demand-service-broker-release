@@ -8,4 +8,3 @@ instance_groups:
 - name: delete-all-service-instances
   jobs:
   - name: delete-all-service-instances
-    properties: {}

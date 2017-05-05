@@ -8,4 +8,3 @@ instance_groups:
 - name: upgrade-all-service-instances
   jobs:
   - name: upgrade-all-service-instances
-    properties: {}

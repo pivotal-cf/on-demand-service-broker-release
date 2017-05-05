@@ -14,7 +14,7 @@ class BoshEmulator
   extend ::Bosh::Template::PropertyHelper
 
   def self.director_merge(manifest, job_name)
-    broker_job_properties = manifest['instance_groups'][0]['jobs'][0]['properties']
+    broker_job_properties = manifest['instance_groups'][0]['jobs'][0].fetch('properties', {})
 
     job_spec = YAML.load_file("jobs/#{job_name}/spec")
     spec_properties = job_spec["properties"]
