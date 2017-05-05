@@ -19,7 +19,7 @@ RSpec.describe 'collect-service-metrics script' do
         'properties' => {
           'username' => "%username'\"t:%!",
           'password' => "%password'\"t:%!",
-          'port' => 8080
+          'port' => 7070
         }
       }
     }
@@ -32,12 +32,25 @@ RSpec.describe 'collect-service-metrics script' do
   context 'when the broker credentials contain special characters' do
     let(:manifest_file) { 'spec/fixtures/collect_service_metrics_with_special_characters.yml' }
 
-    it 'escapes the broker username' do
+    it 'escapes the broker credentials' do
       expect(rendered_template).to include "-brokerUsername '%username'\\''\"t:%!'"
-    end
-
-    it 'escapes the broker password' do
       expect(rendered_template).to include "-brokerPassword '%password'\\''\"t:%!'"
+    end
+  end
+
+  context 'when the broker uri is configured' do
+    let(:manifest_file) { 'spec/fixtures/collect_service_metrics_with_special_characters.yml' }
+
+    it 'uses the configured broker uri' do
+      expect(rendered_template).to include '-brokerUrl http://example.com:8080'
+    end
+  end
+
+  context 'when the broker uri property is missing' do
+    let(:manifest_file) { 'spec/fixtures/collect_service_metrics_without_broker_uri.yml' }
+
+    it 'uses the broker job link' do
+      expect(rendered_template).to include '-brokerUrl http://123.456.789.101:7070'
     end
   end
 end
