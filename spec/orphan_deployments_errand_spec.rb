@@ -19,7 +19,7 @@ RSpec.describe 'orphan-deployments errand' do
         'properties' => {
           'username' => "%username'\"t:%!",
           'password' => "%password'\"t:%!",
-          'port' => 8080
+          'port' => 7070
         }
       }
     }
@@ -35,6 +35,22 @@ RSpec.describe 'orphan-deployments errand' do
     it 'escapes the broker credentials' do
       expect(rendered_template).to include "-brokerUsername '%username'\\''\"t:%!'"
       expect(rendered_template).to include "-brokerPassword '%password'\\''\"t:%!'"
+    end
+  end
+
+  context 'when the broker uri is configured' do
+    let(:manifest_file) { 'spec/fixtures/orphan_deployments_with_special_characters.yml' }
+
+    it 'uses the configured broker uri' do
+      expect(rendered_template).to include '-brokerUrl http://example.com:8080'
+    end
+  end
+
+  context 'when the broker uri property is missing' do
+    let(:manifest_file) { 'spec/fixtures/orphan_deployments_without_broker_uri.yml' }
+
+    it 'uses the broker job link' do
+      expect(rendered_template).to include '-brokerUrl http://123.456.789.101:7070'
     end
   end
 end
