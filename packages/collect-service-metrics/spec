@@ -13,3 +13,4 @@ dependencies:
 files:
   - github.com/craigfurman/herottp/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/cmd/collect-service-metrics/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/network/*.go # gosub

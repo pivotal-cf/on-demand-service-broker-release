@@ -35,7 +35,6 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/authorizationheader/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/boshclient/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/broker/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/brokerclient/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/brokercontext/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/cloud_foundry_client/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/cmd/upgrade-all-service-instances/*.go # gosub
@@ -43,6 +42,8 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/credstore/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/loggerfactory/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/mgmtapi/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/network/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/services/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/task/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/upgrader/*.go # gosub
   - github.com/pivotal-cf/on-demand-services-sdk/bosh/*.go # gosub
