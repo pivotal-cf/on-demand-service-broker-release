@@ -17,7 +17,7 @@ We have [an SDK](https://github.com/pivotal-cf/on-demand-services-sdk) to start 
 
 ### Packaging for Pivotal Cloud Foundry (PCF)
 
-Once you have an ODB integration completed for your service you may wish to create a tile for the PCF marketplace. You can [follow this guide](https://docs.pivotal.io/svc-sdk/odb/0-15/tile.html)
+Once you have an ODB integration completed for your service you may wish to create a tile for the PCF marketplace. You can [follow this guide to tile development](https://docs.pivotal.io/svc-sdk/odb/0-15/tile.html).
 
 ## Contributing
 
