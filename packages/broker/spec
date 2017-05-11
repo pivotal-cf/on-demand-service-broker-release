@@ -31,18 +31,18 @@ files:
   - github.com/pivotal-cf/credhub-cli/repositories/*.go # gosub
   - github.com/pivotal-cf/credhub-cli/util/*.go # gosub
   - github.com/pivotal-cf/credhub-cli/version/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/adapterclient/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/authorizationheader/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/boshclient/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/boshdirector/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/broker/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/brokercontext/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/cloud_foundry_client/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/cf/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/cmd/on-demand-service-broker/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/config/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/credstore/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/features/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/loggerfactory/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/mgmtapi/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/serviceadapter/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/task/*.go # gosub
   - github.com/pivotal-cf/on-demand-services-sdk/bosh/*.go # gosub
   - github.com/pivotal-cf/on-demand-services-sdk/serviceadapter/*.go # gosub

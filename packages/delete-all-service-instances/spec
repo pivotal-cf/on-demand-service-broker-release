@@ -15,7 +15,7 @@ files:
   - github.com/pborman/uuid/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/authorizationheader/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/brokercontext/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/cloud_foundry_client/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/cf/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/cmd/delete-all-service-instances/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/config/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/deleter/*.go # gosub
