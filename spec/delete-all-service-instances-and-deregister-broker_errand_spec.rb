@@ -16,7 +16,7 @@ RSpec.describe 'delete-all-service-instances-and-deregister-broker errand' do
 
     it 'errand calls delete-all-service-instances-and-deregister-broker binary with config and broker name' do
       broker_name = 'test-broker'
-      binary_call = "/var/vcap/packages/delete-all-service-instances-and-deregister-broker/bin/purge-instances-and-deregister \\\n" +
+      binary_call = "/var/vcap/packages/delete-all-service-instances-and-deregister-broker/bin/delete-all-service-instances-and-deregister-broker \\\n" +
       "  -configFilePath /var/vcap/jobs/delete-all-service-instances-and-deregister-broker/config/config.yml -brokerName #{broker_name}"
 
       expect(rendered_template).to include binary_call
