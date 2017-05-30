@@ -43,7 +43,9 @@ The below system tests use Redis as an example.
   1. `cf target -s <space>`
 1. Run the tests
   1. `cd` into broker submodule of broker release
-  1. `BROKER_NAME=on-demand-broker BROKER_USERNAME=$FROM_MANIFEST BROKER_PASSWORD=$FROM_MANIFEST BROKER_URL=http://${FROM_BOSH_VMS_ON_BROKER_DEPLOYMENT}:8080 SERVICE_NAME=$FROM_MANIFEST TEST_APP_NAME=test-app ginkgo -p -nodes=4 system_tests`
+  1. `BROKER_NAME=on-demand-broker BROKER_USERNAME=$FROM_MANIFEST BROKER_PASSWORD=$FROM_MANIFEST BROKER_URL=http://${FROM_BOSH_VMS_ON_BROKER_DEPLOYMENT}:8080 SERVICE_NAME=$FROM_MANIFEST
+  SERVICE_GUID=$UNIQUE_SERVICE_ID_FROM_MANIFEST
+  TEST_APP_NAME=test-app ginkgo -p -nodes=4 system_tests`
 
 ### System Tests "fly execute" Workflow
 1. Follow steps 1-3 above (up to and including "Deploy broker")
