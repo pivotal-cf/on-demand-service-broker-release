@@ -1,0 +1,118 @@
+# Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
+# This program and the accompanying materials are made available under the terms of the under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+---
+name: service-backup
+
+description: |
+  Service Backup provides ability to upload the backup produced by a service
+  to an S3-API-compatible blobstore.
+
+templates:
+  ctl.erb: bin/ctl
+  backup.yml.erb: config/backup.yml
+  manual-backup.sh.erb: bin/manual-backup
+  gcp_service_account.json.erb: config/gcp_service_account.json
+
+packages:
+- service-backup
+- service-backup_aws-cli
+- service-backup_blobxfer
+- service-backup_python
+
+properties:
+
+  ################################# BACKUP #################################
+  service-backup.destinations:
+    default: []
+
+  service-backup.source_folder:
+    description: Local path from which backups are uploaded. All files in here are uploaded.
+
+  service-backup.source_executable:
+    description: Local executable to create backups. Tokens are split on spaces; first is command to execute and remaining are passed as args to command.
+
+  service-backup.cleanup_executable:
+    description: Local executable to cleanup backups. Tokens are split on spaces; first is command to execute and remaining are passed as args to command.
+    default: ""
+
+  service-backup.cron_schedule:
+    description: Schedule on which to perform backups. Supports "* * * * *" syntax.
+
+  service-backup.backup_user:
+    default: vcap
+    description: User which will run the backup daemon.
+
+  service-backup.missing_properties_message:
+    default: Provide these missing fields in your manifest.
+    description: Custom message to show when required backup parameters are not present.
+
+  service-backup.service_identifier_executable:
+    description: Local executable to identify the service. If provided the identifier is included in log messages. Tokens are split on spaces; first is command to execute and remaining are passed as args to command.
+
+  service-backup.exit_if_in_progress:
+    default: false
+    description: Optional field to reject subsequent backup requests if a backup is already in progress. Defaults to false.
+
+  service-backup.aws_cli_path:
+    default: /var/vcap/packages/service-backup_aws-cli/bin/aws
+    description: Path the to aws cli
+
+  service-backup.azure_cli_path:
+    default: /var/vcap/packages/service-backup_blobxfer/bin/blobxfer
+    description: Path the to azure cli
+
+  service-backup.add_deployment_name_to_backup_path:
+    default: false
+    description: Optional, adds the deployment name to the remote backup path.
+
+  service-backup.alerts.product_name:
+    description: Product name to be used when issuing an alert about backups. Required when alerts are configured.
+    default: ""
+
+  service-backup.alerts.config.cloud_controller.url:
+    description: Cloud controller URL. Required when alerts are configured.
+    default: ""
+
+  service-backup.alerts.config.cloud_controller.user:
+    description: Cloud controller username with SpaceAuditor role. Required when alerts are configured.
+    default: ""
+
+  service-backup.alerts.config.cloud_controller.password:
+    description: Corresponding password for user defined in service-backup.alerts.config.cloud_controller.user. Required when alerts are configured.
+    default: ""
+
+  service-backup.alerts.config.notifications.service_url:
+    description: Cloud Foundry notification service URL. Required when alerts are configured.
+    default: ""
+
+  service-backup.alerts.config.notifications.cf_org:
+    description: Cloud Foundry org. Required when alerts are configured.
+    default: ""
+
+  service-backup.alerts.config.notifications.cf_space:
+    description: Cloud Foundry space. Required when alerts are configured.
+    default: ""
+
+  service-backup.alerts.config.notifications.reply_to:
+    description: Email address to reply to, from alerts emails. OPTIONAL, only used when alerts are configured.
+    default: ""
+
+  service-backup.alerts.config.notifications.client_id:
+    description: CF UAA client ID with authority to send notifications. Required when alerts are configured.
+    default: ""
+
+  service-backup.alerts.config.notifications.client_secret:
+    description: Corresponding secret for client defined in service-backup.alerts.config.notifications.client_id. Required when alerts are configured.
+    default: ""
+
+  service-backup.alerts.config.timeout_seconds:
+    description: Timeout in seconds when issuing an alert. OPTIONAL, only used when alerts are configured.
+    default: 60
+
+  service-backup.alerts.config.skip_ssl_validation:
+    description: Ignore TLS certificate validation errors when issuing an alert. OPTIONAL, only used when alerts are configured.
+    default: false

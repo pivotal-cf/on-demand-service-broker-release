@@ -1,0 +1,66 @@
+[submodule "src/github.com/onsi/ginkgo"]
+	path = src/github.com/onsi/ginkgo
+	url = https://github.com/onsi/ginkgo
+	branch = master
+[submodule "src/github.com/onsi/gomega"]
+	path = src/github.com/onsi/gomega
+	url = https://github.com/onsi/gomega
+	branch = master
+[submodule "src/gopkg.in/robfig/cron.v2"]
+	path = src/gopkg.in/robfig/cron.v2
+	url = https://gopkg.in/robfig/cron.v2
+	branch = master
+[submodule "src/github.com/tedsuo/ifrit"]
+	path = src/github.com/tedsuo/ifrit
+	url = https://github.com/tedsuo/ifrit
+	branch = master
+[submodule "src/github.com/Azure/azure-sdk-for-go"]
+	path = src/github.com/Azure/azure-sdk-for-go
+	url = https://github.com/Azure/azure-sdk-for-go
+	branch = master
+[submodule "src/gopkg.in/yaml.v2"]
+	path = src/gopkg.in/yaml.v2
+	url = https://gopkg.in/yaml.v2
+	branch = v2
+[submodule "src/github.com/satori/go.uuid"]
+	path = src/github.com/satori/go.uuid
+	url = https://github.com/satori/go.uuid
+	branch = master
+[submodule "src/google.golang.org/grpc"]
+	path = src/google.golang.org/grpc
+	url = https://github.com/grpc/grpc-go
+	branch = master
+[submodule "src/github.com/pborman/uuid"]
+	path = src/github.com/pborman/uuid
+	url = https://github.com/pborman/uuid
+	branch = master
+[submodule "src/google.golang.org/api"]
+	path = src/google.golang.org/api
+	url = https://code.googlesource.com/google-api-go-client
+	branch = master
+[submodule "src/cloud.google.com/go"]
+	path = src/cloud.google.com/go
+	url = https://code.googlesource.com/gocloud
+	branch = master
+[submodule "src/github.com/golang/protobuf"]
+	path = src/github.com/golang/protobuf
+	url = https://github.com/golang/protobuf
+	branch = master
+[submodule "src/golang.org/x/net"]
+	path = src/golang.org/x/net
+	url = https://go.googlesource.com/net
+	branch = master
+[submodule "src/golang.org/x/oauth2"]
+	path = src/golang.org/x/oauth2
+	url = https://go.googlesource.com/oauth2
+	branch = master
+[submodule "src/github.com/pivotal-cf/service-alerts-client"]
+	path = src/github.com/pivotal-cf/service-alerts-client
+	url = git@github.com:pivotal-cf/service-alerts-client.git
+[submodule "src/code.cloudfoundry.org/lager"]
+	path = src/code.cloudfoundry.org/lager
+	url = git@github.com:cloudfoundry/lager.git
+[submodule "src/github.com/pivotal-cf/service-backup"]
+	path = src/github.com/pivotal-cf/service-backup
+	url = git@github.com:pivotal-cf/service-backup.git
+	branch = master

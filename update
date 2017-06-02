@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
+# This program and the accompanying materials are made available under the terms of the under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+set -e
+
+submodule_warning='Uncommitted submodules changes will be clobbered'
+unversioned_change_warning='Unversioned changes will be clobbered'
+
+function has_upstream() {
+  git rev-parse @{u} > /dev/null 2>&1
+}
+
+if [ "$1" == "--help" ]; then
+  echo "USAGE: $0"
+  echo "    This command takes no arguments."
+  echo ""
+  echo "This script does a git submodule update on all submodules"
+  echo ""
+  echo "NOTE: $submodule_warning"
+  exit 0
+fi
+
+echo ""
+echo "===> $submodule_warning <==="
+echo ""
+
+echo ""
+echo "===> $unversioned_change_warning <==="
+echo ""
+
+set -x # show the commands we are running
+
+has_upstream && git pull
+
+# Update submodule pointers; Clean out any submodule changes
+git submodule sync
+git submodule foreach --recursive 'git submodule sync; git clean -d --force --force'
+
+# Update submodule content, checkout if necessary
+git submodule update --init --recursive --force
+
+git clean -ffd
+
+set +x # stop showing commands
+
+echo "Service-backup has been updated"

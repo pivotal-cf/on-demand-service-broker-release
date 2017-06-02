@@ -1,0 +1,43 @@
+---
+packages:
+- name: aws-cli
+  version: 77afdddfee25a49c3141ffc7a80abb8b4eff40f8
+  fingerprint: 77afdddfee25a49c3141ffc7a80abb8b4eff40f8
+  sha1: 4f7718a3b6bde9210669f83c326cc20c38322d44
+  dependencies:
+  - python
+- name: blobxfer
+  version: 3ffccf3dc7d32d690829ca45e04d3de0e1f5f52c
+  fingerprint: 3ffccf3dc7d32d690829ca45e04d3de0e1f5f52c
+  sha1: 7a4022c1ce2e4a117f6f02bd5daf37de5351edb0
+  dependencies:
+  - python
+- name: golang
+  version: 48ce7b3927e6f7e6576fff21a7dc9d22b7ba9c62
+  fingerprint: 48ce7b3927e6f7e6576fff21a7dc9d22b7ba9c62
+  sha1: 027fb367400581de4bedb610e7ab79ab70ea233f
+  dependencies: []
+- name: python
+  version: 54f1f0f89cdb6d22a3a7ba2d15ab6a74df664c81
+  fingerprint: 54f1f0f89cdb6d22a3a7ba2d15ab6a74df664c81
+  sha1: b1facce36ef602edd6a676da744fde7189d263fa
+  dependencies: []
+- name: service-backup
+  version: 07ef091d809313014cac0a14d34ac95376ffa4b9
+  fingerprint: 07ef091d809313014cac0a14d34ac95376ffa4b9
+  sha1: 515fc45540744017e06ea0dbde0bde4ae28d8816
+  dependencies:
+  - golang
+jobs:
+- name: service-backup
+  version: 12865a811923b730a1c721521a71c45cc21ff2d3
+  fingerprint: 12865a811923b730a1c721521a71c45cc21ff2d3
+  sha1: 56a83babf2717e80d7644e322040af4cb1336d27
+license:
+  version: cf2f0a9486465be13ae0a83711df110f13a438d4
+  fingerprint: cf2f0a9486465be13ae0a83711df110f13a438d4
+  sha1: a3f9a15617b97eaf11922cb8e5833974c9d0531e
+commit_hash: d18543e2
+uncommitted_changes: true
+name: service-backup
+version: 17.1.0

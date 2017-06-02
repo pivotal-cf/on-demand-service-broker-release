@@ -1,0 +1,102 @@
+# Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
+# This program and the accompanying materials are made available under the terms of the under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+---
+name: service-backup
+director_uuid: REPLACE_WITH_DIRECTOR_UUID
+
+stemcells:
+- alias: trusty
+  os: ubuntu-trusty
+  version: latest
+
+releases:
+- name: service-backup
+  version: latest
+
+instance_groups:
+- name: service-backup
+  instances: 1
+  stemcell: trusty
+  vm_type: container
+  persistent_disk_type: 1GB
+  networks:
+  - name: backup-network
+  azs:
+  - lite
+  jobs:
+  - release: service-backup
+    name: service-backup
+    properties:
+      service-backup:
+        source_folder: /tmp
+        source_executable: path/to/source/executable # optional
+        cron_schedule: '*/5 * * * * *'
+        backup_user: vcap # optional
+        exit_if_in_progress: false # optional
+        missing_properties_message: 'Provide these missing fields in your manifest.' # optional
+        service_identifier_executable: path/to/service/identifier/executable # optional
+        cleanup_executable: path/to/cleanup/executable # optional
+        destinations:
+        - type: s3
+          name: DESTINATION_NAME # optional
+          config:
+            access_key_id: AWS_ACCESS_KEY_ID
+            secret_access_key: AWS_SECRET_ACCESS_KEY
+            bucket_name: BUCKET_NAME
+            bucket_path: BUCKET_PATH
+            endpoint_url: https://s3.amazonaws.com # optional
+            region: eu-west-1 # optional
+        - type: azure
+          name: DESTINATION_NAME # optional
+          config:
+            storage_account: AZURE_STORAGE_ACCOUNT
+            storage_access_key: AZURE_STORAGE_KEY
+            container: AZURE_STORAGE_CONTAINER
+            path: CONTAINER_PATH
+            blob_store_base_url: core.windows.net # optional
+        - type: gcs
+          name: DESTINATION_NAME # optional
+          config:
+            service_account_json: |
+              GCP_SERVICE_ACCOUNT_KEY
+            project_id: GCP_PROJECT_ID
+            bucket_name: GCP_BUCKET_NAME
+        - type: scp
+          name: DESTINATION_NAME # optional
+          config:
+            server: SSH_SERVER
+            user: SSH_USER
+            destination: PATH_ON_SSH_SERVER
+            key: |
+              -----BEGIN RSA PRIVATE KEY-----
+              ...
+              -----END RSA PRIVATE KEY-----
+            port: 22 # optional
+            fingerprint: HOST_FINGERPRINT # optional
+        alerts: # optional
+          product_name: PRODUCT_NAME
+          config:
+            cloud_controller:
+              url: CF_API_URL
+              user: CF_USERNAME
+              password: CF_PASSWORD
+            notifications:
+              service_url: CF_NOTIFICATIONS_SERVICE_URL
+              cf_org: CF_ORG_NAME
+              cf_space: CF_SPACE_NAME
+              client_id: BACKUP_NOTIFICATIONS_CLIENT_ID
+              client_secret: BACKUP_NOTIFICATIONS_CLIENT_SECRET
+              reply_to: REPLY_TO_EMAIL_ADDRESS # optional
+            timeout_seconds: <OPTIONAL: default is 60>
+            skip_ssl_validation: <OPTIONAL: ignore TLS certification verification errors>
+
+update:
+  canaries: 1
+  max_in_flight: 1
+  serial: false
+  canary_watch_time: 1000-60000
+  update_watch_time: 1000-60000

@@ -1,0 +1,66 @@
+# Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
+# This program and the accompanying materials are made available under the terms of the under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+---
+name: service-backup
+
+dependencies:
+- golang
+
+files:
+  - cloud.google.com/go/compute/metadata/*.go # gosub
+  - cloud.google.com/go/internal/*.go # gosub
+  - cloud.google.com/go/storage/*.go # gosub
+  - code.cloudfoundry.org/lager/*.go # gosub
+  - github.com/golang/protobuf/proto/*.go # gosub
+  - github.com/pivotal-cf/service-alerts-client/client/*.go # gosub
+  - github.com/pivotal-cf/service-alerts-client/vendor/github.com/cenk/backoff/*.go # gosub
+  - github.com/pivotal-cf/service-alerts-client/vendor/github.com/craigfurman/herottp/*.go # gosub
+  - github.com/pivotal-cf/service-backup/*.go # gosub
+  - github.com/pivotal-cf/service-backup/azure/*.go # gosub
+  - github.com/pivotal-cf/service-backup/cmd/manual-backup/*.go # gosub
+  - github.com/pivotal-cf/service-backup/config/*.go # gosub
+  - github.com/pivotal-cf/service-backup/executor/*.go # gosub
+  - github.com/pivotal-cf/service-backup/gcs/*.go # gosub
+  - github.com/pivotal-cf/service-backup/s3/*.go # gosub
+  - github.com/pivotal-cf/service-backup/scheduler/*.go # gosub
+  - github.com/pivotal-cf/service-backup/scp/*.go # gosub
+  - github.com/pivotal-cf/service-backup/upload/*.go # gosub
+  - github.com/satori/go.uuid/*.go # gosub
+  - github.com/tedsuo/ifrit/*.go # gosub
+  - golang.org/x/net/context/*.go # gosub
+  - golang.org/x/net/context/ctxhttp/*.go # gosub
+  - golang.org/x/net/http2/*.go # gosub
+  - golang.org/x/net/http2/hpack/*.go # gosub
+  - golang.org/x/net/idna/*.go # gosub
+  - golang.org/x/net/internal/timeseries/*.go # gosub
+  - golang.org/x/net/lex/httplex/*.go # gosub
+  - golang.org/x/net/trace/*.go # gosub
+  - golang.org/x/oauth2/*.go # gosub
+  - golang.org/x/oauth2/google/*.go # gosub
+  - golang.org/x/oauth2/internal/*.go # gosub
+  - golang.org/x/oauth2/jws/*.go # gosub
+  - golang.org/x/oauth2/jwt/*.go # gosub
+  - google.golang.org/api/gensupport/*.go # gosub
+  - google.golang.org/api/googleapi/*.go # gosub
+  - google.golang.org/api/googleapi/internal/uritemplates/*.go # gosub
+  - google.golang.org/api/internal/*.go # gosub
+  - google.golang.org/api/iterator/*.go # gosub
+  - google.golang.org/api/option/*.go # gosub
+  - google.golang.org/api/storage/v1/*.go # gosub
+  - google.golang.org/api/transport/*.go # gosub
+  - google.golang.org/grpc/*.go # gosub
+  - google.golang.org/grpc/codes/*.go # gosub
+  - google.golang.org/grpc/credentials/*.go # gosub
+  - google.golang.org/grpc/credentials/oauth/*.go # gosub
+  - google.golang.org/grpc/grpclog/*.go # gosub
+  - google.golang.org/grpc/internal/*.go # gosub
+  - google.golang.org/grpc/metadata/*.go # gosub
+  - google.golang.org/grpc/naming/*.go # gosub
+  - google.golang.org/grpc/peer/*.go # gosub
+  - google.golang.org/grpc/transport/*.go # gosub
+  - gopkg.in/robfig/cron.v2/*.go # gosub
+  - gopkg.in/yaml.v2/*.go # gosub

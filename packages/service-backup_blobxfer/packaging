@@ -1,0 +1,61 @@
+# Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
+# This program and the accompanying materials are made available under the terms of the under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+set -e
+
+cp -r /var/vcap/packages/service-backup_python2/* ${BOSH_INSTALL_TARGET}
+
+tar xfv blobxfer/blobxfer-0.12.1.tar.gz
+pushd blobxfer-0.12.1
+  ${BOSH_INSTALL_TARGET}/bin/python setup.py install
+popd
+
+# keep a note of setuptools for cleanup
+# For some reason, installing this before blobxfer causes errors. requests needs it though.
+tar xfv blobxfer/setuptools-20.6.7.tar.gz
+pushd setuptools-20.6.7
+  ${BOSH_INSTALL_TARGET}/bin/python setup.py install --record setuptools-files.txt
+popd
+
+tar xfv blobxfer/requests-2.10.0.tar.gz
+pushd requests-2.10.0
+  ${BOSH_INSTALL_TARGET}/bin/python setup.py install
+popd
+
+# Needed by dateutil
+tar xvf blobxfer/six-1.10.0.tar.gz
+pushd six-1.10.0
+  ${BOSH_INSTALL_TARGET}/bin/python setup.py install
+popd
+
+# Does not seem to be explicitly declared, but used at runtime by azure storage
+tar xvf blobxfer/python-dateutil-2.4.2.tar.gz
+pushd python-dateutil-2.4.2
+  ${BOSH_INSTALL_TARGET}/bin/python setup.py install
+popd
+
+unzip blobxfer/azure-storage-0.32.0.zip
+pushd azure-storage-0.32.0
+  ${BOSH_INSTALL_TARGET}/bin/python setup.py install
+popd
+
+unzip blobxfer/azure-common-1.1.4.zip
+pushd azure-common-1.1.4
+  ${BOSH_INSTALL_TARGET}/bin/python setup.py install
+popd
+
+# this a 'workaround', as we need only the azure.common package, not the azure package.
+# we noticed that if there is not __init__ file in the azure package dir, we can
+# import azure.common from the code.
+touch ${BOSH_INSTALL_TARGET}/lib/python2.7/site-packages/azure/__init__.py
+
+cp blobxfer/wrapper.py ${BOSH_INSTALL_TARGET}/bin/blobxfer
+
+chmod +x ${BOSH_INSTALL_TARGET}/bin/blobxfer
+
+pushd setuptools-20.6.7
+  cat setuptools-files.txt | xargs rm
+popd

@@ -1,0 +1,92 @@
+# Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
+# This program and the accompanying materials are made available under the terms of the under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+<%
+def validate_config(config)
+  return if config["destinations"].empty?
+
+  required_properties = %w(source_folder cron_schedule)
+  empty_properties = required_properties.select do |property|
+    config[property].to_s.empty?
+  end
+
+  if empty_properties.any?
+    raise invalid_config_message("Missing values for service_backup: #{empty_properties.join(", ")}")
+  end
+end
+
+def validate_type(type)
+  unless %w(scp s3 azure gcs).include?(type)
+    raise invalid_config_message("Unknown destination type: #{type}")
+  end
+end
+
+def validate_destination(type, destination)
+  config = destination.fetch("config") do
+    raise invalid_config_message("Missing config for #{type}")
+  end
+
+  empty_properties = required_properties(type).select do |property|
+    config[property].nil? || config[property].empty?
+  end
+
+  if empty_properties.any?
+    raise invalid_config_message("Missing values for #{type}: #{empty_properties.join(", ")}")
+  end
+end
+
+def required_properties(type)
+  {
+    'scp' => ['server', 'user', 'destination', 'key'],
+    's3' => ['access_key_id', 'secret_access_key', 'bucket_name', 'bucket_path'],
+    'azure' => ['storage_account', 'storage_access_key', 'container', 'path'],
+    'gcs' => ['service_account_json', 'project_id', 'bucket_name']
+  }[type]
+end
+
+def set_defaults(config)
+  config["deployment_name"] = spec.deployment
+end
+
+def set_destination_defaults(type, destination)
+  {
+    'scp' => lambda {
+      destination["config"]["port"] = 22 if destination["config"]["port"].nil?
+      destination["config"]["fingerprint"] = "" if destination["config"]["fingerprint"].nil?
+    },
+    's3' => lambda {
+      destination["config"]["endpoint_url"] = "" if destination["config"]["endpoint_url"].nil?
+      destination["config"]["region"] = "" if destination["config"]["region"].nil?
+    },
+    'azure' => lambda {
+      destination["config"]["blob_store_base_url"] = "core.windows.net" if destination["config"]["blob_store_base_url"].nil?
+    },
+    'gcs' => lambda {}
+  }[type].call
+end
+
+def invalid_config_message(message)
+  custom_message = p('service-backup.missing_properties_message')
+  "Invalid config - #{message}.\n#{custom_message}"
+end
+
+service_backup_config = p('service-backup')
+
+validate_config(service_backup_config)
+set_defaults(service_backup_config)
+
+service_backup_config["destinations"].each do |destination|
+  type = destination.fetch("type") do
+    raise invalid_config_message("Missing type for destination")
+  end
+
+  validate_type(type)
+  validate_destination(type, destination)
+  set_destination_defaults(type, destination)
+end
+%>
+
+<%= service_backup_config.to_yaml %>

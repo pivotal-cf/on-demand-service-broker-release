@@ -1,0 +1,51 @@
+# Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
+# This program and the accompanying materials are made available under the terms of the under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+---
+blobxfer/python-dateutil-2.4.2.tar.gz:
+  object_id: 6b1adbbe-bcd2-4cf5-983c-ab9ce85324dd
+  sha: 1d975f5db65306a61f4353ef00308ec806f47f54
+  size: 209120
+blobxfer/setuptools-20.6.7.tar.gz:
+  object_id: f2d4bdd4-1e19-4deb-b456-e29634fed5d6
+  sha: 8afa042dece06be473b025e628d3585ab5d27de3
+  size: 675428
+blobxfer/azure-common-1.1.4.zip:
+  object_id: dfe5780a-a249-4c8f-b5d5-6f55c9c39292
+  sha: 9780efee38fbaaeaeb697232eb22f18638a2d99f
+  size: 6575
+blobxfer/azure-storage-0.32.0.zip:
+  object_id: 3071aefa-ba11-47b2-b064-aecd1bd592a5
+  sha: 17aae39fd581e3ed4795c2654568d7c7b480e179
+  size: 164004
+blobxfer/requests-2.10.0.tar.gz:
+  object_id: 0564ec27-2e36-4405-bd6b-b8d6499b40bd
+  sha: 1b9a2395402692262fc61fa15bedbc3e112b1029
+  size: 477617
+blobxfer/six-1.10.0.tar.gz:
+  object_id: 9bdfbf5d-32c8-47d1-9047-c2ef5c9b259f
+  sha: 30d480d2e352e8e4c2aae042cf1bf33368ff0920
+  size: 29630
+golang/go1.7.5.linux-amd64.tar.gz:
+  object_id: 1c523c9a-8ea7-4cd2-886c-b11d29459b9b
+  sha: 7c6902ce8cd3b9963082d748c50df074e4896796
+  size: 84176916
+aws-cli/awscli-bundle-1.11.91.zip:
+  object_id: a4088e50-d8c3-4ef6-84d4-7b6848560e96
+  sha: 0a37876f9d7fa18d9ae801640247eb18ccd8e783
+  size: 8735594
+python/Python-3.6.1.tgz:
+  object_id: 520e5d94-3bd7-49db-8a54-d9c5f7c3be93
+  sha: 6e91434cf22414af8240dfa1bf8ab2d043b04998
+  size: 22540566
+blobxfer/blobxfer-0.12.1.tar.gz:
+  object_id: d048639d-c051-45b0-ab99-ec5d4934571e
+  sha: 76cdf870a41c24099ef18cc6f5b0a81bf4e9d4a6
+  size: 43158
+python/Python-2.7.13.tgz:
+  object_id: 687c7caf-1e65-4fc5-b0b1-02029a46b93d
+  sha: dce2b862a30099ee48c19a7c34e2d7c2eeff5670
+  size: 17076672

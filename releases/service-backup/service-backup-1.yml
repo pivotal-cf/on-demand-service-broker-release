@@ -1,0 +1,26 @@
+---
+packages:
+- name: golang
+  version: f57ddbc8d55d7a0f08775bf76bb6a27dc98c7ea7
+  fingerprint: f57ddbc8d55d7a0f08775bf76bb6a27dc98c7ea7
+  sha1: aa035e8887d5001e60df75e6d9a8c12ffee999b4
+  dependencies: []
+- name: service-backup
+  version: 394c081e415b664eebfcd34667cec522ce63a3e4
+  fingerprint: 394c081e415b664eebfcd34667cec522ce63a3e4
+  sha1: e2636a0895079c52e950aeec9ce28ad6c664c4b1
+  dependencies:
+  - golang
+jobs:
+- name: service-backup
+  version: 0017e7a22ea95a21c17680af92ae74d4c67c5fca
+  fingerprint: 0017e7a22ea95a21c17680af92ae74d4c67c5fca
+  sha1: eefa30b1887a162ca554225de8809ffc5c54a095
+license:
+  version: cf2f0a9486465be13ae0a83711df110f13a438d4
+  fingerprint: cf2f0a9486465be13ae0a83711df110f13a438d4
+  sha1: a3f9a15617b97eaf11922cb8e5833974c9d0531e
+commit_hash: c9005bf0
+uncommitted_changes: true
+name: service-backup
+version: '1'
