@@ -1,4 +1,4 @@
-# Service Backups for Pivotal Cloud Foundry&reg;
+# Service Backups for Cloud Foundry
 
 BOSH operators running services (e.g. Redis service broker for Cloud Foundry) may want to back up certain files from the virtual machines running these services so that they can restore them after a disaster.
 
