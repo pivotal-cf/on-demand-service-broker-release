@@ -6,6 +6,10 @@ BOSH operators running services (e.g. Redis service broker for Cloud Foundry) ma
 
 User documentation can be found [here](https://docs.pivotal.io/service-backup).
 
+## BOSH Release Artifacts
+
+Service Metrics releases artifacts can be found on [PivNet](https://network.pivotal.io/products/service-backups-sdk). Service Metrics 18.1.2+ are licensed under Apache 2.0.
+
 ## Contributing to Service Backup
 
 We welcome contributions to Service Backup.
