@@ -19,7 +19,7 @@ consumes:
 
 properties:
   broker_name:
-    description: name of broker to register with cloud controller
+    description: name of broker to deregister with cloud controller
 
   disable_ssl_cert_verification:
     default: false
