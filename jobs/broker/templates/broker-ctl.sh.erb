@@ -43,14 +43,6 @@ log() {
 }
 export -f log
 
-broker_log() {
-  local log_level=$1
-  local broker_log_tag=on-demand-service-broker
-  local broker_log_file=$log_dir/broker.log
-  write_log $broker_log_tag $broker_log_file $log_level
-}
-export -f broker_log
-
 ensure_dir $job_dir
 ensure_dir $log_dir
 ensure_dir $run_dir
@@ -62,7 +54,8 @@ case $1 in
     ensure_dir $run_dir
 
     exec chpst -u vcap:vcap $run_script \
-      -configFilePath /var/vcap/jobs/broker/config/broker.yml > >(broker_log info) 2>&1
+      -configFilePath /var/vcap/jobs/broker/config/broker.yml \
+      2>&1 > $log_dir/broker.log
     ;;
 
   stop)
