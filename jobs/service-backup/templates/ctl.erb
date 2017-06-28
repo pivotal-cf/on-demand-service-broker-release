@@ -27,30 +27,14 @@ backup_log_file=$log_dir/out.log
 
 pidfile=/var/vcap/sys/run/service-backup.pid
 
-write_log() {
-  local log_tag=$1
-  local log_file=$2
-  local log_level=$3
-  logger --priority $log_facility.$log_level --tag $log_tag --stderr 2>> $log_file
-}
-export -f write_log
-
 log() {
-  local log_level=$1
-  shift
-  echo "$(date): $*" | write_log $script_log_tag $script_log_file $log_level
+  echo "$(date): $*" > $script_log_file
 }
 export -f log
 
-backup_log() {
-  local log_level=$1
-  write_log $backup_log_tag $backup_log_file $log_level
-}
-export -f backup_log
-
 case $1 in
   start)
-    log info "start script: starting service-backup"
+    log "start script: starting service-backup"
     echo $$ > $pidfile
 
     backup_user='<%= p('service-backup.backup_user') %>'
@@ -63,16 +47,16 @@ case $1 in
 
     export GCP_SERVICE_ACCOUNT_FILE=/var/vcap/jobs/service-backup/config/gcp_service_account.json
     exec chpst -u "${backup_user}:${backup_user}" /var/vcap/packages/service-backup/bin/service-backup \
-    /var/vcap/jobs/service-backup/config/backup.yml > >(backup_log info) 2>&1
+    /var/vcap/jobs/service-backup/config/backup.yml 2>&1 > $backup_log_file
 
-    log info "start script: completed starting service-backup"
+    log "start script: completed starting service-backup"
     ;;
 
   stop)
-    log info "stop script: stopping service-backup"
+    log "stop script: stopping service-backup"
     kill $(cat $pidfile)
     rm -f $pidfile
-    log info "stop script: completed stopping service-backup"
+    log "stop script: completed stopping service-backup"
     ;;
 
   *)
