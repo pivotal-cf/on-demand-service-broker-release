@@ -20,3 +20,7 @@ inputs:
 
 run:
   path: broker-release/ci/run-system-tests.sh
+
+params:
+  BOSH_SSH_KEY:
+  RUN_IN_PARALLEL:
