@@ -14,16 +14,10 @@ release_version() { echo "0.1+dev.$(git rev-list --count HEAD)"; }
 
 export CI_ROOT_PATH=$PWD
 
-if [ -n "$BOSH_CA_CERT" ]; then
+if [ -n "${BOSH_CA_CERT:-}" ]; then
   export BOSH_CA_CERT_FILE=$PWD/cert
   echo "$BOSH_CA_CERT" > $BOSH_CA_CERT_FILE
   chmod 400 $BOSH_CA_CERT_FILE
-fi
-
-if [ -n "$BOSH_SSH_KEY" ]; then
-  export BOSH_SSH_KEY_FILE=$PWD/ssh_key
-  echo "$BOSH_SSH_KEY" > $BOSH_SSH_KEY_FILE
-  chmod 400 $BOSH_SSH_KEY_FILE
 fi
 
 for v in CF_URL CF_DOMAIN CF_USERNAME CF_PASSWORD CF_ORG CF_SPACE BROKER_USERNAME BROKER_PASSWORD BOSH_URL BOSH_USERNAME BOSH_PASSWORD TEST_FOLDER_NAME
@@ -36,7 +30,6 @@ export SERVICE_NAME=$BROKER_NAME
 export SERVICE_GUID=${SERVICE_GUID_PREFIX}${SERVICE_NAME}
 export BROKER_DEPLOYMENT_NAME=odb-$BROKER_NAME
 export BROKER_URL=https://${BROKER_DEPLOYMENT_NAME}.${CF_DOMAIN}
-export BOSH_SSH_KEY_FILE=$BOSH_SSH_KEY
 
 pushd $(dirname $0)/..
   export GOPATH=$PWD
