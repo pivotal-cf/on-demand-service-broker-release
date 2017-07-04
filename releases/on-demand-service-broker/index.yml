@@ -58,4 +58,6 @@ builds:
     version: 0.15.3
   fda852b3-fb8a-47dc-ad6f-c7c7d680b50b:
     version: 0.16.0
+  4bfa29a8-9f50-4753-a3c2-29f4d6af9eea:
+    version: 0.16.1
 format-version: '2'
