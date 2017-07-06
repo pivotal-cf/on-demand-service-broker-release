@@ -25,10 +25,11 @@ do
   must_have $v
 done
 
-export BROKER_NAME=$(cat uuid/uuid)
-export SERVICE_NAME=$BROKER_NAME
-export SERVICE_GUID=${SERVICE_GUID_PREFIX}${SERVICE_NAME}
-export BROKER_DEPLOYMENT_NAME=odb-$BROKER_NAME
+uuid=$(cat uuid/uuid)
+export BROKER_NAME="odb-${uuid}"
+export SERVICE_NAME=${uuid}
+export SERVICE_GUID=${SERVICE_GUID_PREFIX}${uuid}
+export BROKER_DEPLOYMENT_NAME="odb-${uuid}"
 export BROKER_URL=https://${BROKER_DEPLOYMENT_NAME}.${CF_DOMAIN}
 
 pushd $(dirname $0)/..
