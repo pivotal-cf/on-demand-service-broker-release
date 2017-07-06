@@ -27,8 +27,8 @@ done
 
 uuid=$(cat uuid/uuid)
 export BROKER_NAME="odb-${uuid}"
-export SERVICE_NAME=${uuid}
-export SERVICE_GUID=${SERVICE_GUID_PREFIX}${uuid}
+export SERVICE_NAME=${SERVICE_NAME_PREFIX}${uuid}
+export SERVICE_GUID=${uuid}
 export BROKER_DEPLOYMENT_NAME="odb-${uuid}"
 export BROKER_URL=https://${BROKER_DEPLOYMENT_NAME}.${CF_DOMAIN}
 
