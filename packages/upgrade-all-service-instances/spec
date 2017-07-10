@@ -39,7 +39,6 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/cf/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/cmd/upgrade-all-service-instances/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/config/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/credstore/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/loggerfactory/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/mgmtapi/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/network/*.go # gosub
