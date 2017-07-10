@@ -82,24 +82,6 @@
 	path = src/github.com/pivotal-cf/on-demand-services-sdk
 	url = git@github.com:pivotal-cf/on-demand-services-sdk.git
 	branch = master
-[submodule "src/github.com/pivotal-cf/credhub-cli"]
-	path = src/github.com/pivotal-cf/credhub-cli
-	url = git@github.com:pivotal-cf/credhub-cli.git
-[submodule "src/github.com/fatih/color"]
-	path = src/github.com/fatih/color
-	url = https://github.com/fatih/color
-[submodule "src/github.com/howeyc/gopass"]
-	path = src/github.com/howeyc/gopass
-	url = https://github.com/howeyc/gopass
-[submodule "src/github.com/mattn/go-colorable"]
-	path = src/github.com/mattn/go-colorable
-	url = https://github.com/mattn/go-colorable
-[submodule "src/github.com/mattn/go-isatty"]
-	path = src/github.com/mattn/go-isatty
-	url = https://github.com/mattn/go-isatty
-[submodule "src/golang.org/x/crypto"]
-	path = src/golang.org/x/crypto
-	url = https://go.googlesource.com/crypto.git
 [submodule "src/github.com/coreos/go-semver"]
 	path = src/github.com/coreos/go-semver
 	url = git@github.com:coreos/go-semver.git
