@@ -254,56 +254,6 @@ RSpec.describe 'broker config templating' do
     end
   end
 
-  describe 'credhub configuration' do
-    context "when provided with a valid config" do
-      let(:manifest_file) { File.open 'spec/fixtures/valid_with_credhub.yml' }
-
-      it 'parses successfully' do
-        expect(rendered_template).to include 'api_url: some-url'
-        expect(rendered_template).to include 'client_id: some-client-id'
-        expect(rendered_template).to include 'client_secret: some-client-secret'
-      end
-    end
-
-    context "when no configuration is provided" do
-      let(:manifest_file) { File.open 'spec/fixtures/valid-mandatory-broker-config.yml' }
-
-      it 'parses successfully and does not contain credhub config' do
-        expect(rendered_template).to_not include 'credhub'
-      end
-    end
-
-    context "when api url is not provided" do
-      let(:manifest_file) { File.open 'spec/fixtures/invalid_with_credhub_no_api.yml' }
-
-      it 'templating raises an error' do
-        expect {
-          rendered_template
-        }.to raise_error(RuntimeError, "Invalid Credhub config - must specify api_url")
-      end
-    end
-
-    context "when client_id is not provided" do
-      let(:manifest_file) { File.open 'spec/fixtures/invalid_with_credhub_no_client_id.yml' }
-
-      it 'templating raises an error' do
-        expect {
-          rendered_template
-        }.to raise_error(RuntimeError, "Invalid Credhub config - must specify client_id")
-      end
-    end
-
-    context "when client_secret is not provided" do
-      let(:manifest_file) { File.open 'spec/fixtures/invalid_with_credhub_no_client_secret.yml' }
-
-      it 'templating raises an error' do
-        expect {
-          rendered_template
-        }.to raise_error(RuntimeError, "Invalid Credhub config - must specify client_secret")
-      end
-    end
-  end
-
   describe 'broker credentials have special characters in them' do
     let(:manifest_file) { File.open 'spec/fixtures/valid-with-special-characters.yml' }
 

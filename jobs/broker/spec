@@ -95,15 +95,6 @@ properties:
   cf.authentication.user_credentials.password:
     description: CF admin password
 
-  credhub.api_url:
-    description: Credhub API url
-
-  credhub.client_id:
-    description: Credhub client ID
-
-  credhub.client_secret:
-    description: Credhub client secret
-
   service_adapter.path:
     description: the path to the service adapter binary located on the host with the broker
     default: /var/vcap/packages/odb-service-adapter/bin/service-adapter

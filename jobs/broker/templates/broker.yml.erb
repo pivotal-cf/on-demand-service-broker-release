@@ -8,7 +8,6 @@
 required_catalog_keys = ["id", "service_name", "service_description", "bindable", "plan_updatable", "plans"]
 required_plan_keys = ['name', 'plan_id', 'description', 'instance_groups']
 required_instance_group_keys = ['name', "vm_type", "instances", "networks", "azs"]
-required_credhub_keys = ['api_url','client_id', 'client_secret']
 valid_cf_service_access_values = ['enable', 'disable', 'manual']
 
 def validate_config(hash, keys, message)
@@ -71,10 +70,6 @@ if any_fields_set?(p('bosh.authentication.basic')) && any_fields_set?(p('bosh.au
   raise 'Invalid bosh config - must only specify one type of authentication'
 end
 
-if any_fields_set?(p('credhub'))
-  validate_config(p('credhub'), required_credhub_keys,"Invalid Credhub config - must specify ")
-end
-
 service_deployment = p('service_deployment')
 validate_releases(service_deployment)
 validate_stemcell(service_deployment)
@@ -109,10 +104,6 @@ config = {
   "service_deployment" => p('service_deployment'),
   "service_catalog" => service_catalog
 }
-
-if any_fields_set?(p('credhub'))
-  config["credhub"] = p('credhub')
-end
 %>
 
 <%= config.to_yaml %>
