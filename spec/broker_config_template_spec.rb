@@ -58,14 +58,6 @@ RSpec.describe 'broker config templating' do
     end
   end
 
-  context 'when the manifest specifies a value for cf_user_triggered_upgrades' do
-    let(:manifest_file) { File.open 'spec/fixtures/valid-broker-config-cf-user-triggered-upgrades.yml' }
-
-    it 'ignores the property' do
-      expect(rendered_template).not_to include 'cf_user_triggered_upgrades'
-    end
-  end
-
   context "when the manifest is missing mandatory service catalog property" do
     ["id", "service_name", "service_description", "bindable", "plan_updatable"].each do |missing_field|
       context "when #{missing_field} is absent" do
