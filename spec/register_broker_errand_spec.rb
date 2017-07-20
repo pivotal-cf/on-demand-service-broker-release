@@ -24,7 +24,7 @@ RSpec.describe 'register-broker errand' do
       }
     ]
   }
-  let(:manifest_file) { 'spec/fixtures/register_broker_with_special_characters.yml' }
+  let(:manifest_file) { 'spec/fixtures/register_broker.yml' }
   let(:renderer) do
     merged_context = BoshEmulator.director_merge(YAML.load_file(manifest_file), 'register-broker')
     merged_context['links'] = {
