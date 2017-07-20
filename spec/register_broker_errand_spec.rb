@@ -24,7 +24,8 @@ RSpec.describe 'register-broker errand' do
       }
     ]
   }
-  let(:renderer)  do
+  let(:manifest_file) { 'spec/fixtures/register_broker.yml' }
+  let(:renderer) do
     merged_context = BoshEmulator.director_merge(YAML.load_file(manifest_file), 'register-broker')
     merged_context['links'] = {
       'broker' => {
@@ -40,44 +41,58 @@ RSpec.describe 'register-broker errand' do
           'service_catalog' => {
             'plans' => plans,
             'service_name' => 'myservicename'
-          }
+          },
+          'cf' => {
+            'url' => 'a-cf-url',
+            'authentication' => {
+              'user_credentials' => {
+                'username' => '%cf_username\'"t:%!',
+                'password' => '%cf_password\'"t:%!'
+              }
+            }
+          },
+          'disable_ssl_cert_verification' => disable_ssl_cert_verification
         }
       }
     }
 
     Bosh::Template::Renderer.new(context: merged_context.to_json)
   end
-
+  let(:disable_ssl_cert_verification) { false }
   let(:rendered_template) { renderer.render('jobs/register-broker/templates/errand.sh.erb') }
 
-  context 'when the cf credentials contain special characters' do
-    let(:manifest_file) { 'spec/fixtures/register_broker_with_special_characters.yml' }
+  it 'does not skip SSL validation' do
+    expect(rendered_template).not_to include '--skip-ssl-validation'
+  end
 
+  context 'when disable_ssl_cert_verification is true' do
+    let(:disable_ssl_cert_verification) { true }
+
+    it 'skips SSL validation' do
+      expect(rendered_template).to include 'cf api --skip-ssl-validation a-cf-url'
+    end
+  end
+
+  context 'when the cf credentials contain special characters' do
     it 'escapes the cf username and password' do
       expect(rendered_template).to include "cf auth '%cf_username'\\''\"t:%!' '%cf_password'\\''\"t:%!'"
     end
   end
 
   context 'when the broker credentials contain special characters' do
-    let(:manifest_file) { 'spec/fixtures/register_broker_with_special_characters.yml' }
-
     it 'escapes the broker credentials' do
       expect(rendered_template).to include "cf $broker_cmd $broker_name '%broker_username'\\''\"t:%!' '%broker_password'\\''\"t:%!'"
     end
   end
 
   context 'when there is one plan configured' do
-
     context 'and it has cf_service_access enabled' do
-      let(:manifest_file) { 'spec/fixtures/register_broker_with_special_characters.yml' }
-
       it 'enables the access' do
         expect(rendered_template).to include 'cf enable-service-access'
       end
     end
 
     context 'and it has cf_service_access disabled' do
-      let(:manifest_file) { 'spec/fixtures/register_broker_with_special_characters.yml' }
       let(:access_value) {'disable'}
 
       it 'disables the access' do
@@ -87,7 +102,6 @@ RSpec.describe 'register-broker errand' do
     end
 
     context 'and it has cf_service_access manual' do
-      let(:manifest_file) { 'spec/fixtures/register_broker_with_special_characters.yml' }
       let(:access_value) {'manual'}
 
       it "doesn't change the access" do
@@ -97,7 +111,6 @@ RSpec.describe 'register-broker errand' do
     end
 
     context 'and it does not specify cf_service_access' do
-      let(:manifest_file) { 'spec/fixtures/register_broker_with_special_characters.yml' }
       let(:plans ) {
         [
           {
@@ -120,8 +133,8 @@ RSpec.describe 'register-broker errand' do
     end
 
     context 'and it specifies an invalid value for cf_service_access' do
-      let(:manifest_file) { 'spec/fixtures/register_broker_with_special_characters.yml' }
       let(:access_value) {'foo-bar'}
+
       it 'fails to template the errand' do
         expect {
           rendered_template
@@ -131,7 +144,6 @@ RSpec.describe 'register-broker errand' do
   end
 
   context "when there nil plans configured" do
-    let(:manifest_file) { 'spec/fixtures/register_broker_with_special_characters.yml' }
     let(:plans ) {
       [
         nil,
@@ -158,7 +170,6 @@ RSpec.describe 'register-broker errand' do
   end
 
   context "when there only nil plans configured" do
-    let(:manifest_file) { 'spec/fixtures/register_broker_with_special_characters.yml' }
     let(:plans ) { [nil, nil] }
 
     it 'does not alter service access' do
@@ -167,7 +178,6 @@ RSpec.describe 'register-broker errand' do
   end
 
   context "when there no plans configured" do
-    let(:manifest_file) { 'spec/fixtures/register_broker_with_special_characters.yml' }
     let(:plans ) { [] }
 
     it 'does not alter service access' do
@@ -176,7 +186,6 @@ RSpec.describe 'register-broker errand' do
   end
 
   context 'when there are multiple plans configured' do
-    let(:manifest_file) { 'spec/fixtures/register_broker_with_special_characters.yml' }
     let(:plans) {
       [
         {
