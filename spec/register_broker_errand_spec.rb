@@ -43,9 +43,13 @@ RSpec.describe 'register-broker errand' do
             'service_name' => 'myservicename'
           },
           'cf' => {
-            'api_url' => 'a-cf-url',
-            'admin_username' => '%cf_username\'"t:%!',
-            'admin_password' => '%cf_password\'"t:%!'
+            'url' => 'a-cf-url',
+            'authentication' => {
+              'user_credentials' => {
+                'username' => '%cf_username\'"t:%!',
+                'password' => '%cf_password\'"t:%!'
+              }
+            }
           },
           'disable_ssl_cert_verification' => disable_ssl_cert_verification
         }
