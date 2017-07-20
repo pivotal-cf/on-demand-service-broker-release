@@ -10,7 +10,3 @@ instance_groups:
     - name: register-broker
       properties:
         broker_name: a-broker
-        cf:
-          api_url: a-cf-url
-          admin_username: "%cf_username'\"t:%!"
-          admin_password: "%cf_password'\"t:%!"

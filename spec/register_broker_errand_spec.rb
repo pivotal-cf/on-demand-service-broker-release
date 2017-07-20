@@ -25,7 +25,7 @@ RSpec.describe 'register-broker errand' do
     ]
   }
   let(:manifest_file) { 'spec/fixtures/register_broker_with_special_characters.yml' }
-  let(:renderer)  do
+  let(:renderer) do
     merged_context = BoshEmulator.director_merge(YAML.load_file(manifest_file), 'register-broker')
     merged_context['links'] = {
       'broker' => {
@@ -41,15 +41,33 @@ RSpec.describe 'register-broker errand' do
           'service_catalog' => {
             'plans' => plans,
             'service_name' => 'myservicename'
-          }
+          },
+          'cf' => {
+            'api_url' => 'a-cf-url',
+            'admin_username' => '%cf_username\'"t:%!',
+            'admin_password' => '%cf_password\'"t:%!'
+          },
+          'disable_ssl_cert_verification' => disable_ssl_cert_verification
         }
       }
     }
 
     Bosh::Template::Renderer.new(context: merged_context.to_json)
   end
-
+  let(:disable_ssl_cert_verification) { false }
   let(:rendered_template) { renderer.render('jobs/register-broker/templates/errand.sh.erb') }
+
+  it 'does not skip SSL validation' do
+    expect(rendered_template).not_to include '--skip-ssl-validation'
+  end
+
+  context 'when disable_ssl_cert_verification is true' do
+    let(:disable_ssl_cert_verification) { true }
+
+    it 'skips SSL validation' do
+      expect(rendered_template).to include 'cf api --skip-ssl-validation a-cf-url'
+    end
+  end
 
   context 'when the cf credentials contain special characters' do
     it 'escapes the cf username and password' do

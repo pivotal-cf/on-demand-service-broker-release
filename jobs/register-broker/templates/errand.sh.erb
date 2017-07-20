@@ -15,8 +15,8 @@ end
 
 export PATH=/var/vcap/packages/cf-cli/bin:$PATH
 
-cf api <%= p('disable_ssl_cert_verification') ? '--skip-ssl-validation' : '' %> <%= p('cf.api_url') %>
-cf auth <%= escape_shell(p('cf.admin_username')) %> <%= escape_shell(p('cf.admin_password')) %>
+cf api <%= link('broker').p('disable_ssl_cert_verification') ? '--skip-ssl-validation' : '' %> <%= link('broker').p('cf.api_url') %>
+cf auth <%= escape_shell(link('broker').p('cf.admin_username')) %> <%= escape_shell(link('broker').p('cf.admin_password')) %>
 
 broker_name=<%= p('broker_name') %>
 
