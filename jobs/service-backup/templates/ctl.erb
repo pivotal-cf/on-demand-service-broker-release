@@ -47,7 +47,7 @@ case $1 in
 
     export GCP_SERVICE_ACCOUNT_FILE=/var/vcap/jobs/service-backup/config/gcp_service_account.json
     exec chpst -u "${backup_user}:${backup_user}" /var/vcap/packages/service-backup/bin/service-backup \
-    /var/vcap/jobs/service-backup/config/backup.yml 2>&1 > $backup_log_file
+    /var/vcap/jobs/service-backup/config/backup.yml 2>&1 >> $backup_log_file
 
     log "start script: completed starting service-backup"
     ;;
