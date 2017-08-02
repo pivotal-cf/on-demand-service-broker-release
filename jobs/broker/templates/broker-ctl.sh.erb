@@ -55,7 +55,7 @@ case $1 in
 
     exec chpst -u vcap:vcap $run_script \
       -configFilePath /var/vcap/jobs/broker/config/broker.yml \
-      2>&1 > $log_dir/broker.log
+      >> $log_dir/broker.log 2>&1
     ;;
 
   stop)
