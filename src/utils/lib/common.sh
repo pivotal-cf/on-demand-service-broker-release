@@ -8,8 +8,8 @@
 
 ensure_dir() {
   local dir=$1
-  local owner=$2
+  local owner=${2:-vcap:vcap}
   mkdir -p "${dir}"
-  find -L "${dir}" | grep -v "packages" | xargs chown $2
+  find -L "${dir}" | grep -v "packages" | xargs chown ${owner}
   chmod 750 "${dir}"
 }
