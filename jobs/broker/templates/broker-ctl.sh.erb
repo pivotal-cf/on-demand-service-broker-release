@@ -16,15 +16,9 @@ run_script=/var/vcap/packages/broker/bin/on-demand-service-broker
 
 pidfile=$run_dir/broker.pid
 
-source /var/vcap/packages/broker_utils/log.sh
-
-ensure_dir() {
-  local dir=$1
-  mkdir -p "${dir}"
-  find -L "${dir}" | grep -v "packages" | xargs chown vcap:vcap
-  chmod 750 "${dir}"
-}
-export -f ensure_dir
+utils_path=/var/vcap/packages/broker_utils
+source ${utils_path}/log.sh
+source ${utils_path}/common.sh
 
 ensure_dir $job_dir
 ensure_dir $log_dir

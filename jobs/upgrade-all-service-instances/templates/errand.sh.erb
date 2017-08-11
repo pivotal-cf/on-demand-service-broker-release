@@ -14,12 +14,13 @@ def escape_shell(str)
 end
 %>
 
-source /var/vcap/packages/broker_utils/common.sh
-source /var/vcap/packages/broker_utils/upgrade_all_instances_tools.sh
+utils_path=/var/vcap/packages/broker_utils
+source ${utils_path}/common.sh
+source ${utils_path}/upgrade_all_instances_tools.sh
 
 log_dir=/var/vcap/sys/log/upgrade-all-service-instances
 
-ensure_dir $log_dir "vcap:vcap"
+ensure_dir $log_dir
 
 upgrade_all_instances \
   /var/vcap/packages/upgrade-all-service-instances/bin/upgrade-all-service-instances \
