@@ -57,7 +57,7 @@ ensure_dir() {
   echo $output
 
   [ "$status" -eq 0 ]
-  [[ "$output" =~ "ensure_dir_args: /var/vcap/sys/log/upgrade-all-service-instances vcap:vcap" ]]
+  [[ "$output" =~ "ensure_dir_args: /var/vcap/sys/log/upgrade-all-service-instances" ]]
 }
 
 @test "errand script calls upgrade_all_instances with the correct arguments" {
