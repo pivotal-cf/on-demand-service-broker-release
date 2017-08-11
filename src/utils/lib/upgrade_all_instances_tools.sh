@@ -6,19 +6,11 @@
 
 #! /bin/bash -eu
 
-ensure_dir() {
-  local dir=$1
-  local owner=$2
-  mkdir -p "${dir}"
-  find -L "${dir}" | grep -v "packages" | xargs chown $2
-  chmod 750 "${dir}"
-}
+source $(dirname ${BASH_SOURCE[0]})/log.sh
 
 write_user_log() {
   local log_tag=$1
-  local log_file=$2
-  local log_priority=$3
-  logger -p $log_priority -t $log_tag -s 2>> $log_file
+  LOG_FILE=$2 log "$log_tag: $(cat /dev/stdin)"
 }
 
 upgrade_all_instances() {
@@ -35,5 +27,5 @@ upgrade_all_instances() {
     -brokerPassword $broker_password \
     -brokerUrl $broker_url \
     -pollingInterval $polling_interval \
-    2>&1 | tee -a >(write_user_log upgrader $log_file_path $syslog_priority)
+    2>&1 | tee -a >(write_user_log upgrader ${log_file_path})
 }

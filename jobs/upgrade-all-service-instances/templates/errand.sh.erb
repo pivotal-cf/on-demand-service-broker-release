@@ -14,8 +14,8 @@ def escape_shell(str)
 end
 %>
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source ${DIR}/common.sh
+source /var/vcap/packages/broker_utils/common.sh
+source /var/vcap/packages/broker_utils/upgrade_all_instances_tools.sh
 
 log_dir=/var/vcap/sys/log/upgrade-all-service-instances
 
