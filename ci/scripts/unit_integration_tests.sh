@@ -39,4 +39,6 @@ pushd "${BASE_DIR}"
 
   go install github.com/onsi/ginkgo/ginkgo
   ./src/github.com/pivotal-cf/service-backup/scripts/test_integration
+
+  bats --tap $(find . -name *.bats)
 popd

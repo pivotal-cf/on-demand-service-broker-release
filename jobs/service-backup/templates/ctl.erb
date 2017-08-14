@@ -27,10 +27,8 @@ backup_log_file=$log_dir/out.log
 
 pidfile=/var/vcap/sys/run/service-backup.pid
 
-log() {
-  echo "$(date): $*" > $script_log_file
-}
-export -f log
+source /var/vcap/packages/service-backup_utils/log.sh
+export LOG_FILE=$script_log_file
 
 case $1 in
   start)

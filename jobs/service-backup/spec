@@ -19,6 +19,7 @@ templates:
 
 packages:
 - service-backup
+- service-backup_utils
 - service-backup_aws-cli
 - service-backup_blobxfer
 - service-backup_python
