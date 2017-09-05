@@ -10,6 +10,7 @@ templates:
   post-start.erb: bin/post-start
   broker-ctl.sh.erb: bin/broker-ctl.sh
   broker.yml.erb: config/broker.yml
+  drain.sh.erb: bin/drain
 
 packages:
   - broker
@@ -53,6 +54,10 @@ properties:
   disable_ssl_cert_verification:
     description: Disable SSL certificate verification. DO NOT USE IN PRODUCTION
     default: false
+
+  shutdown_timeout:
+    description: In seconds, allow the broker to close open connections before shutting down
+    default: 60
 
   bosh.url:
     description: BOSH URL

@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+source /var/vcap/packages/broker_utils/common.sh
+
+job_dir=/var/vcap/jobs/broker
+log_dir=/var/vcap/sys/log/broker/drain
+run_dir=/var/vcap/sys/run/broker
+
+ensure_dir ${log_dir}
+
+pidfile=$run_dir/broker.pid
+pid=$(cat "${pidfile}")
+timeout=<%= p('shutdown_timeout') %>
+
+kill ${pid}
+
+while true; do
+  ps -p "${pid}" >/dev/null 2>&1
+  pid_is_running=$?
+
+  if [ ${pid_is_running} -ne 0 ]; then
+    echo 0
+
+    exit 0
+  fi
+
+  if [ ${timeout} -le 0 ]; then
+    echo "timed out waiting for drain to exit, force killing process" >> "${log_dir}/drain.err.log"
+
+    kill -9 $pid
+    rm -rf $pidfile 
+
+    exit 1
+  fi
+
+  timeout=$(( timeout - 1 ))
+  sleep 1
+done
