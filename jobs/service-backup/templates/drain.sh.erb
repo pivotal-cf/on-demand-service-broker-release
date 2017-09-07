@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# Kill the service-backup process so it doesn't spawn any more 'source_exe's
+# after we've killed the existing ones
+
+pidfile=/var/vcap/sys/run/service-backup.pid
+kill $(cat $pidfile)
+
 tick=0
 timeout=60
 while [ $tick -lt $timeout ]; do
