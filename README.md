@@ -21,7 +21,7 @@ Below are the steps to clone and work on the Service Backup repo, however, if yo
 - **Clone the repo**:
 
     ```bash
-    git clone git@github.com:pivotal-cf/service-backup-release.git
+    $ git clone git@github.com:pivotal-cf/service-backup-release.git
     ```
 
     Note that development is carried out on a branch called `master`; this will be checked out by default.
@@ -31,8 +31,8 @@ This repository is the BOSH release, and contains the Go code for the service ba
 - **Ensure the submodules are up to date**:
 
     ```bash
-    cd service-backup-release
-    git submodule update --init --recursive
+    $ cd service-backup-release
+    $ git submodule update --init --recursive
     ```
 
 - **Set the `$GOPATH`**
@@ -40,7 +40,7 @@ This repository is the BOSH release, and contains the Go code for the service ba
     The `$GOPATH` should be set to the release directory. To do this automatically, we recommend using `direnv`. In this example, we have used homebrew:
 
     ```bash
-    brew install direnv
+    $ brew install direnv
     ```
 
 ### Deploying a release
@@ -50,7 +50,7 @@ This repository is the BOSH release, and contains the Go code for the service ba
     When adding or removing submodules to the BOSH release, use the `sync-package-specs` helper script as shown below:
 
     ```bash
-    ./scripts/sync-package-specs
+    $ ./scripts/sync-package-specs
     ```
 
 - **Create your own standalone (i.e. not co-located) BOSH manifest**
@@ -64,11 +64,11 @@ This repository is the BOSH release, and contains the Go code for the service ba
     As above, the example provided assumes you are using `bosh-lite`:
 
     ```bash
-    bosh target lite # or the alias/IP for your BOSH lite director
-    bosh deployment manifests/bosh-lite-deployment.yml
-    bosh create release --name service-backup
-    bosh upload release
-    bosh deploy
+    $ bosh target lite # or the alias/IP for your BOSH lite director
+    $ bosh deployment manifests/bosh-lite-deployment.yml
+    $ bosh create release --name service-backup
+    $ bosh upload release
+    $ bosh deploy
     ```
 
 ### Committing your changes
@@ -78,7 +78,7 @@ This repository is the BOSH release, and contains the Go code for the service ba
     When adding or removing submodules to the BOSH release, use the `sync-submodule-config` helper script as shown below:
 
     ```bash
-    ./scripts/sync-submodule-config
+    $ ./scripts/sync-submodule-config
     ```
 
     This script will overwrite the `.gitmodules` file. Due to a [bug in gosub](https://github.com/vito/gosub/issues/1), it will replace `git@` with
