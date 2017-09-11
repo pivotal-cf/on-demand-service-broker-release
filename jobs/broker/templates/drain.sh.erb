@@ -1,38 +1,55 @@
 #!/usr/bin/env bash
 
+set -eu
+
 source /var/vcap/packages/broker_utils/common.sh
 
-job_dir=/var/vcap/jobs/broker
 log_dir=/var/vcap/sys/log/broker
 run_dir=/var/vcap/sys/run/broker
+drain_log="${log_dir}/drain.log"
 
 ensure_dir ${log_dir}
 
+log() {
+  echo "$(date +%Y-%m-%dT%H:%M:%S) $1" >> ${drain_log}
+}
+
 pidfile=$run_dir/broker.pid
-pid=$(cat "${pidfile}")
-timeout=<%= p('shutdown_timeout') %>
+if [ ! -f "${pidfile}" ] ; then
+  log "No PID file. Broker not running"
+  echo 0
+  exit 0
+fi
 
-kill ${pid}
+timeout=<%= p('shutdown_timeout_in_seconds') %>
+log "Shutting down broker with timeout ${timeout} seconds"
+# timeout for start-stop-daemon should be 1 second greater than internal broker
+# timeout to give it a chance to finish
+(( timeout++ ))
+set +e
+start-stop-daemon \
+  --pidfile "${pidfile}" \
+  --retry "TERM/${timeout}" \
+  --oknodo \
+  --stop &>> ${drain_log}
 
-while true; do
-  ps -p "${pid}" >/dev/null 2>&1
-  pid_is_running=$?
+exit_status=$?
+set -e
 
-  if [ ${pid_is_running} -ne 0 ]; then
-    echo 0
-
-    exit 0
-  fi
-
-  if [ ${timeout} -le 0 ]; then
-    echo "timed out waiting for drain to exit, force killing process" >> "${log_dir}/drain.err.log"
-
-    kill -9 $pid
-    rm -rf $pidfile 
-
+case "${exit_status}" in
+  0)
+    log "Broker shutdown successfully"
+    rm ${pidfile}
+    ;;
+  2)
+    log "Broker failed to shutdown in ${timeout} seconds"
     exit 1
-  fi
+    ;;
+  *)
+    log "Failed to exit broker. Start-stop-daemon exit_status: ${exit_status}"
+    exit 1
+    ;;
+esac
 
-  timeout=$(( timeout - 1 ))
-  sleep 1
-done
+echo 0
+exit 0
