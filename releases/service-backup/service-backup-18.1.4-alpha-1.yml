@@ -1,0 +1,52 @@
+name: service-backup
+version: 18.1.4-alpha-1
+commit_hash: "5788785"
+uncommitted_changes: false
+jobs:
+- name: service-backup
+  version: 9d9c15f6276b9116fcf148604c28c6d996aff93ed7b5881a9f00c38aad7f141f
+  fingerprint: 9d9c15f6276b9116fcf148604c28c6d996aff93ed7b5881a9f00c38aad7f141f
+  sha1: sha256:770145e1b0d4b313ea0125c573496bd9f97247b56db55686d91e35b37bb1cb91
+packages:
+- name: golang
+  version: efd7c138cb6dd531345ec3a8115facade0953a5a53e3343eb1a75bf72f2a47ca
+  fingerprint: efd7c138cb6dd531345ec3a8115facade0953a5a53e3343eb1a75bf72f2a47ca
+  sha1: sha256:7ed5fce12be6e08720553645ef836e53a3e1ddbefee4a47947706c71f9e07508
+  dependencies: []
+- name: service-backup
+  version: 1b676a09f67b9c0c0624507eb8911111401a0700088a9f7a9e2a441922384a52
+  fingerprint: 1b676a09f67b9c0c0624507eb8911111401a0700088a9f7a9e2a441922384a52
+  sha1: sha256:5c97da7614800415814ae915e6260b903639bb99ec5351abb9e9ce027d3568a6
+  dependencies:
+  - golang
+- name: service-backup_aws-cli
+  version: ae2ddb0cd8e463b3a0e93490fdf066402ead2e62aafae344904715174b537f78
+  fingerprint: ae2ddb0cd8e463b3a0e93490fdf066402ead2e62aafae344904715174b537f78
+  sha1: sha256:1114d8a85d2b7919d1ea85e5f136a4711f089131166ee2344498b1c4962c46ba
+  dependencies:
+  - service-backup_python
+- name: service-backup_blobxfer
+  version: 8e35b7c7e1a81b788c8e6c24f0b66d5831742249b4ab0646333ea1b811aeaf60
+  fingerprint: 8e35b7c7e1a81b788c8e6c24f0b66d5831742249b4ab0646333ea1b811aeaf60
+  sha1: sha256:0e247766f4e5530415a97369e9a7ed0898a6523e5025ef111f14d695d1e391be
+  dependencies:
+  - service-backup_python2
+- name: service-backup_python
+  version: e2d5d5dd6617317e2c504b438b6736307a7f99f0a452157d773b043e9c3f2b40
+  fingerprint: e2d5d5dd6617317e2c504b438b6736307a7f99f0a452157d773b043e9c3f2b40
+  sha1: sha256:ef5122ae9f69bf4564624abc0001325fb1bc95a682ba894037b6914e82680cfa
+  dependencies: []
+- name: service-backup_python2
+  version: 8f0604d4eb2d583cf9c3e7e313f8a8c9a1976952500aec9f5f77e93f2dbfc738
+  fingerprint: 8f0604d4eb2d583cf9c3e7e313f8a8c9a1976952500aec9f5f77e93f2dbfc738
+  sha1: sha256:d6fd5a248029fd1a5f6f1605ecae1e8147a281a00e58aebc6d45740a0a3217fb
+  dependencies: []
+- name: service-backup_utils
+  version: dab632fca88d91426b3f51763fd069cf5d50cf0b3bb310742086626f1158647d
+  fingerprint: dab632fca88d91426b3f51763fd069cf5d50cf0b3bb310742086626f1158647d
+  sha1: sha256:123b7b8a314f37ced4f6318e95847880fa71efdcb839edee846992fe4a4ec106
+  dependencies: []
+license:
+  version: 5327c8fcea6fa89dc3c1e540dd4033845672f638e5a24191f86962a6999a9309
+  fingerprint: 5327c8fcea6fa89dc3c1e540dd4033845672f638e5a24191f86962a6999a9309
+  sha1: sha256:ceeccbd03a4afd6d7524cb13ade4a88d8f67744494cf956efe8d018fc58453f1
