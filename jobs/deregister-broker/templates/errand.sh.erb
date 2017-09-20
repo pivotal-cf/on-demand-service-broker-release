@@ -6,16 +6,6 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
-
-export PATH=/var/vcap/packages/cf-cli/bin:$PATH
-
-<%
-def escape_shell(str)
-  "'#{str.to_s.gsub(/'/, "'\\\\''")}'"
-end
-%>
-
-cf api <%= p('disable_ssl_cert_verification') ? '--skip-ssl-validation' : '' %> <%= p('cf.api_url') %>
-cf auth <%= escape_shell(p('cf.admin_username')) %> <%= escape_shell(p('cf.admin_password')) %>
-
-cf delete-service-broker <%= p('broker_name') %> -f
+/var/vcap/packages/deregister-broker/bin/deregister-broker \
+  -configFilePath /var/vcap/jobs/deregister-broker/config/config.yml \
+  -brokerName <%= p('broker_name') %>
