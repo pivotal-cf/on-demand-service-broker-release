@@ -7,10 +7,4 @@
 instance_groups:
 - name: deregister-broker
   jobs:
-    - name: deregister-broker
-      properties:
-        broker_name: a-broker
-        cf:
-          api_url: a-cf-url
-          admin_username: a-username
-          admin_password: a-password
+  - name: deregister-broker
