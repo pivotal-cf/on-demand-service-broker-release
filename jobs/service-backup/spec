@@ -16,7 +16,6 @@ templates:
   backup.yml.erb: config/backup.yml
   manual-backup.sh.erb: bin/manual-backup
   gcp_service_account.json.erb: config/gcp_service_account.json
-  drain.sh.erb: bin/drain
 
 packages:
 - service-backup

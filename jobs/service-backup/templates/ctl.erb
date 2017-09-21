@@ -33,7 +33,6 @@ export LOG_FILE=$script_log_file
 case $1 in
   start)
     log "start script: starting service-backup"
-    echo $$ > $pidfile
 
     backup_user='<%= p('service-backup.backup_user') %>'
 
@@ -43,18 +42,48 @@ case $1 in
       chown -R "${backup_user}:${backup_user}" "$source_folder"
     <% end %>
 
+    backup_daemon=/var/vcap/packages/service-backup/bin/service-backup
+    backup_conf=/var/vcap/jobs/service-backup/config/backup.yml
+
     export GCP_SERVICE_ACCOUNT_FILE=/var/vcap/jobs/service-backup/config/gcp_service_account.json
-    exec chpst -u "${backup_user}:${backup_user}" /var/vcap/packages/service-backup/bin/service-backup \
-    /var/vcap/jobs/service-backup/config/backup.yml 2>&1 >> $backup_log_file
+    start-stop-daemon \
+      --start \
+      --pidfile $pidfile \
+      --make-pidfile \
+      --background \
+      --chuid "${backup_user}:${backup_user}" \
+      --startas /bin/bash \
+      -- -c "exec $backup_daemon $backup_conf &>> $backup_log_file"
 
     log "start script: completed starting service-backup"
     ;;
 
   stop)
     log "stop script: stopping service-backup"
-    kill $(cat $pidfile)
-    rm -f $pidfile
-    log "stop script: completed stopping service-backup"
+
+    start-stop-daemon \
+      --stop \
+      --pidfile $pidfile \
+      --retry "TERM/15/QUIT/15/KILL/15" \
+      --oknodo
+
+      exit_status=$?
+      set -e
+
+      case "${exit_status}" in
+	0)
+	  log "stop script: completed stopping service-backup"
+	  rm ${pidfile}
+	  ;;
+	2)
+	  log "stop script: failed to shutdown in 45 seconds"
+	  exit 1
+	  ;;
+	*)
+	  log "stop script: failed to exit. Start-stop-daemon exit_status: ${exit_status}"
+	  exit 1
+	  ;;
+      esac
     ;;
 
   *)
