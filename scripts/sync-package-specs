@@ -38,6 +38,7 @@ function sync_package() {
 
 sync_package service-backup \
   -app github.com/pivotal-cf/service-backup \
+  -app github.com/pivotal-cf/service-backup/processterminator \
   -app github.com/pivotal-cf/service-backup/cmd/manual-backup
 
 popd

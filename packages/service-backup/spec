@@ -25,6 +25,7 @@ files:
   - github.com/pivotal-cf/service-backup/config/*.go # gosub
   - github.com/pivotal-cf/service-backup/executor/*.go # gosub
   - github.com/pivotal-cf/service-backup/gcs/*.go # gosub
+  - github.com/pivotal-cf/service-backup/processterminator/*.go # gosub
   - github.com/pivotal-cf/service-backup/s3/*.go # gosub
   - github.com/pivotal-cf/service-backup/scheduler/*.go # gosub
   - github.com/pivotal-cf/service-backup/scp/*.go # gosub
