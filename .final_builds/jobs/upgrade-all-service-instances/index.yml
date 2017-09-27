@@ -1,23 +1,26 @@
----
 builds:
-  cde5baa022f8266389e0b90944f24cef56926b8d:
-    version: cde5baa022f8266389e0b90944f24cef56926b8d
-    sha1: 3fbf5a4bf262955dc0cdb76575bd121b04b5cb98
-    blobstore_id: e2b219b2-8ee2-46fe-b703-47f567986b7b
-  6e668f4a85b4e91b5e2a75f7bd93b83feb121ccc:
-    version: 6e668f4a85b4e91b5e2a75f7bd93b83feb121ccc
-    sha1: bd8d301afd32dbdfd9fe1d809003cb04a366f72d
-    blobstore_id: a06dfa65-3e3b-420d-808c-d36351dbbd9b
-  f95fbd7d2d0ac3e3f918e4d637257411e6b76503:
-    version: f95fbd7d2d0ac3e3f918e4d637257411e6b76503
-    sha1: b0acd2b6c34a8dfd93e65003c11737af26c12ace
-    blobstore_id: 19c34605-3ab1-49e3-99bb-025fde83648d
   5e080df6dc008e31fb850c414a98604d0208b7c4:
     version: 5e080df6dc008e31fb850c414a98604d0208b7c4
-    sha1: 84c544c41aa87957ad0d11909aaec02d9989987c
     blobstore_id: c67c0df1-d263-4f39-a141-5b1f1084e438
+    sha1: 84c544c41aa87957ad0d11909aaec02d9989987c
+  6e668f4a85b4e91b5e2a75f7bd93b83feb121ccc:
+    version: 6e668f4a85b4e91b5e2a75f7bd93b83feb121ccc
+    blobstore_id: a06dfa65-3e3b-420d-808c-d36351dbbd9b
+    sha1: bd8d301afd32dbdfd9fe1d809003cb04a366f72d
+  cde5baa022f8266389e0b90944f24cef56926b8d:
+    version: cde5baa022f8266389e0b90944f24cef56926b8d
+    blobstore_id: e2b219b2-8ee2-46fe-b703-47f567986b7b
+    sha1: 3fbf5a4bf262955dc0cdb76575bd121b04b5cb98
+  f3e77a208abbe457b31c6cd5c0c8e141b4e82c8d1290fd0abb61c579d0a0f6ce:
+    version: f3e77a208abbe457b31c6cd5c0c8e141b4e82c8d1290fd0abb61c579d0a0f6ce
+    blobstore_id: 96409f2f-da4b-4995-549d-32a542e18703
+    sha1: sha256:0d048026f33ea057d11ab254f5d44754454307b25caeb24667fe4da313e4ddfa
   f723151989e0b4631c3cc29a70b3989a2c7d70ba:
     version: f723151989e0b4631c3cc29a70b3989a2c7d70ba
-    sha1: 3709f6b3b6d8c0ca38fd16c7c40767f72e740aa6
     blobstore_id: cafa9c97-273c-4679-bfef-44c234d6b349
-format-version: '2'
+    sha1: 3709f6b3b6d8c0ca38fd16c7c40767f72e740aa6
+  f95fbd7d2d0ac3e3f918e4d637257411e6b76503:
+    version: f95fbd7d2d0ac3e3f918e4d637257411e6b76503
+    blobstore_id: 19c34605-3ab1-49e3-99bb-025fde83648d
+    sha1: b0acd2b6c34a8dfd93e65003c11737af26c12ace
+format-version: "2"
