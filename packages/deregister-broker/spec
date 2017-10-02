@@ -14,6 +14,7 @@ files:
   - github.com/craigfurman/herottp/*.go # gosub
   - github.com/pborman/uuid/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/authorizationheader/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/boshdirector/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/brokercontext/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/cf/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/cmd/deregister-broker/*.go # gosub
