@@ -71,9 +71,6 @@ properties:
   bosh.authentication.basic.password:
     description: BOSH director password
 
-  bosh.authentication.uaa.url:
-    description: UAA URL for Bosh Director
-
   bosh.authentication.uaa.client_id:
     description: UAA client ID
 
