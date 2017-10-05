@@ -55,6 +55,9 @@ properties:
     description: Disable SSL certificate verification. DO NOT USE IN PRODUCTION
     default: false
 
+  disable_cf_startup_checks:
+    default: false
+
   shutdown_timeout_in_seconds:
     description: In seconds, allow the broker to close open connections before shutting down
     default: 60
