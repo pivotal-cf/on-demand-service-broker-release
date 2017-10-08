@@ -60,31 +60,38 @@
 	branch = master
 [submodule "src/github.com/pivotal-cf/brokerapi"]
 	path = src/github.com/pivotal-cf/brokerapi
-	url = git@github.com:pivotal-cf/brokerapi.git
+	url = https://github.com/pivotal-cf/brokerapi.git
+	pushurl = git@github.com:pivotal-cf/brokerapi.git
 	branch = master
 [submodule "src/github.com/pivotal-cf/on-demand-service-broker"]
 	path = src/github.com/pivotal-cf/on-demand-service-broker
-	url = git@github.com:pivotal-cf/on-demand-service-broker.git
+	url = https://github.com/pivotal-cf/on-demand-service-broker.git
+	pushurl = git@github.com:pivotal-cf/on-demand-service-broker.git
 	branch = master
 [submodule "examples/redis-example-service-adapter-release"]
 	path = examples/redis-example-service-adapter-release
-	url = git@github.com:pivotal-cf-experimental/redis-example-service-adapter-release.git
+	url = https://github.com/pivotal-cf-experimental/redis-example-service-adapter-release.git
+	pushurl = git@github.com:pivotal-cf-experimental/redis-example-service-adapter-release.git
 [submodule "examples/redis-example-service-release"]
 	path = examples/redis-example-service-release
-	url = git@github.com:pivotal-cf-experimental/redis-example-service-release.git
+	url = https://github.com/pivotal-cf-experimental/redis-example-service-release.git
+	pushurl = git@github.com:pivotal-cf-experimental/redis-example-service-release.git
 [submodule "examples/kafka-example-service-release"]
 	path = examples/kafka-example-service-release
-	url = git@github.com:pivotal-cf-experimental/kafka-example-service-release.git
+	url = https://github.com/pivotal-cf-experimental/kafka-example-service-release.git
+	pushurl = git@github.com:pivotal-cf-experimental/kafka-example-service-release.git
 [submodule "examples/kafka-example-service-adapter-release"]
 	path = examples/kafka-example-service-adapter-release
-	url = git@github.com:pivotal-cf-experimental/kafka-example-service-adapter-release.git
+	url = https://github.com/pivotal-cf-experimental/kafka-example-service-adapter-release.git
+	pushurl = git@github.com:pivotal-cf-experimental/kafka-example-service-adapter-release.git
 [submodule "src/github.com/pivotal-cf/on-demand-services-sdk"]
 	path = src/github.com/pivotal-cf/on-demand-services-sdk
-	url = git@github.com:pivotal-cf/on-demand-services-sdk.git
+	url = https://github.com/pivotal-cf/on-demand-services-sdk.git
+	pushurl = git@github.com:pivotal-cf/on-demand-services-sdk.git
 	branch = master
 [submodule "src/github.com/coreos/go-semver"]
 	path = src/github.com/coreos/go-semver
-	url = git@github.com:coreos/go-semver.git
+	url = https://github.com/coreos/go-semver.git
 [submodule "src/code.cloudfoundry.org/lager"]
 	path = src/code.cloudfoundry.org/lager
 	url = https://github.com/cloudfoundry/lager
