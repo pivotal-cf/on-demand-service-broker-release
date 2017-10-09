@@ -8,4 +8,4 @@
 name: golang
 
 files:
-  - go/go1.8.3.linux-amd64.tar.gz
+  - go/go1.8.4.linux-amd64.tar.gz

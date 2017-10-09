@@ -30,10 +30,10 @@ blobxfer/six-1.10.0.tar.gz:
   size: 29630
   object_id: 9bdfbf5d-32c8-47d1-9047-c2ef5c9b259f
   sha: 30d480d2e352e8e4c2aae042cf1bf33368ff0920
-go/go1.8.3.linux-amd64.tar.gz:
-  size: 90029041
-  object_id: 3d487b4b-ade8-4bf6-523e-d4f3a47bb560
-  sha: 838c415896ef5ecd395dfabde5e7e6f8ac943c8e
+go/go1.8.4.linux-amd64.tar.gz:
+  size: 99071672
+  object_id: 682db1a6-cbe9-49a5-5158-3626f719fe3a
+  sha: dad24dc0b75210bc02c8cd16e62e8d71a6cd6e2d
 python/Python-2.7.13.tgz:
   size: 17076672
   object_id: 687c7caf-1e65-4fc5-b0b1-02029a46b93d
