@@ -101,6 +101,15 @@ properties:
   cf.authentication.user_credentials.password:
     description: CF admin password
 
+  credhub.api_url:
+    description: URL for credhub server
+
+  credhub.client_id:
+    description: UAA client id for credhub
+
+  credhub.client_secret:
+    description: UAA client secret for credhub
+
   service_adapter.path:
     description: the path to the service adapter binary located on the host with the broker
     default: /var/vcap/packages/odb-service-adapter/bin/service-adapter

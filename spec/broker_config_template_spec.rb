@@ -42,6 +42,26 @@ RSpec.describe 'broker config templating' do
     end
   end
 
+  context 'when the manifest contains some credhub properties' do
+    let(:manifest_file) { File.open 'spec/fixtures/valid_credhub.yml' }
+
+    it 'includes the credhub properties in the broker config' do
+      expect(YAML.load(rendered_template).fetch('credhub')).to eq(
+        "api_url" => "https://my.credhub.internal:8844",
+        "client_id" => "credhub_id",
+        "client_secret" => "credhub_password",
+      )
+    end
+  end
+
+  context 'when the manifest does not contain credhub properties' do
+    let(:manifest_file) { File.open 'spec/fixtures/valid-mandatory-broker-config.yml' }
+
+    it 'includes the credhub properties in the broker config' do
+      expect(YAML.load(rendered_template)).not_to have_key('credhub')
+    end
+  end
+
   context 'when the manifest contains only mandatory service catalog properties' do
     let(:manifest_file) { File.open 'spec/fixtures/valid-mandatory-broker-config.yml' }
 

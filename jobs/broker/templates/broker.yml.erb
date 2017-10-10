@@ -56,6 +56,14 @@ def validate_stemcell(service_deployment)
   end
 end
 
+def credhub_config
+  if has_values?('credhub')
+    { 'credhub' => p('credhub') }
+  else
+    {}
+  end
+end
+
 service_catalog = p('service_catalog')
 plans = service_catalog['plans'] || []
 plans.delete_if { |plan| plan.nil? }
@@ -105,7 +113,7 @@ config = {
   "service_adapter" => p('service_adapter'),
   "service_deployment" => p('service_deployment'),
   "service_catalog" => service_catalog
-}
+}.merge(credhub_config)
 %>
 
 <%= config.to_yaml %>
