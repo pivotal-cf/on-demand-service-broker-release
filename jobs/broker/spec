@@ -162,6 +162,10 @@ properties:
     default: ""
     description: apps manager support url
 
+  service_catalog.metadata.shareable:
+    default: false
+    description: is service shareable?
+
   service_catalog.dashboard_client:
     default:
     description: client ID for dashboard

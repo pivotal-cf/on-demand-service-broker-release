@@ -78,6 +78,14 @@ RSpec.describe 'broker config templating' do
     end
   end
 
+  context 'when the manifest specifies a value for metadata.shareable' do
+    let(:manifest_file) { File.open 'spec/fixtures/valid-shareable-config.yml' }
+
+    it 'sets the value correctly' do
+      expect(rendered_template).to include 'shareable: true'
+    end
+  end
+
   context "when the manifest is missing mandatory service catalog property" do
     ["id", "service_name", "service_description", "bindable", "plan_updatable"].each do |missing_field|
       context "when #{missing_field} is absent" do
