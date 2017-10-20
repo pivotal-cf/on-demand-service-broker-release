@@ -12,6 +12,15 @@ dependencies:
 
 files:
   - code.cloudfoundry.org/lager/*.go # gosub
+  - github.com/cloudfoundry-incubator/credhub-cli/credhub/*.go # gosub
+  - github.com/cloudfoundry-incubator/credhub-cli/credhub/auth/*.go # gosub
+  - github.com/cloudfoundry-incubator/credhub-cli/credhub/auth/uaa/*.go # gosub
+  - github.com/cloudfoundry-incubator/credhub-cli/credhub/credentials/*.go # gosub
+  - github.com/cloudfoundry-incubator/credhub-cli/credhub/credentials/generate/*.go # gosub
+  - github.com/cloudfoundry-incubator/credhub-cli/credhub/credentials/values/*.go # gosub
+  - github.com/cloudfoundry-incubator/credhub-cli/credhub/permissions/*.go # gosub
+  - github.com/cloudfoundry-incubator/credhub-cli/credhub/server/*.go # gosub
+  - github.com/cloudfoundry-incubator/credhub-cli/vendor/github.com/hashicorp/go-version/*.go # gosub
   - github.com/coreos/go-semver/semver/*.go # gosub
   - github.com/craigfurman/herottp/*.go # gosub
   - github.com/gorilla/mux/*.go # gosub
@@ -23,9 +32,11 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/boshdirector/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/broker/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/brokercontext/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/brokerupgrader/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/cf/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/cmd/on-demand-service-broker/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/config/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/credhubbroker/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/loggerfactory/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/mgmtapi/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/noopservicescontroller/*.go # gosub
