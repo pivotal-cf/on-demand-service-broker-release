@@ -31,8 +31,8 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/authorizationheader/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/boshdirector/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/broker/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/brokeraugmenter/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/brokercontext/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/brokerupgrader/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/cf/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/cmd/on-demand-service-broker/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/config/*.go # gosub
