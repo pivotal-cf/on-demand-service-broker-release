@@ -20,6 +20,7 @@ files:
   - github.com/cloudfoundry-incubator/credhub-cli/credhub/credentials/values/*.go # gosub
   - github.com/cloudfoundry-incubator/credhub-cli/credhub/permissions/*.go # gosub
   - github.com/cloudfoundry-incubator/credhub-cli/credhub/server/*.go # gosub
+  - github.com/cloudfoundry-incubator/credhub-cli/errors/*.go # gosub
   - github.com/cloudfoundry-incubator/credhub-cli/vendor/github.com/hashicorp/go-version/*.go # gosub
   - github.com/coreos/go-semver/semver/*.go # gosub
   - github.com/craigfurman/herottp/*.go # gosub
