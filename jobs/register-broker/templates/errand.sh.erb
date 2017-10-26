@@ -6,6 +6,8 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
+utils_path=/var/vcap/packages/broker_utils
+source ${utils_path}/cf_service_broker_command.sh
 
 <%
 def escape_shell(str)
@@ -19,12 +21,7 @@ cf api <%= p('disable_ssl_cert_verification') ? '--skip-ssl-validation' : '' %> 
 cf auth <%= escape_shell(p('cf.admin_username')) %> <%= escape_shell(p('cf.admin_password')) %>
 
 broker_name=<%= p('broker_name') %>
-
-if cf service-brokers | grep "^${broker_name}\s"; then
-  broker_cmd=update-service-broker
-else
-  broker_cmd=create-service-broker
-fi
+broker_cmd=$(cf_service_broker_command "${broker_name}")
 
 <% if_p('broker_uri') do |broker_uri| %>
 broker_uri=<%= broker_uri %>

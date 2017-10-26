@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+echo "Getting service brokers as admin...
+
+name                   url
+${SERVICE_NAME}        https://doesnt-matter-to-our-tests.org
+"

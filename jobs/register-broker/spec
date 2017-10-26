@@ -9,6 +9,7 @@ name: register-broker
 
 packages:
   - cf-cli
+  - broker_utils
 
 templates:
   errand.sh.erb: /bin/run

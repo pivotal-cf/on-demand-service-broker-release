@@ -10,3 +10,4 @@ files:
 - utils/lib/log.sh
 - utils/lib/common.sh
 - utils/lib/upgrade_all_instances_tools.sh
+- utils/lib/cf_service_broker_command.sh
