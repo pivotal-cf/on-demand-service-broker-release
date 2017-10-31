@@ -99,3 +99,15 @@
 	path = src/github.com/cloudfoundry-incubator/credhub-cli
 	url = https://github.com/cloudfoundry-incubator/credhub-cli
 	branch = master
+[submodule "src/github.com/davidrjenni/reftools"]
+	path = src/github.com/davidrjenni/reftools
+	url = https://github.com/davidrjenni/reftools
+[submodule "src/github.com/ghodss/yaml"]
+	path = src/github.com/ghodss/yaml
+	url = https://github.com/ghodss/yaml
+[submodule "src/github.com/totherme/unstructured"]
+	path = src/github.com/totherme/unstructured
+	url = https://github.com/totherme/unstructured
+[submodule "src/github.com/xeipuuv/gojsonpointer"]
+	path = src/github.com/xeipuuv/gojsonpointer
+	url = https://github.com/xeipuuv/gojsonpointer
