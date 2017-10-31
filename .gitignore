@@ -16,3 +16,4 @@ releases/**/*.tgz
 .final_builds/packages/**/*.tgz
 bin
 pkg
+.idea/
