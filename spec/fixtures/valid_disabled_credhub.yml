@@ -10,7 +10,7 @@ instance_groups:
       - name: broker
         properties:
           secure_binding_credentials:
-            enabled: true
+            enabled: false
             authentication:
               uaa:
                 client_id: credhub_id

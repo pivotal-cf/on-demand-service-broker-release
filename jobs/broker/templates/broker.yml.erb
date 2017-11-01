@@ -57,11 +57,21 @@ def validate_stemcell(service_deployment)
 end
 
 def credhub_config
-  if has_values?('credhub')
-    { 'credhub' => p('credhub') }
+  if p('secure_binding_credentials.enabled') && has_values?('credhub')
+    {
+      'credhub' => {
+        'api_url' => p('credhub.api_url'),
+        'client_id' => p('secure_binding_credentials.authentication.uaa.client_id'),
+        'client_secret' => p('secure_binding_credentials.authentication.uaa.client_secret')
+      }
+    }
   else
     {}
   end
+end
+
+if has_values?('secure_binding_credentials.authentication.uaa')
+  validate_config(p('secure_binding_credentials.authentication.uaa'), ['client_id', 'client_secret'], 'Invalid secure_binding_credentials config - must specify ')
 end
 
 service_catalog = p('service_catalog')

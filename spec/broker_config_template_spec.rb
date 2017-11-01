@@ -42,7 +42,15 @@ RSpec.describe 'broker config templating' do
     end
   end
 
-  context 'when the manifest contains some credhub properties' do
+  context 'when the manifest disables secure binding' do
+    let(:manifest_file) { File.open 'spec/fixtures/valid_disabled_credhub.yml' }
+
+    it 'does not include the credhub properties in the broker config' do
+      expect(YAML.load(rendered_template)).not_to have_key('credhub')
+    end
+  end
+
+  context 'when the manifest enables secure binding' do
     let(:manifest_file) { File.open 'spec/fixtures/valid_credhub.yml' }
 
     it 'includes the credhub properties in the broker config' do
@@ -54,11 +62,31 @@ RSpec.describe 'broker config templating' do
     end
   end
 
-  context 'when the manifest does not contain credhub properties' do
+  context 'when the manifest does not contain secure binding properties' do
     let(:manifest_file) { File.open 'spec/fixtures/valid-mandatory-broker-config.yml' }
 
-    it 'includes the credhub properties in the broker config' do
+    it 'does not include the credhub properties in the broker config' do
       expect(YAML.load(rendered_template)).not_to have_key('credhub')
+    end
+  end
+
+  context 'when the manifest enables secure binding properties but is missing client ID' do
+    let(:manifest_file) { File.open 'spec/fixtures/invalid_credhub_missing_uaa_client_id.yml' }
+
+    it 'templating raises an error' do
+      expect {
+        rendered_template
+      }.to raise_error(RuntimeError, "Invalid secure_binding_credentials config - must specify client_id")
+    end
+  end
+
+  context 'when the manifest enables secure binding properties but is missing client secret' do
+    let(:manifest_file) { File.open 'spec/fixtures/invalid_credhub_missing_uaa_client_secret.yml' }
+
+    it 'templating raises an error' do
+      expect {
+        rendered_template
+      }.to raise_error(RuntimeError, "Invalid secure_binding_credentials config - must specify client_secret")
     end
   end
 

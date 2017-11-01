@@ -13,8 +13,7 @@ instance_groups:
             enabled: true
             authentication:
               uaa:
-                client_id: credhub_id
-                client_secret: credhub_password
+                client_secret: credhub_secret
           credhub:
             api_url: https://my.credhub.internal:8844
           username: foobar
