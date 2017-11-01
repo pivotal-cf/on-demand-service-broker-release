@@ -6,7 +6,7 @@
 
 set -e
 
-name=Python-2.7.13
+name=Python-2.7.14
 tar zxf python/${name}.tgz
 
 cd $name

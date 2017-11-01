@@ -34,10 +34,10 @@ go/go1.8.4.linux-amd64.tar.gz:
   size: 99071672
   object_id: 682db1a6-cbe9-49a5-5158-3626f719fe3a
   sha: dad24dc0b75210bc02c8cd16e62e8d71a6cd6e2d
-python/Python-2.7.13.tgz:
-  size: 17076672
-  object_id: 687c7caf-1e65-4fc5-b0b1-02029a46b93d
-  sha: dce2b862a30099ee48c19a7c34e2d7c2eeff5670
+python/Python-2.7.14.tgz:
+  size: 17176758
+  object_id: bb860bd5-87aa-4d8d-60a3-c44634c254df
+  sha: e29c3fa7865895e0f01299e0358b59bfd0462766
 python/Python-3.6.2.tgz:
   size: 22580749
   object_id: 8a08d759-e895-4632-70a4-e8cbce179223
