@@ -9,6 +9,8 @@ builds:
     version: 18.1.2
   670ce56d-cffb-4ff9-5bab-f3a4f93f75c9:
     version: 18.1.4-alpha-1
+  af36660b-6659-49f0-51db-e935ea77f8cb:
+    version: 18.1.7
   cdac8efe-39f5-4e2b-57e8-1a2df6860afe:
     version: 18.1.4
   d2f52afe-6024-4b32-7add-9a6ed23ec55c:
