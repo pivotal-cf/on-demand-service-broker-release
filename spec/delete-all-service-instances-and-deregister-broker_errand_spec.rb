@@ -7,7 +7,15 @@
 require 'spec_helper'
 
 RSpec.describe 'delete-all-service-instances-and-deregister-broker errand' do
-  let(:renderer) { Bosh::Template::Renderer.new(context: BoshEmulator.director_merge(YAML.load_file(manifest_file), 'delete-all-service-instances-and-deregister-broker').to_json) }
+  links = [{
+    'broker' => {
+      'instances' => [],
+      'properties' => {}
+    }
+  }]
+  let(:renderer) do
+    Bosh::Template::Renderer.new(context: BoshEmulator.director_merge(YAML.load_file(manifest_file), 'delete-all-service-instances-and-deregister-broker', links).to_json)
+  end
 
   let(:rendered_template) { renderer.render('jobs/delete-all-service-instances-and-deregister-broker/templates/errand.sh.erb') }
 

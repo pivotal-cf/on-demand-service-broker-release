@@ -57,17 +57,20 @@ def validate_stemcell(service_deployment)
 end
 
 def credhub_config
-  if p('secure_binding_credentials.enabled') && has_values?('credhub')
-    {
-      'credhub' => {
-        'api_url' => p('credhub.api_url'),
-        'client_id' => p('secure_binding_credentials.authentication.uaa.client_id'),
-        'client_secret' => p('secure_binding_credentials.authentication.uaa.client_secret')
+  credhub_properties = {}
+  if_link('credhub') do |credhub|
+    if p('secure_binding_credentials.enabled')
+      credhub_properties = {
+        'credhub' => {
+          'api_url' => "#{credhub.p('credhub.internal_url')}:#{credhub.p('credhub.port')}",
+          'ca_cert' => credhub.p('credhub.ca_certificate'),
+          'client_id' => p('secure_binding_credentials.authentication.uaa.client_id'),
+          'client_secret' => p('secure_binding_credentials.authentication.uaa.client_secret')
+        }
       }
-    }
-  else
-    {}
+    end
   end
+  credhub_properties
 end
 
 if has_values?('secure_binding_credentials.authentication.uaa')

@@ -8,11 +8,7 @@ require 'spec_helper'
 
 RSpec.describe 'upgrade-all-service-instances errand' do
   let(:renderer) do
-    merged_context = BoshEmulator.director_merge(
-      YAML.load_file(manifest_file.path),
-      'upgrade-all-service-instances'
-    )
-    merged_context['links'] = {
+    links = [{
       'broker' => {
         'instances' => [
           {
@@ -25,7 +21,12 @@ RSpec.describe 'upgrade-all-service-instances errand' do
           'port' => 8080
         }
       }
-    }
+    }]
+    merged_context = BoshEmulator.director_merge(
+      YAML.load_file(manifest_file.path),
+      'upgrade-all-service-instances',
+      links,
+    )
 
     Bosh::Template::Renderer.new(context: merged_context.to_json)
   end

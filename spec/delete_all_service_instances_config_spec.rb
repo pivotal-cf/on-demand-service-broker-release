@@ -11,12 +11,9 @@ RSpec.describe 'delete-all-service-instances config' do
   let(:renderer) do
     merged_context = BoshEmulator.director_merge(
       YAML.load_file(manifest_file.path),
-      'delete-all-service-instances'
+      'delete-all-service-instances',
+      [broker_link],
     )
-    merged_context['links'] = {
-      'broker' => broker_link
-    }
-
     Bosh::Template::Renderer.new(context: merged_context.to_json)
   end
 
@@ -29,24 +26,26 @@ RSpec.describe 'delete-all-service-instances config' do
 
     let(:broker_link) do
       {
-        'instances' => [{}],
-        'properties' => {
-          'service_catalog' => {
-            'id' => 'some-service-id'
-          },
-          'disable_ssl_cert_verification' => true,
-          'cf' => {
-            'url' => "https://api.cf-app.com",
-            'root_ca_cert' => 'cert',
-            'authentication' => {
-              'url' => 'https://uaa.cf-app.com',
-              'client_credentials' => {
-                'client_id' => 'some_client_id',
-                'secret' => 'some_secret'
-              },
-              'user_credentials' => {
-                'username' => 'some-username',
-                'password' => 'some-password'
+        'broker' => {
+          'instances' => [{}],
+          'properties' => {
+            'service_catalog' => {
+              'id' => 'some-service-id'
+            },
+            'disable_ssl_cert_verification' => true,
+            'cf' => {
+              'url' => "https://api.cf-app.com",
+              'root_ca_cert' => 'cert',
+              'authentication' => {
+                'url' => 'https://uaa.cf-app.com',
+                'client_credentials' => {
+                  'client_id' => 'some_client_id',
+                  'secret' => 'some_secret'
+                },
+                'user_credentials' => {
+                  'username' => 'some-username',
+                  'password' => 'some-password'
+                }
               }
             }
           }

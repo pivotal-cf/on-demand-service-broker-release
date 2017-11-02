@@ -8,8 +8,7 @@ require 'spec_helper'
 
 RSpec.describe 'collect-service-metrics script' do
   let(:renderer) do
-    merged_context = BoshEmulator.director_merge(YAML.load_file(manifest_file), 'service-metrics-adapter')
-    merged_context['links'] = {
+    links = [{
       'broker' => {
         'instances' => [
           {
@@ -22,8 +21,8 @@ RSpec.describe 'collect-service-metrics script' do
           'port' => 7070
         }
       }
-    }
-
+    }]
+    merged_context = BoshEmulator.director_merge(YAML.load_file(manifest_file), 'service-metrics-adapter', links)
     Bosh::Template::Renderer.new(context: merged_context.to_json)
   end
 

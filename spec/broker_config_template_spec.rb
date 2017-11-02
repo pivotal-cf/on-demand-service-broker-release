@@ -8,9 +8,10 @@ require 'spec_helper'
 require 'tempfile'
 
 RSpec.describe 'broker config templating' do
+  let(:links) { [] }
   let(:renderer) do
     Bosh::Template::Renderer.new(context: BoshEmulator.director_merge(
-      YAML.load_file(manifest_file.path), 'broker'
+      YAML.load_file(manifest_file.path), 'broker', links
     ).to_json)
   end
 
@@ -42,34 +43,6 @@ RSpec.describe 'broker config templating' do
     end
   end
 
-  context 'when the manifest disables secure binding' do
-    let(:manifest_file) { File.open 'spec/fixtures/valid_disabled_credhub.yml' }
-
-    it 'does not include the credhub properties in the broker config' do
-      expect(YAML.load(rendered_template)).not_to have_key('credhub')
-    end
-  end
-
-  context 'when the manifest enables secure binding' do
-    let(:manifest_file) { File.open 'spec/fixtures/valid_credhub.yml' }
-
-    it 'includes the credhub properties in the broker config' do
-      expect(YAML.load(rendered_template).fetch('credhub')).to eq(
-        "api_url" => "https://my.credhub.internal:8844",
-        "client_id" => "credhub_id",
-        "client_secret" => "credhub_password",
-      )
-    end
-  end
-
-  context 'when the manifest does not contain secure binding properties' do
-    let(:manifest_file) { File.open 'spec/fixtures/valid-mandatory-broker-config.yml' }
-
-    it 'does not include the credhub properties in the broker config' do
-      expect(YAML.load(rendered_template)).not_to have_key('credhub')
-    end
-  end
-
   context 'when the manifest enables secure binding properties but is missing client ID' do
     let(:manifest_file) { File.open 'spec/fixtures/invalid_credhub_missing_uaa_client_id.yml' }
 
@@ -87,6 +60,64 @@ RSpec.describe 'broker config templating' do
       expect {
         rendered_template
       }.to raise_error(RuntimeError, "Invalid secure_binding_credentials config - must specify client_secret")
+    end
+  end
+
+  context 'when secure_binding_credentials is enabled but there is no credhub link' do
+    let(:manifest_file) { File.open 'spec/fixtures/valid_credhub.yml' }
+
+    it 'does not include the credhub properties in the broker config' do
+      expect(YAML.load(rendered_template)).not_to have_key('credhub')
+    end
+  end
+
+  describe 'credhub link' do
+    let(:manifest_file) { File.open 'spec/fixtures/valid_credhub.yml' }
+
+    it 'does not include the credhub properties when no credhub link is provided' do
+        expect(YAML.load(rendered_template)).not_to have_key('credhub')
+    end
+
+    context "when credhub link is provided" do
+      let(:links) do
+        [{
+          'credhub' => {
+            'instances' => [],
+            'properties' => {
+              'credhub' => {
+                'port' => 8844,
+                'ca_certificate' => 'credhub_ca_cert',
+                'internal_url' => 'https://my.credhub.internal',
+              }
+            }
+          }
+        }]
+      end
+
+      it 'includes the credhub properties when credhub link is provided' do
+        expect(YAML.load(rendered_template).fetch('credhub')).to eq(
+          "api_url" => "https://my.credhub.internal:8844",
+          "ca_cert" => "credhub_ca_cert",
+          "client_id" => "credhub_id",
+          "client_secret" => "credhub_password",
+        )
+      end
+
+      context "but secure binding is disabled" do
+        let(:manifest_file) { File.open 'spec/fixtures/valid_disabled_credhub.yml' }
+
+        it 'does not include the credhub properties in the broker config' do
+          expect(YAML.load(rendered_template)).not_to have_key('credhub')
+        end
+      end
+
+      context 'but the manifest does not contain secure binding properties' do
+        let(:manifest_file) { File.open 'spec/fixtures/valid-mandatory-broker-config.yml' }
+
+        it 'does not include the credhub properties in the broker config' do
+          expect(YAML.load(rendered_template)).not_to have_key('credhub')
+        end
+      end
     end
   end
 

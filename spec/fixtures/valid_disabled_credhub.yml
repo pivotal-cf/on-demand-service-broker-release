@@ -15,8 +15,6 @@ instance_groups:
               uaa:
                 client_id: credhub_id
                 client_secret: credhub_password
-          credhub:
-            api_url: https://my.credhub.internal:8844
           username: foobar
           password: itsasecret
           bosh:

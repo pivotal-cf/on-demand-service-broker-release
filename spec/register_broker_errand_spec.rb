@@ -25,8 +25,7 @@ RSpec.describe 'register-broker errand' do
     ]
   }
   let(:renderer)  do
-    merged_context = BoshEmulator.director_merge(YAML.load_file(manifest_file), 'register-broker')
-    merged_context['links'] = {
+    links = [{
       'broker' => {
         'instances' => [
           {
@@ -43,8 +42,8 @@ RSpec.describe 'register-broker errand' do
           }
         }
       }
-    }
-
+    }]
+    merged_context = BoshEmulator.director_merge(YAML.load_file(manifest_file), 'register-broker', links)
     Bosh::Template::Renderer.new(context: merged_context.to_json)
   end
 

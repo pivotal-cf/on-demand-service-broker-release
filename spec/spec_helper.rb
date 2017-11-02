@@ -13,18 +13,41 @@ require 'bosh/template/property_helper'
 class BoshEmulator
   extend ::Bosh::Template::PropertyHelper
 
-  def self.director_merge(manifest, job_name)
+  def self.director_merge(manifest, job_name, links = [])
     broker_job_properties = manifest['instance_groups'][0]['jobs'][0].fetch('properties', {})
 
     job_spec = YAML.load_file("jobs/#{job_name}/spec")
-    spec_properties = job_spec["properties"]
+    spec_properties = job_spec['properties']
 
     effective_properties = {}
     spec_properties.each_pair do |name, definition|
-      copy_property(effective_properties, broker_job_properties, name, definition["default"])
+      copy_property(effective_properties, broker_job_properties, name, definition['default'])
     end
 
-    manifest.merge({"properties" => effective_properties})
+    manifest_links = {}
+
+    spec_links = job_spec['consumes'] || {}
+    spec_links.each do |spec_link|
+      found = false
+      link_name = spec_link['name']
+      links.each do |link|
+        link.each do |defined_link_name, defined_link_data|
+          if link_name == defined_link_name
+            manifest_links[link_name] = defined_link_data
+            found = true
+          end
+        end
+      end
+
+      if !found && !spec_link['optional']
+        raise("Expected #{link_name} link to exist")
+      end
+    end
+
+    manifest.merge({
+      'properties' => effective_properties,
+      'links' => manifest_links,
+    })
   end
 end
 

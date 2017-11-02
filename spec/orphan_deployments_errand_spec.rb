@@ -8,8 +8,7 @@ require 'spec_helper'
 
 RSpec.describe 'orphan-deployments errand' do
   let(:renderer) do
-    merged_context = BoshEmulator.director_merge(YAML.load_file(manifest_file), 'orphan-deployments')
-    merged_context['links'] = {
+    links = [{
       'broker' => {
         'instances' => [
           {
@@ -22,8 +21,12 @@ RSpec.describe 'orphan-deployments errand' do
           'port' => 7070
         }
       }
-    }
-
+    }]
+    merged_context = BoshEmulator.director_merge(
+      YAML.load_file(manifest_file),
+      'orphan-deployments',
+      links,
+    )
     Bosh::Template::Renderer.new(context: merged_context.to_json)
   end
 

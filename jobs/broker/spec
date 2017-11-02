@@ -36,6 +36,11 @@ provides:
     - service_catalog.id
     - service_catalog.plans
 
+consumes:
+- name: credhub
+  type: credhub
+  optional: true
+
 properties:
   port:
     description: Port for the broker
