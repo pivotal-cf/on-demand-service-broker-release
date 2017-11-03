@@ -87,7 +87,7 @@ RSpec.describe 'broker config templating' do
               'credhub' => {
                 'port' => 8844,
                 'ca_certificate' => 'credhub_ca_cert',
-                'internal_url' => 'https://my.credhub.internal',
+                'internal_url' => 'my.credhub.internal',
               }
             }
           }
