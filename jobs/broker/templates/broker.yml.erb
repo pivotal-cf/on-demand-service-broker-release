@@ -62,7 +62,7 @@ def credhub_config
     if p('secure_binding_credentials.enabled')
       credhub_properties = {
         'credhub' => {
-          'api_url' => "#{credhub.p('credhub.internal_url')}:#{credhub.p('credhub.port')}",
+          'api_url' => "https://#{credhub.p('credhub.internal_url')}:#{credhub.p('credhub.port')}",
           'ca_cert' => credhub.p('credhub.ca_certificate'),
           'client_id' => p('secure_binding_credentials.authentication.uaa.client_id'),
           'client_secret' => p('secure_binding_credentials.authentication.uaa.client_secret')
