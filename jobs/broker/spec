@@ -119,9 +119,6 @@ properties:
   secure_binding_credentials.authentication.uaa.ca_cert:
     description: Internal UAA certificate
 
-  credhub.api_url:
-    description: URL for credhub server
-
   service_adapter.path:
     description: the path to the service adapter binary located on the host with the broker
     default: /var/vcap/packages/odb-service-adapter/bin/service-adapter
