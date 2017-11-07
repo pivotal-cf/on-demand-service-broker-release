@@ -15,6 +15,8 @@ instance_groups:
               uaa:
                 client_id: credhub_id
                 client_secret: credhub_password
+                ca_cert: |
+                  --- INTERNAL UAA CA CERT ---
           username: foobar
           password: itsasecret
           bosh:

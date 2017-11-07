@@ -32,7 +32,6 @@ provides:
     - cf.authentication.client_credentials.secret
     - cf.authentication.user_credentials.username
     - cf.authentication.user_credentials.password
-    - cf.authentication.ca_cert
     - service_catalog.service_name
     - service_catalog.id
     - service_catalog.plans
@@ -107,9 +106,6 @@ properties:
   cf.authentication.user_credentials.password:
     description: CF admin password
 
-  cf.authentication.ca_cert:
-    description: UAA CA certificate
-
   secure_binding_credentials.enabled:
     description: Flag to activate secure binding
     default: false
@@ -119,6 +115,9 @@ properties:
 
   secure_binding_credentials.authentication.uaa.client_secret:
     description: UAA client secret for secure binding credential authentication
+
+  secure_binding_credentials.authentication.uaa.ca_cert:
+    description: Internal UAA certificate
 
   credhub.api_url:
     description: URL for credhub server

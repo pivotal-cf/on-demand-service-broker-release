@@ -100,6 +100,7 @@ RSpec.describe 'broker config templating' do
           "ca_cert" => "credhub_ca_cert",
           "client_id" => "credhub_id",
           "client_secret" => "credhub_password",
+          "internal_uaa_ca_cert" => "--- INTERNAL UAA CA CERT ---\n",
         )
       end
 

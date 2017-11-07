@@ -65,7 +65,8 @@ def credhub_config
           'api_url' => "https://#{credhub.p('credhub.internal_url')}:#{credhub.p('credhub.port')}",
           'ca_cert' => credhub.p('credhub.ca_certificate'),
           'client_id' => p('secure_binding_credentials.authentication.uaa.client_id'),
-          'client_secret' => p('secure_binding_credentials.authentication.uaa.client_secret')
+          'client_secret' => p('secure_binding_credentials.authentication.uaa.client_secret'),
+          'internal_uaa_ca_cert' => p('secure_binding_credentials.authentication.uaa.ca_cert'),
         }
       }
     end
