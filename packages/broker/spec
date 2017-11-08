@@ -41,6 +41,7 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/loggerfactory/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/mgmtapi/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/noopservicescontroller/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/service/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/serviceadapter/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/startupchecker/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/task/*.go # gosub
