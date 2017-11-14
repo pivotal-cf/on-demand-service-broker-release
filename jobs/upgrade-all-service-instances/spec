@@ -13,6 +13,7 @@ packages:
 
 templates:
   errand.sh.erb: /bin/run
+  config.yml.erb: /config/config.yml
 
 consumes:
   - name: broker
@@ -22,3 +23,6 @@ properties:
   polling_interval:
     description: "interval in seconds when waiting for service instance to be upgraded"
     default: 60
+
+  service_instances_api:
+    description: "service instances API details"

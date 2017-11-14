@@ -4,28 +4,15 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
-#! /bin/bash -eu
+instance_groups:
+- name: upgrade-all-service-instances
+  jobs:
+  - name: upgrade-all-service-instances
+    properties:
+      service_instances_api:
+        url: http://example.org/give-me/some-services
+        authentication:
+          basic:
+            username: myname
+            password: supersecret
 
-source $(dirname ${BASH_SOURCE[0]})/log.sh
-
-write_user_log() {
-  local log_tag=$1
-  LOG_FILE=$2 log "$log_tag: $(cat /dev/stdin)"
-}
-
-upgrade_all_instances() {
-  local upgrader_path=$1
-  local broker_username=$2
-  local broker_password=$3
-  local broker_url=$4
-  local polling_interval=$5
-  local log_file_path=$6
-  local syslog_priority=$7
-
-  $upgrader_path \
-    -brokerUsername $broker_username \
-    -brokerPassword $broker_password \
-    -brokerUrl $broker_url \
-    -pollingInterval $polling_interval \
-    2>&1 | tee -a >(write_user_log upgrader ${log_file_path})
-}

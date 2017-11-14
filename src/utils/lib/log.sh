@@ -8,3 +8,8 @@ log() {
   echo "$(date): $*" >> ${LOG_FILE}
   return 0
 }
+
+write_user_log() {
+  local log_tag=$1
+  LOG_FILE=$2 log "$log_tag: $(cat /dev/stdin)"
+}
