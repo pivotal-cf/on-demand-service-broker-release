@@ -12,7 +12,7 @@ packages:
   - upgrade-all-service-instances
 
 templates:
-  errand.sh.erb: /bin/run
+  errand.sh.erb: bin/run
 
 consumes:
   - name: broker

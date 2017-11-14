@@ -11,8 +11,8 @@ packages:
   - delete-all-service-instances-and-deregister-broker
 
 templates:
-  errand.sh.erb: /bin/run
-  config.yml.erb: /config/config.yml
+  errand.sh.erb: bin/run
+  config.yml.erb: config/config.yml
 
 consumes:
   - name: broker
