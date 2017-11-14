@@ -8,25 +8,14 @@ set -o pipefail
 # http://www.apache.org/licenses/LICENSE-2.0
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
-<%
-def escape_shell(str)
-  "'#{str.to_s.gsub(/'/, "'\\\\''")}'"
-end
-%>
-
 utils_path=/var/vcap/packages/broker_utils
 source ${utils_path}/common.sh
-source ${utils_path}/upgrade_all_instances_tools.sh
+source ${utils_path}/log.sh
 
 log_dir=/var/vcap/sys/log/upgrade-all-service-instances
-
 ensure_dir $log_dir
+log_file_path=$log_dir/upgrade-all-instances.log
 
-upgrade_all_instances \
-  /var/vcap/packages/upgrade-all-service-instances/bin/upgrade-all-service-instances \
-  <%= escape_shell(link('broker').p('username')) %> \
-  <%= escape_shell(link('broker').p('password')) %> \
-  'http://<%= link('broker').instances[0].address %>:<%= link('broker').p('port') %>' \
-  <%= p('polling_interval') %> \
-  $log_dir/upgrade-all-instances.log \
-  user.info
+/var/vcap/packages/upgrade-all-service-instances/bin/upgrade-all-service-instances \
+  -configPath /var/vcap/jobs/upgrade-all-service-instances/config/config.yml \
+  2>&1 >(write_user_log upgrader ${log_file_path})
