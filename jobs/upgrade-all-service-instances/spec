@@ -12,8 +12,8 @@ packages:
   - upgrade-all-service-instances
 
 templates:
-  errand.sh.erb: /bin/run
-  config.yml.erb: /config/config.yml
+  errand.sh.erb: bin/run
+  config.yml.erb: config/config.yml
 
 consumes:
   - name: broker
