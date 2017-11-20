@@ -7,7 +7,7 @@
 source 'https://rubygems.org'
 ruby '~> 2.3.0'
 
-gem 'bosh_cli'
+gem 'bosh-template'
 
 group :development, :test do
   gem 'rspec'
