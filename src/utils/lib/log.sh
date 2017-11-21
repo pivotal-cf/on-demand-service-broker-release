@@ -1,4 +1,6 @@
-#!/usr/bin/env bash -u
+#!/usr/bin/env bash
+
+set -u
 
 log() {
   if [ -z "$LOG_FILE" ]; then
