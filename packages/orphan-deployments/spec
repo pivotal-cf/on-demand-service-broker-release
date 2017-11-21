@@ -33,5 +33,6 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/task/*.go # gosub
   - github.com/pivotal-cf/on-demand-services-sdk/bosh/*.go # gosub
   - github.com/pivotal-cf/on-demand-services-sdk/serviceadapter/*.go # gosub
-  - gopkg.in/go-playground/validator.v8/*.go # gosub
+  - github.com/pivotal-cf/on-demand-services-sdk/vendor/gopkg.in/go-playground/validator.v8/*.go # gosub
+  - github.com/pivotal-cf/on-demand-services-sdk/vendor/gopkg.in/yaml.v2/*.go # gosub
   - gopkg.in/yaml.v2/*.go # gosub
