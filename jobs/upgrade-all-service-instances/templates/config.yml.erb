@@ -40,6 +40,9 @@
         }
       }
     }
+    if_p('service_instances_api.root_ca_cert') do |root_ca_cert|
+      service_instances_api_block["service_instances_api"]["root_ca_cert"] = root_ca_cert
+    end
   end
   config.merge!(service_instances_api_block)
 

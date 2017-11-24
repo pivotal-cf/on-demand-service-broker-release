@@ -94,6 +94,23 @@ RSpec.describe 'upgrade-all-service-instances config' do
       expect(basic_auth_block.fetch('username')).to eq("myname")
       expect(basic_auth_block.fetch('password')).to eq("supersecret")
     end
+
+    it 'doesnt set root_ca_cert' do
+      expect(config.fetch('service_instances_api').has_key?('root_ca_cert')).to be_falsey
+    end
+
+    context 'and root_ca_cert provided' do
+      let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_with_si_api_and_rootca.yml' }
+
+      it 'sets correct root_ca_cert' do
+        expect(config.fetch('service_instances_api').fetch('root_ca_cert')).to eq('-----BEGIN CERTIFICATE-----
+MostCERTainlyACert
+-----END CERTIFICATE-----
+')
+      end
+    end
+
+
   end
 
   context 'with polling interval provided' do
