@@ -11,8 +11,10 @@ dependencies:
   - go
 
 files:
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/curve25519/*.s
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/curve25519/*.h
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/sys/unix/*.s
   - github.com/pivotal-cf/on-demand-service-broker/authorizationheader/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/boshdirector/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/brokercontext/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/cf/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/cmd/deregister-broker/*.go # gosub
