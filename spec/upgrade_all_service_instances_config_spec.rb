@@ -128,4 +128,30 @@ MostCERTainlyACert
       expect(config.fetch('polling_interval')).to eq(60)
     end
   end
+
+  context 'with attempt limit provided' do
+    let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_with_attempt_limit.yml' }
+
+    it 'sets attempt limit to 42' do
+      expect(config.fetch('attempt_limit')).to eq(42)
+    end
+  end
+
+  context 'without attempt limit provided' do
+    let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_minimal.yml' }
+
+    it 'sets attempt limit to the default' do
+      expect(config.fetch('attempt_limit')).to eq(5)
+    end
+  end
+
+  context 'with an attempt limit less or equal zero' do
+    let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_invalid_attempt_limit.yml' }
+
+    it 'fails' do
+      expect {
+        rendered_template
+      }.to raise_error(RuntimeError, "Invalid upgrade_all_service_instances.attempt_limit - must be greater or equal 1")
+    end
+  end
 end

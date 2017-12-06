@@ -5,6 +5,13 @@
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
 <%=
+  def validated_attempt_limit()
+    if p('attempt_limit') <= 0
+      raise 'Invalid upgrade_all_service_instances.attempt_limit - must be greater or equal 1'
+    end
+    p('attempt_limit')
+  end
+
   config = {
     "broker_api" => {
       "url" => "http://#{link('broker').instances[0].address}:#{link('broker').p('port')}",
@@ -15,7 +22,8 @@
         }
       }
     },
-    "polling_interval" => p('polling_interval')
+    "polling_interval" => p('polling_interval'),
+    "attempt_limit" => validated_attempt_limit,
   }
   service_instances_api_block = {
     "service_instances_api" => {
