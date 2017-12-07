@@ -36,7 +36,7 @@
       }
     }
   }
-  if_p('service_instances_api') do |service_instances|
+  if_p('service_instances_api.url') do
     service_instances_api_block = {
       "service_instances_api" => {
         "url" => p('service_instances_api.url'),
