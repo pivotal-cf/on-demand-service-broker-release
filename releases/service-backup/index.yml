@@ -17,4 +17,6 @@ builds:
     version: 18.1.5
   f0c66538-1c9f-4b2b-bb99-d467988a5ff2:
     version: 18.1.1
+  f8738c9f-43c7-4041-627a-ba7d8c77378b:
+    version: 18.1.8
 format-version: "2"
