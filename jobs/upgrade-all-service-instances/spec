@@ -23,6 +23,9 @@ properties:
   polling_interval:
     description: "interval in seconds when waiting for service instance to be upgraded"
     default: 60
+  attempt_interval_seconds:
+    description: "interval in seconds between upgrade attempt batches"
+    default: 60
   attempt_limit:
     description: "maximum number of times the errand will try to upgrade the set of instances"
     default: 5

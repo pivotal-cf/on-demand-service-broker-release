@@ -129,6 +129,22 @@ MostCERTainlyACert
     end
   end
 
+  context 'with attempt interval provided' do
+    let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_with_attempt_interval.yml' }
+
+    it 'sets polling interval to 36' do
+      expect(config.fetch('attempt_interval')).to eq(36)
+    end
+  end
+
+  context 'without attempt interval provided' do
+    let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_minimal.yml' }
+
+    it 'sets attempt interval to the default' do
+      expect(config.fetch('attempt_interval')).to eq(60)
+    end
+  end
+
   context 'with attempt limit provided' do
     let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_with_attempt_limit.yml' }
 
