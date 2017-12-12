@@ -20,7 +20,7 @@ consumes:
     type: broker
 
 properties:
-  polling_interval:
+  polling_interval_seconds:
     description: "interval in seconds when waiting for service instance to be upgraded"
     default: 60
   attempt_interval_seconds:

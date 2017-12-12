@@ -9,4 +9,4 @@ instance_groups:
   jobs:
   - name: upgrade-all-service-instances
     properties:
-      polling_interval: 101
+      polling_interval_seconds: 101
