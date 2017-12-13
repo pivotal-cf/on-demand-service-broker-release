@@ -112,6 +112,40 @@ if has_values?("cf.authentication.client_credentials") && has_values?("cf.authen
   raise "Invalid CF authentication config - must specify either client or user credentials"
 end
 
+def normalise_bosh_authentication(bosh)
+  uaa_config = bosh['authentication']['uaa']
+  uaa_config['client_credentials'] = {
+    'client_id' => uaa_config['client_id'],
+    'client_secret' => uaa_config['client_secret'],
+  }
+  uaa_config.delete('client_id')
+  uaa_config.delete('client_secret')
+end
+
+def bosh_config
+  bosh = p('bosh')
+  normalise_bosh_authentication(bosh)
+  bosh
+end
+
+def cf_config
+  cf = p('cf')
+  cf_auth = cf['authentication']
+  client_credentials = cf_auth['client_credentials']
+  cf_auth['uaa'] = {
+    'url' => cf_auth['url'],
+    'client_credentials' => {
+      'client_id' => client_credentials['client_id'],
+      'client_secret' => client_credentials['secret']
+    },
+    'user_credentials' => cf_auth['user_credentials']
+  }
+  cf_auth.delete('url')
+  cf_auth.delete('client_credentials')
+  cf_auth.delete('user_credentials')
+  cf
+end
+
 config = {
   "broker" => {
     "port" => p('port'),
@@ -122,8 +156,8 @@ config = {
     "startup_banner" => p('startup_banner'),
     "shutdown_timeout_in_seconds" => p('shutdown_timeout_in_seconds')
   },
-  "bosh" => p('bosh'),
-  "cf" => p('cf'),
+  "bosh" => bosh_config,
+  "cf" => cf_config,
   "service_adapter" => p('service_adapter'),
   "service_deployment" => p('service_deployment'),
   "service_catalog" => service_catalog

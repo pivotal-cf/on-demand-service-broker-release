@@ -21,6 +21,58 @@ RSpec.describe 'broker config templating' do
     manifest_file.close
   end
 
+  describe 'successful templating' do
+    context 'basic auth for BOSH' do
+      let(:manifest_file) { File.open 'spec/fixtures/valid-mandatory-broker-config.yml' }
+
+      it 'succeeds' do
+        config = YAML.load(rendered_template)
+        expected = {
+          "url"=>"some-url",
+          "root_ca_cert"=>nil,
+          "authentication"=>{
+            "basic"=>{
+              "username"=>"some-username",
+              "password"=>"some-password",
+            },
+            "uaa"=>{
+              "client_credentials"=> {
+                "client_id"=>nil,
+                "client_secret"=>nil,
+              }
+            }
+          }
+        }
+        expect(config.fetch("bosh")).to eq(expected)
+      end
+    end
+
+    context 'UAA configuration for BOSH' do
+      let(:manifest_file) { File.open 'spec/fixtures/valid-bosh-uaa.yml' }
+
+      it 'succeeds' do
+        config = YAML.load(rendered_template)
+        expected = {
+          "url"=>"some-url",
+          "root_ca_cert"=>nil,
+          "authentication"=>{
+            "basic"=>{
+              "username"=>nil,
+              "password"=>nil,
+            },
+            "uaa"=>{
+              "client_credentials"=> {
+                "client_id"=>"id",
+                "client_secret"=>"secret",
+              }
+            }
+          }
+        }
+        expect(config.fetch("bosh")).to eq(expected)
+      end
+    end
+  end
+
   describe 'bosh authentication configuration' do
     context 'when there is no authentication configured' do
       let(:manifest_file) { File.open 'spec/fixtures/invalid-missing-bosh-auth.yml' }
@@ -330,6 +382,59 @@ RSpec.describe 'broker config templating' do
         expect {
           rendered_template
         }.to raise_error(RuntimeError, "Invalid CF authentication config - must specify either client or user credentials")
+      end
+    end
+
+    context 'basic auth for CF' do
+      let(:manifest_file) { File.open 'spec/fixtures/valid-cf-basic-auth.yml' }
+
+      it 'succeeds' do
+        config = YAML.load(rendered_template)
+        expected = {
+          'url'=>'cf-url',
+          'root_ca_cert'=>nil,
+          'authentication'=>{
+            'uaa'=>{
+              'url' => "cf-uaa-url",
+              'client_credentials' => {
+                'client_id' => nil,
+                'client_secret' => nil
+              },
+              'user_credentials'=>{
+                'username' => 'cf-user',
+                'password' => 'cf-pass'
+              },
+            }
+          }
+        }
+        expect(config.fetch('cf')).to eq(expected)
+      end
+    end
+
+    context 'UAA configuration for CF' do
+      let(:manifest_file) { File.open 'spec/fixtures/valid-cf-uaa.yml' }
+
+      it 'succeeds' do
+        config = YAML.load(rendered_template)
+        expected = {
+
+          "url"=>"cf-url",
+          "root_ca_cert"=>nil,
+          "authentication"=>{
+            "uaa"=>{
+              "url" => "cf-uaa-url",
+              "client_credentials"=> {
+                "client_id"=>"id",
+                "client_secret"=>"secret",
+              },
+              'user_credentials'=>{
+                'username' => nil,
+                'password' => nil
+              },
+            }
+          }
+        }
+        expect(config.fetch("cf")).to eq(expected)
       end
     end
   end
