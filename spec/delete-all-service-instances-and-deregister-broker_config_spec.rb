@@ -101,7 +101,7 @@ RSpec.describe 'delete-all-service-instances-and-deregister-broker config' do
     end
 
     context 'when the polling is configured' do
-      let(:manifest_file) { File.open 'spec/fixtures/delete_all_with_polling_configured.yml' }
+      let(:manifest_file) { File.open 'spec/fixtures/delete_all_and_deregister_broker_with_polling_configured.yml' }
 
       it 'sets the configured polling interval' do
         expect(config.fetch('polling_interval')).to eq(101)
