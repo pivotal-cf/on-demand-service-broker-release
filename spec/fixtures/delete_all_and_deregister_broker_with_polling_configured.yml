@@ -9,5 +9,5 @@ instance_groups:
   jobs:
   - name: delete-all-service-instances
     properties:
-      polling_interval: 101
-      polling_initial_offset: 10
+      polling_interval_seconds: 101
+      polling_initial_offset_seconds: 10

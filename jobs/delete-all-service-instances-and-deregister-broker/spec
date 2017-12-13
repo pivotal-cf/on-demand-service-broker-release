@@ -21,9 +21,9 @@ consumes:
 properties:
   broker_name:
     description: name of the broker to be deregistered from the cloud controller
-  polling_interval:
+  polling_interval_seconds:
     description: "interval in seconds when waiting for service instance to be deleted"
     default: 60
-  polling_initial_offset:
+  polling_initial_offset_seconds:
     description: "offset in seconds before starting to poll Cloud Foundry to check if the instance has been deleted"
     default: 5
