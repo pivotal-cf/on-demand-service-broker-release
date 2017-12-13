@@ -70,17 +70,17 @@ RSpec.describe 'deregister-broker config' do
     end
 
     it 'sets the cf authentication url' do
-      expect(config.fetch('cf').fetch('authentication').fetch('url')).to eq('https://uaa.cf-app.com')
+      expect(config.fetch('cf').fetch('authentication').fetch('uaa').fetch('url')).to eq('https://uaa.cf-app.com')
     end
 
     it 'sets the cf authentication client_credentials' do
-      expect(config.fetch('cf').fetch('authentication').fetch('client_credentials').fetch('client_id')).to eq('some_client_id')
-      expect(config.fetch('cf').fetch('authentication').fetch('client_credentials').fetch('secret')).to eq('some_secret')
+      expect(config.fetch('cf').fetch('authentication').fetch('uaa').fetch('client_credentials').fetch('client_id')).to eq('some_client_id')
+      expect(config.fetch('cf').fetch('authentication').fetch('uaa').fetch('client_credentials').fetch('client_secret')).to eq('some_secret')
     end
 
     it 'sets the cf authentication user_credentials' do
-      expect(config.fetch('cf').fetch('authentication').fetch('user_credentials').fetch('username')).to eq('some-username')
-      expect(config.fetch('cf').fetch('authentication').fetch('user_credentials').fetch('password')).to eq('some-password')
+      expect(config.fetch('cf').fetch('authentication').fetch('uaa').fetch('user_credentials').fetch('username')).to eq('some-username')
+      expect(config.fetch('cf').fetch('authentication').fetch('uaa').fetch('user_credentials').fetch('password')).to eq('some-password')
     end
   end
 end

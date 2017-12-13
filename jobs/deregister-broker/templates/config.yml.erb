@@ -5,8 +5,26 @@
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
 <%=
+  def cf_config
+    cf = link('broker').p('cf')
+    cf_auth = cf['authentication']
+    client_credentials = cf_auth['client_credentials']
+    cf_auth['uaa'] = {
+      'url' => cf_auth['url'],
+      'client_credentials' => {
+        'client_id' => client_credentials['client_id'],
+        'client_secret' => client_credentials['secret']
+      },
+      'user_credentials' => cf_auth['user_credentials']
+    }
+    cf_auth.delete('url')
+    cf_auth.delete('client_credentials')
+    cf_auth.delete('user_credentials')
+    cf
+  end
+
   config = {
     "disable_ssl_cert_verification" => link("broker").p("disable_ssl_cert_verification"),
-    "cf" => link("broker").p("cf")
+    "cf" => cf_config
   }.to_yaml
 %>
