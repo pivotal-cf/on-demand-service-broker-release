@@ -75,11 +75,11 @@ case $1 in
     case "${exit_status}" in
       0)
 	log "stop script: completed stopping service-backup"
-	rm ${pidfile}
+	rm -f ${pidfile}
 	;;
       1)
 	log "stop script: service-backup was not running"
-	rm ${pidfile}
+	rm -f ${pidfile}
 	;;
       *)
 	log "stop script: failed to exit. Start-stop-daemon exit_status: ${exit_status}"
