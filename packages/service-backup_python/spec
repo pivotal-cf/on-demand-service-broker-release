@@ -8,3 +8,4 @@
 name: service-backup_python
 files:
   - python/Python-3.6.2.tgz
+  - python/pip-9.0.1.tar.gz

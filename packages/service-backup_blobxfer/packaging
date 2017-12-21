@@ -6,56 +6,24 @@
 
 set -e
 
-cp -r /var/vcap/packages/service-backup_python2/* ${BOSH_INSTALL_TARGET}
+cp -r /var/vcap/packages/service-backup_python/* ${BOSH_INSTALL_TARGET}
 
-tar xfv blobxfer/blobxfer-0.12.1.tar.gz
-pushd blobxfer-0.12.1
-  ${BOSH_INSTALL_TARGET}/bin/python setup.py install
+tar xvf blobxfer/libffi-3.2.1.tar.gz
+pushd libffi-3.2.1
+  ./configure --prefix=${BOSH_INSTALL_TARGET}
+  make
+  make install
 popd
 
-# keep a note of setuptools for cleanup
-# For some reason, installing this before blobxfer causes errors. requests needs it though.
-tar xfv blobxfer/setuptools-20.6.7.tar.gz
-pushd setuptools-20.6.7
-  ${BOSH_INSTALL_TARGET}/bin/python setup.py install --record setuptools-files.txt
-popd
+PIP_LOCATION=/var/vcap/packages/service-backup_python/bin/pip
+export PKG_CONFIG_PATH=${BOSH_INSTALL_TARGET}/lib/pkgconfig:$PKG_CONFIG_PATH
 
-tar xfv blobxfer/requests-2.10.0.tar.gz
-pushd requests-2.10.0
-  ${BOSH_INSTALL_TARGET}/bin/python setup.py install
-popd
+mkdir -p $BOSH_INSTALL_TARGET/lib/python3.6/site-packages
+export PYTHONPATH=$BOSH_INSTALL_TARGET/lib/python3.6/site-packages:$PYTHONPATH
 
-# Needed by dateutil
-tar xvf blobxfer/six-1.10.0.tar.gz
-pushd six-1.10.0
-  ${BOSH_INSTALL_TARGET}/bin/python setup.py install
+pushd blobxfer
+  $PIP_LOCATION install --prefix=${BOSH_INSTALL_TARGET} --no-index --find-links=. blobxfer-1.0.0.tar.gz
 popd
-
-# Does not seem to be explicitly declared, but used at runtime by azure storage
-tar xvf blobxfer/python-dateutil-2.4.2.tar.gz
-pushd python-dateutil-2.4.2
-  ${BOSH_INSTALL_TARGET}/bin/python setup.py install
-popd
-
-unzip blobxfer/azure-storage-0.32.0.zip
-pushd azure-storage-0.32.0
-  ${BOSH_INSTALL_TARGET}/bin/python setup.py install
-popd
-
-unzip blobxfer/azure-common-1.1.4.zip
-pushd azure-common-1.1.4
-  ${BOSH_INSTALL_TARGET}/bin/python setup.py install
-popd
-
-# this a 'workaround', as we need only the azure.common package, not the azure package.
-# we noticed that if there is not __init__ file in the azure package dir, we can
-# import azure.common from the code.
-touch ${BOSH_INSTALL_TARGET}/lib/python2.7/site-packages/azure/__init__.py
 
 cp blobxfer/wrapper.py ${BOSH_INSTALL_TARGET}/bin/blobxfer
-
 chmod +x ${BOSH_INSTALL_TARGET}/bin/blobxfer
-
-pushd setuptools-20.6.7
-  cat setuptools-files.txt | xargs rm
-popd

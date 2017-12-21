@@ -9,6 +9,21 @@ set -e
 name=Python-3.6.2
 tar zxf python/${name}.tgz
 
-cd $name
+pushd $name
+  ./configure --prefix=${BOSH_INSTALL_TARGET}
+  make
+  make install
+popd
 
-./configure --prefix=${BOSH_INSTALL_TARGET} && make && make install
+echo "Extracting pip..."
+tar xzf python/pip-9.0.1.tar.gz
+
+echo "Setting the PYTHONPATH with pip site packages..."
+mkdir -p $BOSH_INSTALL_TARGET/lib/python3.6/site-packages
+export PYTHONPATH=$BOSH_INSTALL_TARGET/lib/python3.6/site-packages:$PYTHONPATH
+
+echo "Installing pip..."
+pushd pip-9.0.1
+  ${BOSH_INSTALL_TARGET}/bin/python3 setup.py install --prefix=$BOSH_INSTALL_TARGET
+popd
+
