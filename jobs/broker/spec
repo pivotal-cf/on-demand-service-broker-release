@@ -57,7 +57,7 @@ properties:
       exclude_special: true
 
   disable_ssl_cert_verification:
-    description: Disable SSL certificate verification for CF. DO NOT USE IN PRODUCTION
+    description: Disable SSL certificate verification for CF (but not for BOSH). DO NOT USE IN PRODUCTION
     default: false
 
   disable_cf_startup_checks:
