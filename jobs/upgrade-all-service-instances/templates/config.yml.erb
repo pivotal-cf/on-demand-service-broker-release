@@ -25,6 +25,7 @@
     "polling_interval" => p('polling_interval_seconds'),
     "attempt_interval" => p('attempt_interval_seconds'),
     "attempt_limit" => validated_attempt_limit,
+    "max_in_flight" => 1,
   }
   service_instances_api_block = {
     "service_instances_api" => {
