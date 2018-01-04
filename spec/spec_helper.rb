@@ -9,6 +9,15 @@ require 'yaml'
 
 require 'bosh/template/renderer'
 require 'bosh/template/property_helper'
+require 'bosh/template/test'
+
+VALID_MANDATORY_BROKER_PROPERTIES = YAML.
+  load_file('spec/fixtures/valid-mandatory-broker-config.yml').
+  fetch('instance_groups').
+  first.
+  fetch('jobs').
+  first.
+  fetch('properties')
 
 class BoshEmulator
   extend ::Bosh::Template::PropertyHelper

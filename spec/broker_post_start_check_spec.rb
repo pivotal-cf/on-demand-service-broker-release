@@ -7,23 +7,29 @@
 require 'spec_helper'
 
 RSpec.describe 'broker-post-start script' do
-  let(:renderer) do
-    merged_context = BoshEmulator.director_merge(YAML.load_file(manifest_file), 'broker')
-
-    Bosh::Template::Renderer.new(context: merged_context.to_json)
+  before(:all) do
+    release_path = File.join(File.dirname(__FILE__), '..')
+    release = Bosh::Template::Test::ReleaseDir.new(release_path)
+    job = release.job('broker')
+    @template = job.template('bin/post-start')
   end
 
-  let(:rendered_template) { renderer.render('jobs/broker/templates/post-start.erb') }
-
   context 'when the broker credentials contain special characters' do
-    let(:manifest_file) { 'spec/fixtures/valid-with-special-characters.yml' }
+    before(:all) do
+      @properties = VALID_MANDATORY_BROKER_PROPERTIES.merge({
+        "username" => "%username'\"t:%!",
+        "password" => "%password'\"t:%!"
+      })
+    end
 
     it 'escapes the broker username' do
-      expect(rendered_template).to include "-brokerUsername '%username'\\''\"t:%!'"
+      post_start_script = @template.render(@properties)
+      expect(post_start_script).to include("-brokerUsername '%username'\\''\"t:%!'")
     end
 
     it 'escapes the broker password' do
-      expect(rendered_template).to include "-brokerPassword '%password'\\''\"t:%!'"
+      post_start_script = @template.render(@properties)
+      expect(post_start_script).to include "-brokerPassword '%password'\\''\"t:%!'"
     end
   end
 end
