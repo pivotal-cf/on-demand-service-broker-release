@@ -170,4 +170,30 @@ MostCERTainlyACert
       }.to raise_error(RuntimeError, "Invalid upgrade_all_service_instances.attempt_limit - must be greater or equal 1")
     end
   end
+
+  context 'with max in flight provided' do
+    let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_with_max_in_flight.yml' }
+
+    it 'sets max in flight to 13' do
+      expect(config.fetch('max_in_flight')).to eq(13)
+    end
+  end
+
+  context 'without max in flight provided' do
+    let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_minimal.yml' }
+
+    it 'sets max in flight to the default of 1' do
+      expect(config.fetch('max_in_flight')).to eq(1)
+    end
+  end
+
+  context 'with an max in flight less or equal zero' do
+    let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_invalid_max_in_flight.yml' }
+
+    it 'fails' do
+      expect {
+        rendered_template
+      }.to raise_error(RuntimeError, "Invalid upgrade_all_service_instances.max_in_flight - must be greater or equal 1")
+    end
+  end
 end

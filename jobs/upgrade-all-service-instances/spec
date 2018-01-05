@@ -29,6 +29,9 @@ properties:
   attempt_limit:
     description: "maximum number of times the errand will try to upgrade the set of instances"
     default: 5
+  max_in_flight:
+    description: "the maximum number of instances that will be in an upgrading state at the same time"
+    default: 1
 
   service_instances_api.url:
     description: "service instances API provider URL"
