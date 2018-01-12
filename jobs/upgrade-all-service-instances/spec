@@ -32,6 +32,9 @@ properties:
   max_in_flight:
     description: "the maximum number of instances that will be in an upgrading state at the same time"
     default: 1
+  canaries:
+    description: "number of instances to upgrade first before upgrading the rest of the instances"
+    default: 0
 
   service_instances_api.url:
     description: "service instances API provider URL"
