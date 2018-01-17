@@ -19,6 +19,13 @@
     p('max_in_flight')
   end
 
+  def validated_canaries()
+    if p('canaries') < 0
+      raise 'Invalid upgrade_all_service_instances.canaries - must be greater or equal 0'
+    end
+    p('canaries')
+  end
+
   config = {
     "broker_api" => {
       "url" => "http://#{link('broker').instances[0].address}:#{link('broker').p('port')}",
@@ -33,6 +40,7 @@
     "attempt_interval" => p('attempt_interval_seconds'),
     "attempt_limit" => validated_attempt_limit,
     "max_in_flight" => validated_max_in_flight,
+    "canaries" => validated_canaries,
   }
   service_instances_api_block = {
     "service_instances_api" => {
