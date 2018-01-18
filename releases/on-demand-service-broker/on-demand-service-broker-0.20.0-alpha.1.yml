@@ -1,0 +1,110 @@
+name: on-demand-service-broker
+version: 0.20.0-alpha.1
+commit_hash: 669114e
+uncommitted_changes: false
+jobs:
+- name: broker
+  version: 23ac086abd07e9b1e3c3e4e70b3162e989b64c6d196c6d93906ccbb9f5372b89
+  fingerprint: 23ac086abd07e9b1e3c3e4e70b3162e989b64c6d196c6d93906ccbb9f5372b89
+  sha1: sha256:0f6328809aa0e7871a95910eed042150851177bdf0b6d1cf5842f8752b2a2bab
+- name: delete-all-service-instances
+  version: 64afb74d0089dde5b5e416432c4002d9482daa709f9c110cf69ec5c2a25f1eb9
+  fingerprint: 64afb74d0089dde5b5e416432c4002d9482daa709f9c110cf69ec5c2a25f1eb9
+  sha1: sha256:be18bb485c3eec09670e99c2c2ff9f15d4cd8ab634eab317ae75673a8d0607c3
+- name: delete-all-service-instances-and-deregister-broker
+  version: f2440bb680fa6daa410533ac0b97f966d4d450943973d850af75e6f7eeace99a
+  fingerprint: f2440bb680fa6daa410533ac0b97f966d4d450943973d850af75e6f7eeace99a
+  sha1: sha256:994a390850028274499c15fad2a40630558481af94855f9d01bdd51515863272
+- name: deregister-broker
+  version: 9638bc62960ad2e7c92502d373f270573877ae57a7fe164aa647ea0d6ae04113
+  fingerprint: 9638bc62960ad2e7c92502d373f270573877ae57a7fe164aa647ea0d6ae04113
+  sha1: sha256:8d1af2591cf2271045d5ee9e1df987cd8251d4b510af666e770e962984e6ad87
+- name: orphan-deployments
+  version: d4cd73122baac03df3bca829ff86b2acff6d94cc1aefd9710b0274bf26e3f1c9
+  fingerprint: d4cd73122baac03df3bca829ff86b2acff6d94cc1aefd9710b0274bf26e3f1c9
+  sha1: sha256:3cb00e0976fceecf07400400987f2befd07294410c11f046a93bfe35da286039
+- name: register-broker
+  version: 61f87163477c3358a6edb0e8ae552efbf4b14fbd6f6907638c0267505b7b391f
+  fingerprint: 61f87163477c3358a6edb0e8ae552efbf4b14fbd6f6907638c0267505b7b391f
+  sha1: sha256:4bb8131ceae3b6084e1a2de646c83389720247d29fca82e527a5e2f57e0bbfa1
+- name: service-metrics-adapter
+  version: 4a4a35043b212fa50086b1505a8bf2948c4bdc851726c59ce748898f1e254826
+  fingerprint: 4a4a35043b212fa50086b1505a8bf2948c4bdc851726c59ce748898f1e254826
+  sha1: sha256:ad0341d5d88a824597a7e7ed44cf15c9adfa24ba8651d0adb7b6381977c7a6fc
+- name: upgrade-all-service-instances
+  version: 3f4220ecb0d80ae938893eb386f0dfdbaf3bc6e8a29ffd6e5a710e885aa0a3ee
+  fingerprint: 3f4220ecb0d80ae938893eb386f0dfdbaf3bc6e8a29ffd6e5a710e885aa0a3ee
+  sha1: sha256:c50c11be7f89ef44014efb4288a15cd0fa48255eb3e043e2950175beb18f5f4c
+packages:
+- name: broker
+  version: e6b63a191c4d170ebe6841e334dc8f63ea5836e6f8e6b480cf7ab8c837966592
+  fingerprint: e6b63a191c4d170ebe6841e334dc8f63ea5836e6f8e6b480cf7ab8c837966592
+  sha1: sha256:c5965a6172a3a7053f85ce7150b60d7065d8aa5e5181e575751819e91d1ae71a
+  dependencies:
+  - go
+- name: broker-post-start
+  version: d1bac57bc97815830a5f96f6a9337480c9512b72da6df597818b69765000a1cc
+  fingerprint: d1bac57bc97815830a5f96f6a9337480c9512b72da6df597818b69765000a1cc
+  sha1: sha256:60984aa8bf9b32555f58d1a01411475a773784e49507144f9fc0cca6aa75d6e9
+  dependencies:
+  - go
+- name: broker_utils
+  version: 17a0003e6e2499cdcd29711c1b80e07ac16fbcd0b2c03c55b2778ce69d90cb1e
+  fingerprint: 17a0003e6e2499cdcd29711c1b80e07ac16fbcd0b2c03c55b2778ce69d90cb1e
+  sha1: sha256:60fc5d85f02741b4ea501f68178f6cba6d132ad3ad3a422e52d16e5950488781
+  dependencies: []
+- name: cf-cli
+  version: 7dd427ac822d8eb81065db9f90c7c7c633f71802408d9fc787b218991da6bf6c
+  fingerprint: 7dd427ac822d8eb81065db9f90c7c7c633f71802408d9fc787b218991da6bf6c
+  sha1: sha256:a4fee9db5b05279d4cc47b8e1da95f2d9d656a7b14549751f18dc41030ff1642
+  dependencies: []
+- name: collect-service-metrics
+  version: c318fe235d70310d5b8f0190e50258c53559ffe0e6e1eb94e49a262d252b673e
+  fingerprint: c318fe235d70310d5b8f0190e50258c53559ffe0e6e1eb94e49a262d252b673e
+  sha1: sha256:67b51a335edaa2073f619d1312c065b2ee481b16f37d5561b423932762376adf
+  dependencies:
+  - go
+- name: common
+  version: 0677040cc1fb08b6a3bf40666b0575de4be5aa400e87cc6cce60c91b814ca4b3
+  fingerprint: 0677040cc1fb08b6a3bf40666b0575de4be5aa400e87cc6cce60c91b814ca4b3
+  sha1: sha256:48c47e94834302578a5ab7ee077053e7fb1d4ff81aed2b1dcf76f4b6fa646f74
+  dependencies: []
+- name: delete-all-service-instances
+  version: 3e948f86c3f424915227a0fd7345eef2dcf910d9bd32c948c172eb28ba4a1992
+  fingerprint: 3e948f86c3f424915227a0fd7345eef2dcf910d9bd32c948c172eb28ba4a1992
+  sha1: sha256:346488b8a2388481f69e4481e9442ca0a900177f13ca7a7396502035309c0de8
+  dependencies:
+  - go
+- name: delete-all-service-instances-and-deregister-broker
+  version: 3a585889b96fb3504cb66b132e05aeb74184f0f4edd1a9939f6a2de75c3c7644
+  fingerprint: 3a585889b96fb3504cb66b132e05aeb74184f0f4edd1a9939f6a2de75c3c7644
+  sha1: sha256:682dca7dcfce2cc0dfe3c306f5538952ce40317e3b19626fd67551fd4833197f
+  dependencies:
+  - go
+- name: deregister-broker
+  version: e0d1b3362aa3e7a7579748e7db1eb160a8ac662f9806086ca8da8498198386c6
+  fingerprint: e0d1b3362aa3e7a7579748e7db1eb160a8ac662f9806086ca8da8498198386c6
+  sha1: sha256:9141e4d209895eeba5e112c33ee9e59df52e669e85ccd4295f9af53be0471f99
+  dependencies:
+  - go
+- name: go
+  version: e77ef06460670a8e3d696d6c08876d26903236229267b298379a40d919a1949b
+  fingerprint: e77ef06460670a8e3d696d6c08876d26903236229267b298379a40d919a1949b
+  sha1: sha256:42ddd30df04127a91f099b049fc0c40568f6ceba48a704e07cf6fa1a7af521d0
+  dependencies: []
+- name: orphan-deployments
+  version: fd4c19e422b6f350b4db243750cac8b0bbb5d1ba700780c3e917088ddb856f4d
+  fingerprint: fd4c19e422b6f350b4db243750cac8b0bbb5d1ba700780c3e917088ddb856f4d
+  sha1: sha256:99a92f01eff0b255476dadffff01696f0fede57589180fc6a3a77e53cd10a1bd
+  dependencies:
+  - go
+- name: upgrade-all-service-instances
+  version: 0ee1838afe2d79255ac2d8cbcd0d7240c7a8a747a4b64966ca5994b564321769
+  fingerprint: 0ee1838afe2d79255ac2d8cbcd0d7240c7a8a747a4b64966ca5994b564321769
+  sha1: sha256:2078cdecd4df2d2be086b0f48f3bf1757e4025b157278fd7cd425c99652a83ad
+  dependencies:
+  - go
+license:
+  version: 132ecd6066433e03c9a12b746c193ad0fbc63aa1b8d03a4b0ba78adf92371119
+  fingerprint: 132ecd6066433e03c9a12b746c193ad0fbc63aa1b8d03a4b0ba78adf92371119
+  sha1: sha256:738d3d567f5acc70d8b189b8ce24201bc35d576eca89ead2f611b80fc8f0b3fa
