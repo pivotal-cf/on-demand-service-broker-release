@@ -53,8 +53,6 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/dustin/go-humanize/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/fatih/color/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/gorilla/mux/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/hashicorp/errwrap/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/hashicorp/go-multierror/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/mattn/go-colorable/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/mattn/go-isatty/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/mattn/go-runewidth/*.go # gosub
