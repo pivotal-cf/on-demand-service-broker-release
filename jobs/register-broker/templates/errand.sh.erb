@@ -29,6 +29,7 @@ end
 %>
 
 export PATH=/var/vcap/packages/cf-cli/bin:$PATH
+export CF_DIAL_TIMEOUT=60
 
 cf api <%= p('disable_ssl_cert_verification') ? '--skip-ssl-validation' : '' %> <%= p('cf.api_url') %>
 cf auth <%= escape_shell(p('cf.admin_username')) %> <%= escape_shell(p('cf.admin_password')) %>
