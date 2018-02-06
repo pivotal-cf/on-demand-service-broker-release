@@ -67,6 +67,10 @@ properties:
     description: In seconds, allow the broker to close open connections before shutting down
     default: 60
 
+  expose_operational_errors:
+    description: The On Demand Broker will return BOSH errors to the platform when a failure occurs
+    default: false
+
   bosh.url:
     description: BOSH URL
 
