@@ -33,7 +33,6 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/task/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/clock/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/lager/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/armon/go-socks5/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/bmatcuk/doublestar/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/charlievieth/fs/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cheggaaa/pb/*.go # gosub
@@ -64,6 +63,7 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/craigfurman/herottp/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/dustin/go-humanize/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/fatih/color/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/genevievelesperance/go-socks5/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/gorilla/mux/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/hashicorp/go-version/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/mattn/go-colorable/*.go # gosub
