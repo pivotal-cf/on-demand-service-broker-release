@@ -94,10 +94,10 @@ blobxfer/urllib3-1.22.tar.gz:
   size: 226083
   object_id: 3be8363d-60d9-4c0f-4912-5d82c238b12f
   sha: 02c623c3bdceda4ef5bffdafdda472d2d9e34ef1
-go/go1.8.4.linux-amd64.tar.gz:
-  size: 99071672
-  object_id: 682db1a6-cbe9-49a5-5158-3626f719fe3a
-  sha: dad24dc0b75210bc02c8cd16e62e8d71a6cd6e2d
+go/go1.9.4.linux-amd64.tar.gz:
+  size: 105600650
+  object_id: 6c76522a-f32e-49c2-7747-03232197aaa2
+  sha: ed1bd37c356338a5a04923c183931a96687f202e
 python/Python-3.6.2.tgz:
   size: 22580749
   object_id: 8a08d759-e895-4632-70a4-e8cbce179223
