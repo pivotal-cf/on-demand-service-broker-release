@@ -1,0 +1,175 @@
+---
+name: ((broker_deployment_name))
+
+variables:
+- name: broker_password
+  type: password
+
+releases:
+  - name: ((broker_release))
+    version: latest
+  - name: ((service_adapter_release))
+    version: latest
+  - name: routing
+    version: latest
+  - name: loggregator
+    version: latest
+  - name: consul
+    version: latest
+
+stemcells:
+  - alias: trusty
+    os: ubuntu-trusty
+    version: latest
+
+instance_groups:
+  - name: broker
+    instances: 1
+    vm_type: t2.small
+    stemcell: trusty
+    networks: [{name: default}]
+    azs: [z1]
+    jobs:
+      - name: register-broker
+        release: ((broker_release))
+        properties:
+          broker_name: ((broker_name))
+          broker_uri: https://((broker_uri))
+          disable_ssl_cert_verification: ((disable_ssl_cert_verification))
+          cf:
+            api_url: ((cf.api_url))
+            admin_username: ((cf.user_credentials.username))
+            admin_password: ((cf.user_credentials.password))
+
+      - name: deregister-broker
+        release: ((broker_release))
+        properties:
+          broker_name: ((broker_name))
+        jobs: []
+
+      - name: delete-all-service-instances-and-deregister-broker
+        release: ((broker_release))
+        properties:
+          broker_name: ((broker_name))
+          polling_interval_seconds: 10 # matches broker_client_default_async_poll_interval_seconds in cf manifest
+        jobs: []
+
+      - name: delete-all-service-instances
+        release: ((broker_release))
+        properties:
+          polling_interval_seconds: 10 # matches broker_client_default_async_poll_interval_seconds in cf manifest
+        jobs: []
+
+      - name: upgrade-all-service-instances
+        release: ((broker_release))
+        properties:
+          max_in_flight: 3
+          polling_interval_seconds: 10
+          canaries: 2
+        jobs: []
+
+      - name: orphan-deployments
+        release: ((broker_release))
+        properties: {}
+        jobs: []
+
+      - name: broker
+        release: ((broker_release))
+        properties:
+          expose_operational_errors: false
+          startup_banner: true
+          port: &broker_port 8080
+          username: broker
+          password: ((broker_password))
+          shutdown_timeout_in_seconds: 10
+          bosh:
+            url: ((bosh.url))
+            authentication:
+              uaa:
+                client_id: ((bosh.authentication.username))
+                client_secret: ((bosh.authentication.password))
+            root_ca_cert: ((bosh.root_ca_cert))
+          cf:
+            root_ca_cert: ((cf.root_ca_cert))
+            url: ((cf.api_url))
+            authentication:
+              url: ((cf.uaa.url))
+              user_credentials:
+                username: admin
+                password: ((cf.user_credentials.password))
+          service_deployment: {}
+          service_catalog:
+            id: ((service_catalog_id))
+            service_name: ((service_catalog_service_name))
+            service_description: Service Description
+            bindable: true
+            plan_updatable: true
+            metadata:
+              display_name: Service Broker
+            tags:
+              - pivotal
+            global_properties:
+              persistence: true
+            plans: []
+
+      - name: route_registrar
+        release: routing
+        consumes:
+          nats:
+            from: nats
+            deployment: cf
+        properties:
+          route_registrar:
+            routes:
+              - name: ((broker_route_name))
+                registration_interval: 20s
+                port: *broker_port
+                uris: [((broker_uri))]
+
+      - name: metron_agent
+        release: loggregator
+        properties:
+          metron_agent:
+            deployment: ((broker_deployment_name))
+            etcd:
+              client_cert: ((metron_agent.etcd.client_cert))
+              client_key: ((metron_agent.etcd.client_key))
+            protocols:
+              - tls
+            tls:
+              metron:
+                cert: ((metron_agent.tls.metron.cert))
+                key: ((metron_agent.tls.metron.key))
+          metron_endpoint:
+            shared_secret: ((metron_endpoint.shared_secret))
+          loggregator:
+            etcd:
+              ca_cert: ((loggregator.etcd.ca_cert))
+              machines:
+              - cf-etcd.service.cf.internal
+              require_ssl: true
+            tls:
+              metron:
+                cert: ((loggregator.tls.metron.cert))
+                key: ((loggregator.tls.metron.key))
+              ca_cert: ((loggregator.tls.ca_cert))
+          loggregator_endpoint:
+            shared_secret: ((metron_endpoint.shared_secret))
+
+      - name: consul_agent
+        release: consul
+        consumes:
+          consul: nil
+          consul_client:
+            from: consul_client_link
+            deployment: cf
+          consul_common:
+            from: consul_common_link
+            deployment: cf
+          consul_server: nil
+
+update:
+  canaries: 1
+  canary_watch_time: 3000-180000
+  update_watch_time: 3000-180000
+  max_in_flight: 4

@@ -1,0 +1,21 @@
+- type: replace
+  path: /releases/-
+  value: {name: service-metrics, version: latest}
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/-
+  value:
+    name: service-metrics-adapter
+    release: ((broker_release))
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/-
+  value:
+    name: service-metrics
+    release: service-metrics
+    properties:
+      service_metrics:
+        execution_interval_seconds: 30
+        origin: ((broker_deployment_name))
+        monit_dependencies: [broker]
+

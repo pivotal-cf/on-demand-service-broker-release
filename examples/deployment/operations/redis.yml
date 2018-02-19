@@ -1,0 +1,30 @@
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=broker/properties/service_catalog/service_description
+  value: Redis Dedicated Instance
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=broker/properties/service_catalog/metadata/display_name
+  value: Redis
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=broker/properties/service_catalog/tags/-
+  value: redis
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=broker/properties/service_deployment?
+  value:
+    releases:
+      - name: ((service_release))
+        version: ((service_release_version))
+        jobs: [redis-server, health-check, cleanup-data]
+    stemcell:
+      os: ubuntu-trusty
+      version: 3468.16
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/-
+  value:
+    name: service-adapter
+    release: ((service_adapter_release))
+    properties:
+      redis_instance_group_name: redis-server

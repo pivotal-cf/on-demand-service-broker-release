@@ -1,0 +1,62 @@
+broker_deployment_name: # Bosh deployment name
+
+broker_release: on-demand-broker-release # Name of the odb release
+
+service_adapter_release: # Name of service adapter release. E.g. redis-example-service-adapter
+
+service_release: # Name of the service release. E.g. redis-service
+service_release_version: # Version of the service release. E.g. 0.20
+
+
+disable_ssl_cert_verification: false # When talking to cf, don't verify the certificates
+
+broker_name: # Name of the broker, as registered with CF
+broker_uri:
+broker_route_name: # ID of the route, as registered with the Go Router (cf). Used in the route_registrar
+
+service_catalog_id: # Unique ID for the service, as displayed in the /v2/services unique_id
+service_catalog_service_name: # Label for the service, as displayed in the cf marketplace
+
+# If syslog_forwarding is enabled
+syslog_forwarding_address:
+syslog_forwarding_port:
+
+# If secure bindings are enabled
+credhub:
+  client_secret:
+
+bosh:
+  url:
+  root_ca_cert:
+  authentication:
+    username:
+    password:
+
+cf:
+  api_url:
+  root_ca_cert:
+  uaa:
+    url:
+    ca_cert: # Required if secure bindings are enabled
+  user_credentials:
+    username:
+    password:
+metron_agent:
+  etcd:
+    client_cert: ## cf manifest -> etcd.props.etcd.client_cert
+    client_key: ## cf manifest -> etcd.props.etcd.client_key
+  tls:
+    metron:
+      cert: ## cf manifest -> metron.cert
+      key: ## cf manifest -> metron.key
+loggregator:
+  etcd:
+    ca_cert: ## cf manifest -> doppler.loggregator.etcd.ca_cert
+  tls:
+    ca_cert: ## cf manifest -> doppler.loggregator.tls.ca_cert
+    metron:
+      cert: ## cf manifest -> metron.cert
+      key: ## cf manifest -> metron.key
+metron_endpoint:
+  shared_secret: ## cf manifest -> metron_endpoint.shared_secret
+

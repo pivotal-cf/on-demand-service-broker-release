@@ -1,0 +1,114 @@
+- type: replace
+  path: /releases/-
+  value: {name: syslog, version: latest}
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/-
+  value:
+    name: syslog_forwarder
+    release: syslog
+    properties:
+      syslog:
+        address: ((syslog_forwarding_address))
+        port: ((syslog_forwarding_port))
+        transport: udp
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=deregister-broker/jobs/-
+  value:
+    name: syslog_forwarder
+    release: syslog
+    properties:
+      syslog:
+        address: ((syslog_forwarding_address))
+        port: ((syslog_forwarding_port))
+        transport: udp
+        forward_files: false
+        custom_rule: |
+          module(load="imfile" mode="polling")
+          input(type="imfile"
+              File="/var/vcap/sys/log/deregister-broker/errand.stdout.log"
+              Tag="deregister-broker-stdout")
+          input(type="imfile"
+              File="/var/vcap/sys/log/deregister-broker/errand.stderr.log"
+              Tag="deregister-broker-stderr")
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=delete-all-service-instances/jobs/-
+  value:
+    name: syslog_forwarder
+    release: syslog
+    properties:
+      syslog:
+        address: ((syslog_forwarding_address))
+        port: ((syslog_forwarding_port))
+        transport: udp
+        forward_files: false
+        custom_rule: |
+          module(load="imfile" mode="polling")
+          input(type="imfile"
+              File="/var/vcap/sys/log/delete-all-service-instances/errand.stdout.log"
+              Tag="delete-all-service-instances-stdout")
+          input(type="imfile"
+              File="/var/vcap/sys/log/delete-all-service-instances/errand.stderr.log"
+              Tag="delete-all-service-instances-stderr")
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=delete-all-service-instances-and-deregister-broker/jobs/-
+  value:
+    name: syslog_forwarder
+    release: syslog
+    properties:
+      syslog:
+        address: ((syslog_forwarding_address))
+        port: ((syslog_forwarding_port))
+        transport: udp
+        forward_files: false
+        custom_rule: |
+          module(load="imfile" mode="polling")
+          input(type="imfile"
+              File="/var/vcap/sys/log/delete-all-service-instances-and-deregister-broker/errand.stdout.log"
+              Tag="delete-all-service-instances-and-deregister-broker-stdout")
+          input(type="imfile"
+              File="/var/vcap/sys/log/delete-all-service-instances-and-deregister-broker/errand.stderr.log"
+              Tag="delete-all-service-instances-and-deregister-broker-stderr")
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=upgrade-all-service-instances/jobs/-
+  value:
+    name: syslog_forwarder
+    release: syslog
+    properties:
+      syslog:
+        address: ((syslog_forwarding_address))
+        port: ((syslog_forwarding_port))
+        transport: udp
+        forward_files: false
+        custom_rule: |
+            module(load="imfile" mode="polling")
+            input(type="imfile"
+                File="/var/vcap/sys/log/upgrade-all-service-instances/errand.stdout.log"
+                Tag="upgrade-all-service-instances-stdout")
+            input(type="imfile"
+                File="/var/vcap/sys/log/upgrade-all-service-instances/errand.stderr.log"
+                Tag="upgrade-all-service-instances-stderr")
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=orphan-deployments/jobs/-
+  value:
+    name: syslog_forwarder
+    release: syslog
+    properties:
+      syslog:
+        address: ((syslog_forwarding_address))
+        port: ((syslog_forwarding_port))
+        transport: udp
+        forward_files: false
+        custom_rule: |
+          module(load="imfile" mode="polling")
+          input(type="imfile"
+              File="/var/vcap/sys/log/orphan-deployments/errand.stdout.log"
+              Tag="orphan-deployments-stdout")
+          input(type="imfile"
+              File="/var/vcap/sys/log/orphan-deployments/errand.stderr.log"
+              Tag="orphan-deployments-stderr")

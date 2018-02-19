@@ -1,0 +1,16 @@
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=broker/properties/secure_binding_credentials?
+  value:
+    enabled: true
+    authentication:
+      uaa:
+        ca_cert: ((cf.uaa.ca_cert))
+        client_id: credhub_cli
+        client_secret: ((credhub.client_secret))
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=broker/consumes?
+  value:
+    credhub:
+      from: credhub
+      deployment: cf

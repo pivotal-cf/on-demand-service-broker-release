@@ -1,0 +1,34 @@
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=broker/properties/service_catalog/plans
+  value:
+    - name: dedicated-vm
+      plan_id: redis-dedicated
+      description: Redis Dedicated Instance
+      metadata:
+        display_name: Redis Dedicated Instance
+        bullets: []
+      quotas:
+        service_instance_limit: 10
+      instance_groups:
+        - name: redis-server
+          vm_type: t2.small
+          persistent_disk_type: 10GB
+          instances: 1
+          networks: [default]
+          azs: [z1]
+    - name: dedicated-high-memory-vm
+      plan_id: redis-himem
+      description: Dedicated high memory VM, no persistence, suitable for use as a cache
+      cf_service_access: enable
+      metadata:
+        display_name: Redis Dedicated High Memory VM
+        bullets: []
+      properties:
+        persistence: false
+      instance_groups:
+        - name: redis-server
+          vm_type: t2.small
+          persistent_disk_type: 10GB
+          instances: 1
+          networks: [default]
+          azs: [z1]
