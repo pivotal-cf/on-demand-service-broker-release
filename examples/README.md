@@ -23,6 +23,8 @@ $ bosh -d kafka-example-odb deploy base_odb_manifest.yml \
   -o operations/kafka.yml \
   -o operations/kafka_example_service_catalog.yml \
   -l operations/example_vars.yml \
+  -v syslog_forwarding_address=some.example.com \
+  -v syslog_forwarding_port=1337 \
   --vars-store=creds.yml
 ```
 

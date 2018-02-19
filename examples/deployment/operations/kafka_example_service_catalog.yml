@@ -1,0 +1,31 @@
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=broker/properties/service_catalog/plans
+  value:
+  - name: small
+    plan_id: kafka-small
+    description: A Kafka deployment with a single instance of each job and persistent disk
+    instance_groups:
+      - name: kafka_server
+        vm_type: t2.small
+        instances: 1
+        persistent_disk_type: 10GB
+        networks: [default]
+        azs: [z1]
+      - name: zookeeper_server
+        vm_type: t2.small
+        instances: 1
+        persistent_disk_type: 10GB
+        networks: [default]
+        azs: [z1]
+    properties:
+      auto_create_topics: true
+      default_replication_factor: 1
+      logging:
+        syslog_address: ((syslog_forwarding_address))
+        syslog_port: ((syslog_forwarding_port))
+        loggregator_etcd_addresses: [cf-etcd.service.cf.internal]
+        loggregator_etcd_ca_cert: ((loggregator.etcd.ca_cert))
+        loggregator_shared_secret: ((metron_endpoint.shared_secret))
+        loggregator_tls_ca_cert: ((loggregator.tls.ca_cert))
+        loggregator_tls_metron_cert: ((loggregator.tls.metron.cert))
+        loggregator_tls_metron_key: ((loggregator.tls.metron.key))

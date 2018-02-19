@@ -1,0 +1,31 @@
+- type: replace
+  path: /stemcells/alias=trusty/version
+  value: 3421.35
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=broker/properties/service_catalog/metadata/display_name
+  value: Kafka
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=broker/properties/service_catalog/tags/-
+  value: kafka
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=broker/properties/service_deployment?
+  value:
+    releases:
+      - name: ((service_release))
+        version: ((service_release_version))
+        jobs: [kafka_server, zookeeper_server]
+      - name: loggregator
+        version: 89
+        jobs: [metron_agent]
+    stemcell:
+      os: ubuntu-trusty
+      version: 3421.35
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/-
+  value:
+    name: kafka-service-adapter
+    release: ((service_adapter_release))
