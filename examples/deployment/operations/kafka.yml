@@ -29,3 +29,9 @@
   value:
     name: kafka-service-adapter
     release: ((service_adapter_release))
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/-
+  value:
+    name: admin_tools
+    release: ((service_adapter_release))

@@ -1,12 +1,13 @@
 broker_deployment_name: # Bosh deployment name
 
 broker_release: on-demand-broker-release # Name of the odb release
+broker_version: latest # Version of the odb release. E.g. 0.19
 
 service_adapter_release: # Name of service adapter release. E.g. redis-example-service-adapter
+service_adapter_version: latest # Version of the service adapter release. E.g. 1.20
 
 service_release: # Name of the service release. E.g. redis-service
 service_release_version: # Version of the service release. E.g. 0.20
-
 
 disable_ssl_cert_verification: false # When talking to cf, don't verify the certificates
 

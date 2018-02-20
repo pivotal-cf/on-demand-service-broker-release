@@ -7,9 +7,9 @@ variables:
 
 releases:
   - name: ((broker_release))
-    version: latest
+    version: ((broker_version))
   - name: ((service_adapter_release))
-    version: latest
+    version: ((service_adapter_version))
   - name: routing
     version: latest
   - name: loggregator
