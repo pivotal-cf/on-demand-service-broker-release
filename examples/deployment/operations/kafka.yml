@@ -34,4 +34,8 @@
   path: /instance_groups/name=broker/jobs/-
   value:
     name: admin_tools
-    release: ((service_adapter_release))
+    release: ((service_release))
+
+- type: replace
+  path: /releases/-
+  value: {name: ((service_release)), version: ((service_release_version))}
