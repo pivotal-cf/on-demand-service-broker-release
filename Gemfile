@@ -7,9 +7,8 @@
 source 'https://rubygems.org'
 ruby '~> 2.3.6'
 
-gem 'bosh-template'
-
 group :development, :test do
+  gem 'bosh-template'
   gem 'rspec'
   gem 'rspec-its'
   gem 'guard-rspec'
