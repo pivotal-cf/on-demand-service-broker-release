@@ -35,6 +35,9 @@ properties:
   canaries:
     description: "number of instances to upgrade first before upgrading the rest of the instances"
     default: 0
+  canary_selection_params:
+    description: "parameters to filter the canary instances. Cannot be set in conjuntion with `canaries`"
+    default: {}
 
   service_instances_api.url:
     description: "service instances API provider URL"

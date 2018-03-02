@@ -196,4 +196,40 @@ MostCERTainlyACert
       }.to raise_error(RuntimeError, "Invalid upgrade_all_service_instances.max_in_flight - must be greater or equal 1")
     end
   end
+
+  context 'when canaries are configured incorrectly' do
+    let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_invalid_canaries.yml' }
+
+    it 'fails if its less than zero' do
+      expect {
+        rendered_template
+      }.to raise_error(RuntimeError, "Invalid upgrade_all_service_instances.canaries - must be greater or equal 0")
+    end
+  end
+
+  context 'when canaries are configured' do
+    let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_minimal.yml' }
+
+    it 'ouputs the default value' do
+      expect(config.fetch('canaries')).to eq(0)
+    end
+  end
+
+  context 'when canaries and the canary_selection_params are configured' do
+    let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_canaries_and_canary_selection_params.yml' }
+
+    it 'fails' do
+      expect {
+        rendered_template
+      }.to raise_error(RuntimeError, "Invalid upgrade_all_service_instances - for the upgrade you must either set canary_selection_params OR canaries, not both")
+    end
+  end
+
+  context 'when canary_selection_params are configured' do
+    let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_canary_selection_params.yml' }
+
+    it 'succeeds' do
+      expect(config.fetch('canary_selection_params')).to eq({'test'=>true, 'size'=>'small'})
+    end
+  end
 end
