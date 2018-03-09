@@ -1,0 +1,4 @@
+---
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=upgrade-all-service-instances/properties?/canaries
+  value: ((upgrades_canaries))

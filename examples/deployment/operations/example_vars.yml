@@ -18,6 +18,12 @@ broker_route_name: # ID of the route, as registered with the Go Router (cf). Use
 service_catalog_id: # Unique ID for the service, as displayed in the /v2/services unique_id
 service_catalog_service_name: # Label for the service, as displayed in the cf marketplace
 
+# Upgrades
+upgrades_max_in_flight:
+upgrades_canaries:  # number of canary instances
+upgrades_canaries_cf_org:    # use only canary instances from this cf org
+upgrades_canaries_cf_space:  # use only canary instances from this cf space
+
 # If syslog_forwarding is enabled
 syslog_forwarding_address:
 syslog_forwarding_port:

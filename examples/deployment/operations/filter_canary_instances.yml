@@ -1,0 +1,6 @@
+---
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=upgrade-all-service-instances/properties?/canary_selection_params
+  value:
+    cf_org: ((upgrades_canaries_cf_org))
+    cf_space: ((upgrades_canaries_cf_space))
