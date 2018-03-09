@@ -23,10 +23,6 @@
     if p('canaries') < 0
       raise 'Invalid upgrade_all_service_instances.canaries - must be greater or equal 0'
     end
-
-    if p('canaries') > 0 && !p('canary_selection_params').empty?
-      raise 'Invalid upgrade_all_service_instances - for the upgrade you must either set canary_selection_params OR canaries, not both'
-    end
     p('canaries')
   end
 

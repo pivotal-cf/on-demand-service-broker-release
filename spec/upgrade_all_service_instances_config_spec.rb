@@ -218,10 +218,9 @@ MostCERTainlyACert
   context 'when canaries and the canary_selection_params are configured' do
     let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_canaries_and_canary_selection_params.yml' }
 
-    it 'fails' do
-      expect {
-        rendered_template
-      }.to raise_error(RuntimeError, "Invalid upgrade_all_service_instances - for the upgrade you must either set canary_selection_params OR canaries, not both")
+    it 'both are available in the config' do
+      expect(config.fetch('canaries')).to eq(3)
+      expect(config.fetch('canary_selection_params')).to eq({'test'=>true, 'size'=>'small'})
     end
   end
 
