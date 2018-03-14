@@ -37,5 +37,9 @@
     release: ((service_release))
 
 - type: replace
+  path: /instance_groups/name=broker/jobs/name=broker/properties/enable_plan_schemas?
+  value: true
+
+- type: replace
   path: /releases/-
   value: {name: ((service_release)), version: ((service_release_version))}
