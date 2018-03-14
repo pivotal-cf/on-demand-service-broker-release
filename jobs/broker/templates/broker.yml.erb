@@ -43,7 +43,8 @@ def validate_releases(service_deployment)
     validate_config(r, required_release_keys, "Invalid service_deployment.releases config - must specify ")
 
     if r['version'] =~ /latest$/
-      raise "You must configure the exact release and stemcell versions in broker.service_deployment. ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported."
+      raise "You must configure the exact release and stemcell versions in broker.service_deployment. " +
+        "ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported."
     end
   end
 end
@@ -52,7 +53,8 @@ def validate_stemcell(service_deployment)
   required_stemcell_keys = %w{os version}
   validate_config(service_deployment['stemcell'], required_stemcell_keys, "Invalid service_deployment.stemcell config - must specify ")
   if service_deployment['stemcell']['version'] =~ /latest$/
-    raise "You must configure the exact release and stemcell versions in broker.service_deployment. ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported."
+    raise "You must configure the exact release and stemcell versions in broker.service_deployment. " +
+      "ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported."
   end
 end
 
@@ -155,7 +157,8 @@ config = {
     "disable_cf_startup_checks" => p('disable_cf_startup_checks'),
     "startup_banner" => p('startup_banner'),
     "shutdown_timeout_in_seconds" => p('shutdown_timeout_in_seconds'),
-    "expose_operational_errors" => p('expose_operational_errors')
+    "expose_operational_errors" => p('expose_operational_errors'),
+    "enable_plan_schemas" => p('enable_plan_schemas')
   },
   "bosh" => bosh_config,
   "cf" => cf_config,

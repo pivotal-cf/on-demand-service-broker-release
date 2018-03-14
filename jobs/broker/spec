@@ -67,6 +67,10 @@ properties:
     description: In seconds, allow the broker to close open connections before shutting down
     default: 60
 
+  enable_plan_schemas:
+    default: false
+    description: If the service adapter supports service plan schemas and you would like the schema to appear in the service catalog, set this flag to true
+
   expose_operational_errors:
     description: The On Demand Broker will return BOSH errors to the platform when a failure occurs
     default: false

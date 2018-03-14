@@ -617,8 +617,9 @@ RSpec.describe 'broker config templating' do
 
       it 'raises an error' do
         expect { rendered_template }.to(
-          raise_error(RuntimeError, "You must configure the exact release and stemcell versions in broker.service_deployment. ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported.")
-        )
+          raise_error(RuntimeError, "You must configure the exact release and stemcell versions in broker.service_deployment." +
+            " ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported.")
+          )
       end
     end
 
@@ -632,7 +633,8 @@ RSpec.describe 'broker config templating' do
 
       it 'raises an error' do
         expect { rendered_template }.to(
-          raise_error(RuntimeError, "You must configure the exact release and stemcell versions in broker.service_deployment. ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported.")
+          raise_error(RuntimeError, "You must configure the exact release and stemcell versions in broker.service_deployment. " +
+          "ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported.")
         )
       end
     end
@@ -647,7 +649,8 @@ RSpec.describe 'broker config templating' do
 
       it 'raises an error' do
         expect { rendered_template }.to(
-          raise_error(RuntimeError, "You must configure the exact release and stemcell versions in broker.service_deployment. ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported.")
+          raise_error(RuntimeError, "You must configure the exact release and stemcell versions in broker.service_deployment. " +
+          "ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported.")
         )
       end
     end
@@ -662,8 +665,35 @@ RSpec.describe 'broker config templating' do
 
       it 'raises an error' do
         expect { rendered_template }.to(
-          raise_error(RuntimeError, "You must configure the exact release and stemcell versions in broker.service_deployment. ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported.")
+          raise_error(RuntimeError, "You must configure the exact release and stemcell versions in broker.service_deployment. " +
+          "ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported.")
         )
+      end
+    end
+
+    context 'when enable_plan_schemas is set' do
+      let(:manifest_file) do
+        generate_test_manifest do |yaml|
+          yaml['instance_groups'][0]['jobs'][0]['properties']['enable_plan_schemas'] = true
+          yaml
+        end
+      end
+
+      it 'is included in the configuration' do
+        expect(rendered_template).to include "enable_plan_schemas: true"
+      end
+    end
+
+    context 'when enable_plan_schemas is not set' do
+      let(:manifest_file) do
+        generate_test_manifest do |yaml|
+          yaml['instance_groups'][0]['jobs'][0]['properties'].delete('enable_plan_schemas')
+          yaml
+        end
+      end
+
+      it 'defaults to false' do
+        expect(rendered_template).to include "enable_plan_schemas: false"
       end
     end
   end
