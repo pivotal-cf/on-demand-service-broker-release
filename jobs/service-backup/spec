@@ -30,6 +30,38 @@ properties:
   ################################# BACKUP #################################
   service-backup.destinations:
     default: []
+    description: Service Backup supports one or more of S3 (AWS, Ceph s3, Swift w/ S3 compatibility module), Azure blobstore, and SCP. For more details check https://docs.pivotal.io/svc-sdk/service-backup/17-2/#backup-destinations
+    example:
+      - type: s3
+        config:
+          bucket_name: <bucket>
+          bucket_path: <path in bucket>
+          access_key_id: <aws access key>
+          secret_access_key: <aws secret key>
+      - type: azure
+        config:
+          storage_account: <storage account>
+          storage_access_key: <storage key>
+          container: <container name>
+          path: <path in container>
+      - type: gcs
+        config:
+          service_account_json: |
+            <GCP service account key JSON literal>
+          project_id: <GCP project ID>
+          bucket_name: <bucket name>
+      - type: scp
+        config:
+          user: <ssh username>
+          server: <ssh server>
+          destination: <path to upload to on server>
+          fingerprint: <host-fingerprint> #optional
+          key: |
+            -----BEGIN EXAMPLE RSA PRIVATE KEY-----
+              ...
+            -----END EXAMPLE RSA PRIVATE KEY-----
+          port: <optional ssh port. Defaults to 22>
+
 
   service-backup.source_folder:
     description: Local path from which backups are uploaded. All files in here are uploaded.
