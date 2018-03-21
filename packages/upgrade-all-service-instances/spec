@@ -66,6 +66,9 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pkg/errors/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/vito/go-interact/interact/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/vito/go-interact/interact/terminal/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/xeipuuv/gojsonpointer/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/xeipuuv/gojsonreference/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/xeipuuv/gojsonschema/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/curve25519/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/ed25519/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/ed25519/internal/edwards25519/*.go # gosub
