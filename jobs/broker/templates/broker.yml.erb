@@ -108,6 +108,11 @@ plans.each do |plan|
   if plan.has_key?('cf_service_access') && !valid_cf_service_access_values.include?(plan.fetch('cf_service_access'))
     raise "Unsupported value '#{plan.fetch('cf_service_access')}' for cf_service_access. Choose from \"enable\", \"disable\", \"manual\""
   end
+
+  pre_delete = plan['lifecycle_errands'].to_h['pre_delete']
+  if pre_delete != nil && pre_delete.class == Hash
+    raise "Plan property lifecycle_errands.pre_delete must be an array."
+  end
 end
 
 if has_values?("cf.authentication.client_credentials") && has_values?("cf.authentication.user_credentials")

@@ -696,6 +696,32 @@ RSpec.describe 'broker config templating' do
         expect(rendered_template).to include "enable_plan_schemas: false"
       end
     end
+
+    context 'when pre-delete errand is specified' do
+      let(:manifest_file) do
+        generate_test_manifest do |yaml|
+          yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog']['plans'][0]['lifecycle_errands'] = {'pre_delete' => [{'name' => 'cleanup'}]}
+        end
+      end
+
+      it 'is included in the configuration' do
+        expect(rendered_template).to include "- name: cleanup"
+      end
+    end
+
+    context 'when pre-delete errand is in the wrong format' do
+      let(:manifest_file) do
+        generate_test_manifest do |yaml|
+          yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog']['plans'][0]['lifecycle_errands'] = {'pre_delete' => {'name' => 'cleanup'}}
+        end
+      end
+
+      it 'raises an error' do
+        expect { rendered_template }.to(
+          raise_error(RuntimeError, "Plan property lifecycle_errands.pre_delete must be an array.")
+        )
+      end
+    end
   end
 end
 
