@@ -113,6 +113,11 @@ plans.each do |plan|
   if pre_delete != nil && pre_delete.class == Hash
     raise "Plan property lifecycle_errands.pre_delete must be an array."
   end
+
+  post_deploy = plan['lifecycle_errands'].to_h['post_deploy']
+  if post_deploy != nil && post_deploy.class == Hash
+    raise "Plan property lifecycle_errands.post_deploy must be an array."
+  end
 end
 
 if has_values?("cf.authentication.client_credentials") && has_values?("cf.authentication.user_credentials")

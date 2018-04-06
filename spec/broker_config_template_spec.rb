@@ -722,6 +722,32 @@ RSpec.describe 'broker config templating' do
         )
       end
     end
+
+    context 'when post-deploy errand is specified' do
+      let(:manifest_file) do
+        generate_test_manifest do |yaml|
+          yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog']['plans'][0]['lifecycle_errands'] = {'post_deploy' => [{'name' => 'health-check'}]}
+        end
+      end
+
+      it 'is included in the configuration' do
+        expect(rendered_template).to include "- name: health-check"
+      end
+    end
+
+    context 'when post-deploy errand is in the wrong format' do
+      let(:manifest_file) do
+        generate_test_manifest do |yaml|
+          yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog']['plans'][0]['lifecycle_errands'] = {'post_deploy' => {'name' => 'health-check'}}
+        end
+      end
+
+      it 'raises an error' do
+        expect { rendered_template }.to(
+          raise_error(RuntimeError, "Plan property lifecycle_errands.post_deploy must be an array.")
+        )
+      end
+    end
   end
 end
 
