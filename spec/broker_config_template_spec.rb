@@ -146,7 +146,7 @@ RSpec.describe 'broker config templating' do
         }]
       end
 
-      it 'includes the credhub properties when credhub link is provided' do
+      it 'includes the credhub properties' do
         expect(YAML.load(rendered_template).fetch('credhub')).to eq(
           "api_url" => "https://my.credhub.internal:8844",
           "ca_cert" => "credhub_ca_cert",
@@ -170,6 +170,30 @@ RSpec.describe 'broker config templating' do
         it 'does not include the credhub properties in the broker config' do
           expect(YAML.load(rendered_template)).not_to have_key('credhub')
         end
+      end
+    end
+
+    context "when credhub link is provided but set to empty" do
+      let(:manifest_file) { File.open 'spec/fixtures/valid_credhub.yml' }
+      let(:links) do
+        [{
+          'credhub' => {
+            'instances' => [],
+            'properties' => {
+              'credhub' => {
+                'port' => '',
+                'ca_certificate' => '',
+                'internal_url' => '',
+              },
+            }
+          }
+        }]
+      end
+
+      it "raises an error" do
+          expect {
+            rendered_template
+          }.to raise_error(RuntimeError, "Secure service binding is enabled but CredHub link is empty")
       end
     end
   end

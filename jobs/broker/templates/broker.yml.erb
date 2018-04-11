@@ -61,6 +61,11 @@ end
 def credhub_config
   credhub_properties = {}
   if_link('credhub') do |credhub|
+    ['internal_url', 'ca_certificate', 'port'].each do |v|
+      if credhub.p("credhub.#{v}") == ''
+        raise "Secure service binding is enabled but CredHub link is empty"
+      end
+    end
     if p('secure_binding_credentials.enabled')
       credhub_properties = {
         'credhub' => {
