@@ -65,7 +65,7 @@ instance_groups:
         properties:
           max_in_flight: 3
           polling_interval_seconds: 10
-          canaries: 2
+          canaries: 1
         jobs: []
 
       - name: orphan-deployments
