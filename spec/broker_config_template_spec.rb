@@ -115,19 +115,15 @@ RSpec.describe 'broker config templating' do
     end
   end
 
-  context 'when secure_binding_credentials is enabled but there is no credhub link' do
-    let(:manifest_file) { File.open 'spec/fixtures/valid_credhub.yml' }
-
-    it 'does not include the credhub properties in the broker config' do
-      expect(YAML.load(rendered_template)).not_to have_key('credhub')
-    end
-  end
-
   describe 'credhub link' do
     let(:manifest_file) { File.open 'spec/fixtures/valid_credhub.yml' }
 
-    it 'does not include the credhub properties when no credhub link is provided' do
-        expect(YAML.load(rendered_template)).not_to have_key('credhub')
+    context 'when secure_binding_credentials is enabled but there is no credhub link' do
+      it 'templating raises an error' do
+        expect {
+          rendered_template
+        }.to raise_error(RuntimeError, "secure_binding_credentials is enabled, but no CredHub link was provided")
+      end
     end
 
     context "when credhub link is provided" do

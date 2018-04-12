@@ -58,15 +58,23 @@ def validate_stemcell(service_deployment)
   end
 end
 
+def credhub_link_valid?(credhub_link)
+  ['internal_url', 'ca_certificate', 'port'].each do |v|
+    if credhub_link.p("credhub.#{v}") == ''
+      return false
+    end
+  end
+
+  return true
+end
+
 def credhub_config
   credhub_properties = {}
-  if_link('credhub') do |credhub|
-    ['internal_url', 'ca_certificate', 'port'].each do |v|
-      if credhub.p("credhub.#{v}") == ''
-        raise "Secure service binding is enabled but CredHub link is empty"
-      end
-    end
-    if p('secure_binding_credentials.enabled')
+
+  if p('secure_binding_credentials.enabled')
+    if_link('credhub') do |credhub|
+      raise "Secure service binding is enabled but CredHub link is empty" unless credhub_link_valid?(credhub)
+
       credhub_properties = {
         'credhub' => {
           'api_url' => "https://#{credhub.p('credhub.internal_url')}:#{credhub.p('credhub.port')}",
@@ -76,8 +84,11 @@ def credhub_config
           'internal_uaa_ca_cert' => p('secure_binding_credentials.authentication.uaa.ca_cert'),
         }
       }
+    end.else do
+      raise "secure_binding_credentials is enabled, but no CredHub link was provided"
     end
   end
+
   credhub_properties
 end
 
