@@ -218,6 +218,14 @@ RSpec.describe 'broker config templating' do
     end
   end
 
+  context 'when the manifest has arbitrary service metadata' do
+    let(:manifest_file) { File.open 'spec/fixtures/valid-service-metadata.yml' }
+
+    it 'sets the value correctly' do
+      expect(rendered_template).to include 'yolo: false'
+    end
+  end
+
   context "when the manifest is missing mandatory service catalog property" do
     ["id", "service_name", "service_description", "bindable", "plan_updatable"].each do |missing_field|
       context "when #{missing_field} is absent" do

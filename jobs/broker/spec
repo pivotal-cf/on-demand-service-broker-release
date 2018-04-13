@@ -179,6 +179,9 @@ properties:
     default: ""
     description: apps manager support url
 
+  service_catalog.metadata:
+    description: service metadata - accepts arbitrary key / value pairs
+
   service_catalog.metadata.shareable:
     default: false
     description: is service shareable?
