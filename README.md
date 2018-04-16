@@ -3,6 +3,8 @@ A BOSH release for a [Cloud Foundry on-demand service broker](https://github.com
 
 The broker deploys any service release on demand. One service instance corresponds to one BOSH deployment.
 
+To create the release, ensure you are using the Bosh CLI v2.0.48+.
+
 ## User Documentation
 
 Full user documentation can be found [here](https://docs.pivotal.io/svc-sdk/odb).
