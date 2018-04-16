@@ -71,6 +71,8 @@ This repository is the BOSH release, and contains the Go code for the service ba
     $ bosh deploy
     ```
 
+    Note: to create the release, you will need the Bosh CLI v2.0.48+
+
 ### Committing your changes
 
 - **Update the .gitmodules file**

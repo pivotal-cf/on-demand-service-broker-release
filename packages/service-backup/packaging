@@ -11,9 +11,11 @@ set -eux
 
 mkdir -p ${BOSH_INSTALL_TARGET}/src
 cp -a . ${BOSH_INSTALL_TARGET}/src
-export GOPATH=$BOSH_INSTALL_TARGET
 
-export GOROOT=$(readlink -nf /var/vcap/packages/golang)
+source /var/vcap/packages/golang-1.10-linux/bosh/compile.env
+
+export GOPATH=$GOPATH:$BOSH_INSTALL_TARGET
+export GOROOT=$(readlink -nf /var/vcap/packages/golang-1.10-linux)
 export PATH=$GOROOT/bin:$PATH
 
 go install github.com/pivotal-cf/service-backup
