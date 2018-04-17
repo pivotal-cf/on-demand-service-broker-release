@@ -27,7 +27,7 @@ instance_groups:
     instances: 1
     vm_type: ((vm_type))
     stemcell: trusty
-    networks: [((broker_network))]
+    networks: [{name: ((broker_network))}]
     azs: [z1]
     jobs:
       - name: register-broker
