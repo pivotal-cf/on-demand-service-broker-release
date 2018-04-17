@@ -25,7 +25,7 @@ stemcells:
 instance_groups:
   - name: broker
     instances: 1
-    vm_type: t2.small
+    vm_type: ((vm_type))
     stemcell: trusty
     networks: [{name: default}]
     azs: [z1]
