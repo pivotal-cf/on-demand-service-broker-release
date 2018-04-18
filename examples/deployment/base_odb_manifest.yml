@@ -26,6 +26,7 @@ instance_groups:
   - name: broker
     instances: 1
     vm_type: ((vm_type))
+    vm_extensions: ((instance_groups_vm_extensions))
     stemcell: trusty
     networks: [{name: ((broker_network))}]
     azs: [((instance_groups_azs))]
