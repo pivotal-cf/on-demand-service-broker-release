@@ -1,8 +1,4 @@
 - type: replace
-  path: /stemcells/alias=trusty/version
-  value: 3468.21
-
-- type: replace
   path: /instance_groups/name=broker/jobs/name=broker/properties/service_catalog/metadata/display_name
   value: Kafka
 
