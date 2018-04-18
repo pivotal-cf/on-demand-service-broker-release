@@ -18,8 +18,8 @@
         version: ((service_release_version))
         jobs: [redis-server, health-check, cleanup-data]
     stemcell:
-      os: ubuntu-trusty
-      version: 3468.16
+      os: ((stemcell_os))
+      version: ((redis_stemcell_version))
 
 - type: replace
   path: /instance_groups/name=broker/jobs/-

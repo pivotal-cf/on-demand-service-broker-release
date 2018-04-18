@@ -18,16 +18,16 @@ releases:
     version: latest
 
 stemcells:
-  - alias: trusty
-    os: ubuntu-trusty
-    version: latest
+  - alias: &stemcell_alias ((stemcell_alias))
+    os: &stemcell_os ((stemcell_os))
+    version: &stemcell_version ((stemcell_version))
 
 instance_groups:
   - name: broker
     instances: 1
     vm_type: ((vm_type))
     vm_extensions: ((instance_groups_vm_extensions))
-    stemcell: trusty
+    stemcell: *stemcell_alias
     networks: [{name: ((broker_network))}]
     azs: [((instance_groups_azs))]
     jobs:
