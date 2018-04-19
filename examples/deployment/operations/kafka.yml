@@ -14,7 +14,7 @@
         version: ((service_release_version))
         jobs: [kafka_server, zookeeper_server]
       - name: loggregator
-        version: 89
+        version: "89.3"
         jobs: [metron_agent]
     stemcell:
       os: ((stemcell_os))
