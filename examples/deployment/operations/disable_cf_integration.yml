@@ -1,0 +1,6 @@
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=broker/properties/disable_cf_startup_checks?
+  value: true
+
+- type: remove
+  path: /instance_groups/name=broker/jobs/name=broker/properties/cf
