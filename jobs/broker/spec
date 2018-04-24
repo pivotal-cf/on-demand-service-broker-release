@@ -202,7 +202,10 @@ properties:
     description: properties applied to every plan. if in conflict, plan properties take precedence
 
   service_catalog.global_quotas.service_instance_limit:
-    description: the maximum number of instances that my be provisioned by on-demand broker
+    description: the maximum number of instances that may be provisioned by on-demand broker
+
+  service_catalog.global_quotas.resource_limits:
+    description: hash of resource names and limit (integer) that may may be provisioned by on-demand broker
 
   service_catalog.plans:
     description: the service plans to be presented to Cloud Foundry
