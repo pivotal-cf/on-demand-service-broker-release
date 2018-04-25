@@ -206,6 +206,7 @@ properties:
 
   service_catalog.global_quotas.resource_limits:
     description: hash of resource names and limit (integer) that may may be provisioned by on-demand broker
+    default: {}
 
   service_catalog.plans:
     description: the service plans to be presented to Cloud Foundry
