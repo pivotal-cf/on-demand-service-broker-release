@@ -6,12 +6,23 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
+set -eu
 
-modified_packages=$(./scripts/sync-package-specs)
+pushd $(dirname $0)/../..
 
-if [ -n "$modified_packages" ]; then
-  echo $'\e[31mthe following package specs are not staged:\e[0m'
-  echo
-  echo "$modified_packages"
+echo "Syncing Go Packages"
+
+./scripts/sync-package-specs
+
+echo "Checking for changes in package specs"
+set +e
+git diff --exit-code packages
+diffres=$?
+set -e
+
+if [[ "$diffres" -ne 0 ]]; then
+  echo "\033[0;31mThere are changes in your package specs, most likely due to sync-package-specs updating them, please review & add these before committing. If the changes are expected, stash them before this commit.\033[0m"
   exit 1
 fi
+
+popd

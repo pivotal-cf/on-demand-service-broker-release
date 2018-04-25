@@ -25,9 +25,6 @@ function sync_package() {
 
       for package in $(gosub list "$@"); do
         repo=$(echo ${2} | cut -f1-3 -d/)
-        if [ -d "../../src/${repo}/Godeps/_workspace/src/${package}" ]; then
-          package="${repo}/Godeps/_workspace/src/${package}"
-        fi
         echo ${package} | sed -e 's/\(.*\)/  - \1\/*.go # gosub/g'
       done
     } > spec.new
@@ -38,7 +35,6 @@ function sync_package() {
 
 sync_package service-backup \
   -app github.com/pivotal-cf/service-backup \
-  -app github.com/pivotal-cf/service-backup/processterminator \
   -app github.com/pivotal-cf/service-backup/cmd/manual-backup
 
 popd
