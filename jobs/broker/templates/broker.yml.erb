@@ -114,6 +114,18 @@ service_deployment = p('service_deployment')
 validate_releases(service_deployment)
 validate_stemcell(service_deployment)
 
+if p('disable_cf_startup_checks')
+  global_limit = service_catalog.dig('global_quotas', 'service_instance_limit')
+  if global_limit != nil && global_limit > 0
+    raise 'Invalid quota configuration - global service instance limit requires CF to be configured'
+  end
+
+  global_resource_limit = service_catalog.dig('global_quotas', 'resource_limits')
+  if global_resource_limit && any_fields_set?(global_resource_limit)
+    raise 'Invalid quota configuration - global resource limits require CF to be configured'
+  end
+end
+
 plans.each do |plan|
   validate_config(plan, required_plan_keys, "Invalid plan config - must specify ")
 
@@ -133,6 +145,18 @@ plans.each do |plan|
   post_deploy = plan['lifecycle_errands'].to_h['post_deploy']
   if post_deploy != nil && post_deploy.class == Hash
     raise "Plan property lifecycle_errands.post_deploy must be an array."
+  end
+
+  if p('disable_cf_startup_checks')
+    plan_limit = plan.dig('quotas', 'service_instance_limit')
+    if plan_limit != nil && plan_limit > 0
+      raise 'Invalid quota configuration - plan service instance limit requires CF to be configured'
+    end
+
+    plan_resource_limit = plan.dig('quotas', 'resource_limits')
+    if plan_resource_limit && any_fields_set?(plan_resource_limit)
+      raise 'Invalid quota configuration - plan resource limit requires CF to be configured'
+    end
   end
 end
 

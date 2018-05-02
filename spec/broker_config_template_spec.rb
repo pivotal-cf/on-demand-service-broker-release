@@ -402,6 +402,58 @@ RSpec.describe 'broker config templating' do
     end
   end
 
+  describe 'quotas when cf is not configured - i.e. cf startup checks disabled' do
+    context 'when global service instance limit quota is set' do
+      let(:manifest_file) { File.open 'spec/fixtures/quotas_no_cf_global_instances.yml' }
+
+      it 'templating raises an error when a global instance limit is set' do
+        expect {
+          rendered_template
+        }.to raise_error(RuntimeError, "Invalid quota configuration - global service instance limit requires CF to be configured")
+      end
+    end
+
+    context 'when a plan service instance limit quota is set' do
+      let(:manifest_file) { File.open 'spec/fixtures/quotas_no_cf_plan_instances.yml' }
+
+      it 'templating raises an error when a plan instance limit is set' do
+        expect {
+          rendered_template
+        }.to raise_error(RuntimeError, "Invalid quota configuration - plan service instance limit requires CF to be configured")
+      end
+    end
+
+    context 'when global resource limits are set' do
+      let (:manifest_file) { File.open 'spec/fixtures/quotas_no_cf_global_resource_limits.yml' }
+
+      it 'templating raises an error when a global resource limit is set' do
+        expect {
+          rendered_template
+        }.to raise_error(RuntimeError, "Invalid quota configuration - global resource limits require CF to be configured")
+      end
+    end
+
+    context 'when plan resource limits are set' do
+      let (:manifest_file) { File.open 'spec/fixtures/quotas_no_cf_plan_resource_limits.yml' }
+
+      it 'templating raises an error when a global resource limit is set' do
+        expect {
+          rendered_template
+        }.to raise_error(RuntimeError, "Invalid quota configuration - plan resource limit requires CF to be configured")
+      end
+    end
+
+    context 'when global resource limit block is present but no values are present' do
+      let (:manifest_file) { File.open 'spec/fixtures/quotas_no_cf_global_resource_limits_no_values.yml' }
+
+      it 'succeeds' do
+        expect {
+          rendered_template
+        }.not_to raise_error
+      end
+    end
+  end
+
   describe 'cf authentication' do
     context "when both user and client credentials are provided" do
       let(:manifest_file) { File.open 'spec/fixtures/invalid_has_both_client_and_user_cf_auth.yml' }
