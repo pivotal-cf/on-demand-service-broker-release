@@ -15,13 +15,13 @@ This is a:
 > Provide a brief summary of the bug or feature request. Please focus on the
 problem statement rather than any potential solutions.
 
-## Use cases (if feature request)
+## Use cases (if feature request)
 
 > Please provide the use cases for this feature and detail the workflows this
 would help with. If you have implemented a workaround for this already, please
 explain how you are currently solving this problem.
 
-## Steps to reproduce (if bug report)
+## Steps to reproduce (if bug report)
 
 > Please include SDK version, BOSH version and platform specifics. Please be
 careful posting manifests here in case they contain secrets, but please keep
