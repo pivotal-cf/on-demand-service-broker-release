@@ -112,6 +112,10 @@ instance_groups:
               - pivotal
             global_properties:
               persistence: true
+            global_quotas:
+              service_instance_limit: 1337
+              resource_limits:
+                memory: 32000
             plans: []
 
       - name: route_registrar
