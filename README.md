@@ -23,4 +23,5 @@ Once you have an ODB integration completed for your service you may wish to crea
 
 ## Contributing
 
-- See [CONTRIBUTING](CONTRIBUTING.md) 
+- See [CONTRIBUTING](CONTRIBUTING.md)
+- Trigger the CI PR pipeline
