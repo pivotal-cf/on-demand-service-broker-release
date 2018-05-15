@@ -3,7 +3,7 @@
   value: Redis Dedicated Instance
 
 - type: replace
-  path: /instance_groups/name=broker/jobs/name=broker/properties/broker/use_stdin?
+  path: /instance_groups/name=broker/jobs/name=broker/properties/use_stdin?
   value: true
 
 - type: replace
