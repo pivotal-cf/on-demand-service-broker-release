@@ -75,6 +75,10 @@ properties:
     description: The On Demand Broker will return BOSH errors to the platform when a failure occurs
     default: false
 
+  use_stdin:
+    description: Pass arguments to service adapter over standard input instead of as command line arguments. Requires a compatible service adapter.
+    default: false
+
   bosh.url:
     description: BOSH URL
 

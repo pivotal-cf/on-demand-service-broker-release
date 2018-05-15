@@ -751,6 +751,32 @@ RSpec.describe 'broker config templating' do
       end
     end
 
+    context 'when use_stdin is set' do
+      let(:manifest_file) do
+        generate_test_manifest do |yaml|
+          yaml['instance_groups'][0]['jobs'][0]['properties']['use_stdin'] = true
+          yaml
+        end
+      end
+
+      it 'is included in the configuration' do
+        expect(rendered_template).to include "use_stdin: true"
+      end
+    end
+
+    context 'when use_stdin is not set' do
+      let(:manifest_file) do
+        generate_test_manifest do |yaml|
+          yaml['instance_groups'][0]['jobs'][0]['properties'].delete('use_stdin')
+          yaml
+        end
+      end
+
+      it 'defaults to false' do
+        expect(rendered_template).to include "use_stdin: false"
+      end
+    end
+
     context 'when enable_plan_schemas is set' do
       let(:manifest_file) do
         generate_test_manifest do |yaml|
