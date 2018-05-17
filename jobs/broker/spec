@@ -131,6 +131,22 @@ properties:
   secure_binding_credentials.authentication.uaa.ca_cert:
     description: Internal UAA certificate
 
+  resolve_manifest_secrets_at_bind:
+    default: false
+    description: Allow ODB to read and write service instance secrets using the BOSH CredHub. Required for removing plain text secrets from service instance manifests.
+
+  bosh_credhub_api.url:
+    description: Full URL of BOSH CredHub service
+
+  bosh_credhub_api.root_ca_cert:
+    description: Public certificate of root certificate authority used to sign BOSH CredHub's certificate. Used to authenticate the service.
+
+  bosh_credhub_api.authentication.uaa.client_id:
+    description: ID of UAA client with permissions to read and write to BOSH CredHub
+
+  bosh_credhub_api.authentication.uaa.client_secret:
+    description: Secret of UAA client with permissions to read and write to BOSH CredHub
+
   service_adapter.path:
     description: the path to the service adapter binary located on the host with the broker
     default: /var/vcap/packages/odb-service-adapter/bin/service-adapter
