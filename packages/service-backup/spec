@@ -8,7 +8,7 @@
 name: service-backup
 
 dependencies:
-- golang-1.10-linux
+- golang-1.9-linux
 
 files:
   - cloud.google.com/go/compute/metadata/*.go # gosub
