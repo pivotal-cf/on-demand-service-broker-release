@@ -1,5 +1,4 @@
----
-cf-cli/cf-cli_6.36.1_linux_x86-64.tgz:
-  size: 5910456
-  object_id: 06c52a45-4cd1-4154-690a-cf3961b1b829
-  sha: sha256:d5e59258183939305f44c471dab41a000290446399cc9b206b107c7bdb8ce180
+cf-cli/cf-cli_6.36.2_linux_x86-64.tgz:
+  size: 8252087
+  object_id: 209a6a89-20e5-43df-6179-1b53267b19aa
+  sha: 0c71945fe50fd62c17d9b590c8bb694021e33e51
