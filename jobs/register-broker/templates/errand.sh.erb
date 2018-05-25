@@ -31,7 +31,16 @@ end
 export PATH=/var/vcap/packages/cf-cli/bin:$PATH
 export CF_DIAL_TIMEOUT=60
 
-cf api <%= p('disable_ssl_cert_verification') ? '--skip-ssl-validation' : '' %> <%= p('cf.api_url') %>
+<% if p('disable_ssl_cert_verification') %>
+  cf api --skip-ssl-validation <%= p('cf.api_url') %>
+<% else %>
+  cert_file="$(mktemp)"
+  echo -e "<%= link('broker').p('cf.root_ca_cert') %>" > "$cert_file"
+  export SSL_CERT_FILE="$cert_file"
+  cf api <%= p('cf.api_url') %>
+  trap "rm -f $cert_file" EXIT
+<% end %>
+
 cf auth <%= escape_shell(p('cf.admin_username')) %> <%= escape_shell(p('cf.admin_password')) %>
 
 broker_name=<%= p('broker_name') %>

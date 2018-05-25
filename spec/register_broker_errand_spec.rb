@@ -36,6 +36,9 @@ RSpec.describe 'register-broker errand' do
           'username' => "%broker_username'\"t:%!",
           'password' => "%broker_password'\"t:%!",
           'port' => 8080,
+          'cf' => {
+            'root_ca_cert' => 'thats a certificate'
+          },
           'service_catalog' => {
             'plans' => plans,
             'service_name' => 'myservicename'
@@ -221,6 +224,26 @@ RSpec.describe 'register-broker errand' do
       expect(rendered_template).to include 'cf enable-service-access myservicename -p unconfigured-plan'
       expect(rendered_template).to include 'cf disable-service-access myservicename -p disable-plan'
       expect(rendered_template).to_not include 'manual-plan'
+    end
+  end
+
+  describe 'ssl verification' do
+    context 'when its disabled' do
+      it 'adds the skip-ssl-validation flag' do
+        expect(rendered_template).to include 'cf api --skip-ssl-validation'
+      end
+    end
+
+    context 'when its enabled' do
+      let(:manifest_file) { 'spec/fixtures/register_broker_with_ssl_enabled.yml' }
+      it 'does not add the skip-ssl-validation flag' do
+        expect(rendered_template).to_not include 'cf api --skip-ssl-validation'
+      end
+
+      it 'exports the SSL_CERT_FILE env variable' do
+        expect(rendered_template).to include 'echo -e "thats a certificate" > "$cert_file"'
+        expect(rendered_template).to include 'export SSL_CERT_FILE="$cert_file"'
+      end
     end
   end
 end
