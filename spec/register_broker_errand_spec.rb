@@ -8,7 +8,7 @@ require 'spec_helper'
 
 RSpec.describe 'register-broker errand' do
   let(:access_value) {'enable'}
-  let(:plans ) {
+  let(:plans ) do
     [
       {
         'name' => 'dedicated-vm',
@@ -23,9 +23,9 @@ RSpec.describe 'register-broker errand' do
         ]
       }
     ]
-  }
-  let(:renderer)  do
-    links = [{
+  end
+  let(:links) do
+    [{
       'broker' => {
         'instances' => [
           {
@@ -46,6 +46,9 @@ RSpec.describe 'register-broker errand' do
         }
       }
     }]
+  end
+
+  let(:renderer)  do
     merged_context = BoshEmulator.director_merge(YAML.load_file(manifest_file), 'register-broker', links)
     Bosh::Template::Renderer.new(context: merged_context.to_json)
   end
@@ -235,14 +238,49 @@ RSpec.describe 'register-broker errand' do
     end
 
     context 'when its enabled' do
-      let(:manifest_file) { 'spec/fixtures/register_broker_with_ssl_enabled.yml' }
-      it 'does not add the skip-ssl-validation flag' do
-        expect(rendered_template).to_not include 'cf api --skip-ssl-validation'
+      context 'when cf link is present' do
+        let(:manifest_file) { 'spec/fixtures/register_broker_with_ssl_enabled.yml' }
+        it 'does not add the skip-ssl-validation flag' do
+          expect(rendered_template).to_not include 'cf api --skip-ssl-validation'
+        end
+
+        it 'exports the ssl_cert_file env variable from the cf link' do
+          expect(rendered_template).to include 'echo -e "thats a certificate" > "$cert_file"'
+          expect(rendered_template).to include 'export SSL_CERT_FILE="$cert_file"'
+          expect(rendered_template).to include 'cf api a-cf-url'
+        end
       end
 
-      it 'exports the SSL_CERT_FILE env variable' do
-        expect(rendered_template).to include 'echo -e "thats a certificate" > "$cert_file"'
-        expect(rendered_template).to include 'export SSL_CERT_FILE="$cert_file"'
+      context 'when cf link is not present' do
+        let(:links) do
+          [{
+            'broker' => {
+              'instances' => [
+                {
+                  'address' => "123.456.789.101",
+                }
+              ],
+              'properties' => {
+                'username' => "%broker_username'\"t:%!",
+                'password' => "%broker_password'\"t:%!",
+                'port' => 8080,
+                'service_catalog' => {
+                  'plans' => plans,
+                  'service_name' => 'myservicename'
+                }
+              }
+            }
+          }]
+        end
+
+        let(:manifest_file) { 'spec/fixtures/register_broker_with_ssl_enabled.yml' }
+          it 'does not add the skip-ssl-validation flag' do
+            expect(rendered_template).to_not include 'cf api --skip-ssl-validation'
+          end
+
+        it 'exports the ssl_cert_file env variable from the cf link' do
+          expect(rendered_template).to_not include 'export SSL_CERT_FILE="$cert_file"'
+        end
       end
     end
   end
