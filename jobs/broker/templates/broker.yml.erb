@@ -198,6 +198,20 @@ def cf_config
   cf
 end
 
+def bosh_credhub_config_valid?
+  bosh_credhub = p('bosh_credhub_api')
+  ['url', 'root_ca_cert', 'authentication.uaa.client_credentials.client_id', 'authentication.uaa.client_credentials.client_secret'].all? do |k|
+    !bosh_credhub.dig(*k.split('.')).nil?
+  end
+end
+
+def bosh_credhub_config
+  if p('resolve_manifest_secrets_at_bind') && !bosh_credhub_config_valid?
+    raise 'resolve_manifest_secrets_at_bind enabled without bosh credhub config'
+  end
+  p('bosh_credhub_api')
+end
+
 config = {
   "broker" => {
     "port" => p('port'),
@@ -209,13 +223,15 @@ config = {
     "shutdown_timeout_in_seconds" => p('shutdown_timeout_in_seconds'),
     "expose_operational_errors" => p('expose_operational_errors'),
     "enable_plan_schemas" => p('enable_plan_schemas'),
-    "use_stdin" => p('use_stdin')
+    "use_stdin" => p('use_stdin'),
+    "resolve_manifest_secrets_at_bind" => p('resolve_manifest_secrets_at_bind'),
   },
   "bosh" => bosh_config,
   "cf" => cf_config,
   "service_adapter" => p('service_adapter'),
   "service_deployment" => p('service_deployment'),
-  "service_catalog" => service_catalog
+  "service_catalog" => service_catalog,
+  "bosh_credhub" => bosh_credhub_config
 }.merge(credhub_config)
 %>
 

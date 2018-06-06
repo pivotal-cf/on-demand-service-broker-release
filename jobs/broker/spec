@@ -141,10 +141,10 @@ properties:
   bosh_credhub_api.root_ca_cert:
     description: Public certificate of root certificate authority used to sign BOSH CredHub's certificate. Used to authenticate the service.
 
-  bosh_credhub_api.authentication.uaa.client_id:
+  bosh_credhub_api.authentication.uaa.client_credentials.client_id:
     description: ID of UAA client with permissions to read and write to BOSH CredHub
 
-  bosh_credhub_api.authentication.uaa.client_secret:
+  bosh_credhub_api.authentication.uaa.client_credentials.client_secret:
     description: Secret of UAA client with permissions to read and write to BOSH CredHub
 
   service_adapter.path:

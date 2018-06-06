@@ -194,6 +194,40 @@ RSpec.describe 'broker config templating' do
     end
   end
 
+  context 'when the resolve_manifest_secrets_at_bind flag is set to true' do
+    let(:manifest_file) { File.open 'spec/fixtures/valid_resolve_bind_secrets.yml' }
+
+    it 'includes the resolve_manifest_secrets_at_bind flag as true in the config' do
+      expect(rendered_template).to include 'resolve_manifest_secrets_at_bind: true'
+      yml = YAML.load(rendered_template)
+      expect(yml).to have_key 'bosh_credhub'
+      expect(yml['bosh_credhub']).to include(
+        'url' => 'https://bosh_credhub_url:8844/api/',
+        'root_ca_cert' => 'CERT',
+        'authentication' => {
+          'uaa' => {
+            'ca_cert' => 'UAA CA CERT',
+            'client_credentials' => {
+              'client_id' => 'credhub_id',
+              'client_secret' => 'credhub_password'
+            }
+          }
+        }
+      )
+    end
+  end
+
+  context 'when the resolve_manifest_secrets_at_bind flag is set to true but we do not have bosh_credhub config' do
+    let(:manifest_file) { File.open 'spec/fixtures/invalid_resolve_bind_secrets.yml' }
+
+    it 'fails with an error' do
+      expect {
+        rendered_template
+      }.to raise_error(RuntimeError, "resolve_manifest_secrets_at_bind enabled without bosh credhub config")
+    end
+  end
+
+
   context 'when the manifest contains only mandatory service catalog properties' do
     let(:manifest_file) { File.open 'spec/fixtures/valid-mandatory-broker-config.yml' }
 
