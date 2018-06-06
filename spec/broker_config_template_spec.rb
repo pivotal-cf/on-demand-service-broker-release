@@ -206,7 +206,6 @@ RSpec.describe 'broker config templating' do
         'root_ca_cert' => 'CERT',
         'authentication' => {
           'uaa' => {
-            'ca_cert' => 'UAA CA CERT',
             'client_credentials' => {
               'client_id' => 'credhub_id',
               'client_secret' => 'credhub_password'
