@@ -161,7 +161,6 @@ instance_groups:
       - name: consul_agent
         release: consul
         consumes:
-          consul: nil
           consul_client:
             from: consul_client_link
             deployment: ((cf_deployment_name))
