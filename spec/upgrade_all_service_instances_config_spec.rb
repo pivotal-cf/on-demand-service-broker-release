@@ -231,4 +231,20 @@ MostCERTainlyACert
       expect(config.fetch('canary_selection_params')).to eq({'test'=>true, 'size'=>'small'})
     end
   end
+
+  context 'without request timeout provided' do
+    let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_minimal.yml' }
+
+    it 'sets request timeout to 120' do
+      expect(config.fetch('request_timeout')).to eq(120)
+    end
+  end
+
+  context 'with request timeout provided' do
+    let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_with_request_timeout.yml' }
+
+    it 'sets request timeout to the provided value' do
+      expect(config.fetch('request_timeout')).to eq(300)
+    end
+  end
 end
