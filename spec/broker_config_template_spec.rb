@@ -29,6 +29,13 @@ RSpec.describe 'broker config templating' do
     manifest_file.close
   end
 
+  before(:all) do
+    release_path = File.join(File.dirname(__FILE__), '..')
+    release = Bosh::Template::Test::ReleaseDir.new(release_path)
+    job = release.job('broker')
+    @template = job.template('config/broker.yml')
+  end
+
   describe 'successful templating' do
     context 'basic auth for BOSH' do
       let(:manifest_file) { File.open 'spec/fixtures/valid-mandatory-broker-config.yml' }
@@ -892,6 +899,60 @@ RSpec.describe 'broker config templating' do
         expect { rendered_template }.to(
           raise_error(RuntimeError, 'Plan property lifecycle_errands.post_deploy must be an array.')
         )
+      end
+    end
+  end
+
+  describe 'binding with BOSH dns' do
+    let(:manifest_file) { File.open 'spec/fixtures/valid_credhub.yml' }
+
+    context 'with a list of valid BOSH dns link definitions' do
+      it 'adds them to the config' do
+        valid_dns_config = {
+          'binding_with_dns' => [
+            {
+              'name' => 'my-link-name',
+              'link_provider' => 'provider-name',
+              'instance_group' => 'ig-1'
+            },
+            {
+              'name' => 'another-link-name',
+              'link_provider' => 'another-provider-name',
+              'instance_group' => 'ig-2'
+            }
+          ]
+        }
+        catalog = VALID_MANDATORY_BROKER_PROPERTIES.dig('service_catalog')
+        catalog['plans'][0] = catalog['plans'][0].merge(valid_dns_config)
+        @properties = VALID_MANDATORY_BROKER_PROPERTIES.merge(
+          'service_catalog' => catalog
+        )
+        broker_config = @template.render(@properties)
+        plans = YAML.safe_load(broker_config).dig('service_catalog', 'plans')
+        binding_config = plans[0].fetch('binding_with_dns', {})
+        expect(binding_config).to eq(valid_dns_config['binding_with_dns'])
+      end
+
+      it 'fails when mandatory keys are not specified' do
+        item = {
+          'name' => 'my-link-name',
+          'link_provider' => 'provider-name',
+          'instance_group' => 'ig-1'
+        }
+        %w[name link_provider instance_group].each do |key|
+          item_clone = item.clone
+          item_clone.delete(key)
+          config = { 'binding_with_dns' => [item_clone] }
+          catalog = VALID_MANDATORY_BROKER_PROPERTIES.dig('service_catalog')
+          catalog['plans'][0] = catalog['plans'][0].merge(config)
+          @properties = VALID_MANDATORY_BROKER_PROPERTIES.merge(
+            'service_catalog' => catalog
+          )
+          expect { @template.render(@properties) }.to raise_error(
+            RuntimeError,
+            "Invalid binding with dns config - must specify #{key}"
+          )
+        end
       end
     end
   end
