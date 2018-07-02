@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
 # This program and the accompanying materials are made available under the terms of the under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -22,7 +24,7 @@ RSpec.describe 'delete-all-service-instances-and-deregister-broker config' do
     renderer.render('jobs/delete-all-service-instances-and-deregister-broker/templates/config.yml.erb')
   end
 
-  context'with the broker link' do
+  context 'with the broker link' do
     let(:manifest_file) { File.open 'spec/fixtures/delete_all_without_polling_configured.yml' }
 
     let(:broker_link) do
@@ -35,7 +37,7 @@ RSpec.describe 'delete-all-service-instances-and-deregister-broker config' do
             },
             'disable_ssl_cert_verification' => true,
             'cf' => {
-              'url' => "https://api.cf-app.com",
+              'url' => 'https://api.cf-app.com',
               'root_ca_cert' => 'cert',
               'authentication' => {
                 'url' => 'https://uaa.cf-app.com',
@@ -54,7 +56,7 @@ RSpec.describe 'delete-all-service-instances-and-deregister-broker config' do
       }
     end
 
-    let(:config) { YAML.load(rendered_template) }
+    let(:config) { YAML.safe_load(rendered_template) }
 
     it 'is not empty' do
       expect(config).not_to be_empty

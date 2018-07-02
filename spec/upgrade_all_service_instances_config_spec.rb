@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
 # This program and the accompanying materials are made available under the terms of the under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -12,7 +14,7 @@ RSpec.describe 'upgrade-all-service-instances config' do
     merged_context = BoshEmulator.director_merge(
       YAML.load_file(manifest_file.path),
       'upgrade-all-service-instances',
-      [broker_link],
+      [broker_link]
     )
     Bosh::Template::Renderer.new(context: merged_context.to_json)
   end
@@ -26,7 +28,7 @@ RSpec.describe 'upgrade-all-service-instances config' do
       'broker' => {
         'instances' => [
           {
-            'address' => "123.456.789.101"
+            'address' => '123.456.789.101'
           }
         ],
         'properties' => {
@@ -38,9 +40,9 @@ RSpec.describe 'upgrade-all-service-instances config' do
     }
   end
 
-  let(:config) { YAML.load(rendered_template) }
+  let(:config) { YAML.safe_load(rendered_template) }
 
-  context'with no service instances api specified' do
+  context 'with no service instances api specified' do
     let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_minimal.yml' }
 
     it 'is not empty' do
@@ -68,7 +70,7 @@ RSpec.describe 'upgrade-all-service-instances config' do
     end
   end
 
-  context'with service instances api specified' do
+  context 'with service instances api specified' do
     let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_with_service_instances_api.yml' }
 
     it 'is not empty' do
@@ -91,12 +93,12 @@ RSpec.describe 'upgrade-all-service-instances config' do
 
     it 'sets correct service instances api authentication' do
       basic_auth_block = config.fetch('service_instances_api').fetch('authentication').fetch('basic')
-      expect(basic_auth_block.fetch('username')).to eq("myname")
-      expect(basic_auth_block.fetch('password')).to eq("supersecret")
+      expect(basic_auth_block.fetch('username')).to eq('myname')
+      expect(basic_auth_block.fetch('password')).to eq('supersecret')
     end
 
     it 'doesnt set root_ca_cert' do
-      expect(config.fetch('service_instances_api').has_key?('root_ca_cert')).to be_falsey
+      expect(config.fetch('service_instances_api').key?('root_ca_cert')).to be_falsey
     end
 
     context 'and root_ca_cert provided' do
@@ -109,8 +111,6 @@ MostCERTainlyACert
 ')
       end
     end
-
-
   end
 
   context 'with polling interval provided' do
@@ -165,9 +165,9 @@ MostCERTainlyACert
     let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_invalid_attempt_limit.yml' }
 
     it 'fails' do
-      expect {
+      expect do
         rendered_template
-      }.to raise_error(RuntimeError, "Invalid upgrade_all_service_instances.attempt_limit - must be greater or equal 1")
+      end.to raise_error(RuntimeError, 'Invalid upgrade_all_service_instances.attempt_limit - must be greater or equal 1')
     end
   end
 
@@ -191,9 +191,9 @@ MostCERTainlyACert
     let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_invalid_max_in_flight.yml' }
 
     it 'fails' do
-      expect {
+      expect do
         rendered_template
-      }.to raise_error(RuntimeError, "Invalid upgrade_all_service_instances.max_in_flight - must be greater or equal 1")
+      end.to raise_error(RuntimeError, 'Invalid upgrade_all_service_instances.max_in_flight - must be greater or equal 1')
     end
   end
 
@@ -201,9 +201,9 @@ MostCERTainlyACert
     let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_invalid_canaries.yml' }
 
     it 'fails if its less than zero' do
-      expect {
+      expect do
         rendered_template
-      }.to raise_error(RuntimeError, "Invalid upgrade_all_service_instances.canaries - must be greater or equal 0")
+      end.to raise_error(RuntimeError, 'Invalid upgrade_all_service_instances.canaries - must be greater or equal 0')
     end
   end
 
@@ -220,7 +220,7 @@ MostCERTainlyACert
 
     it 'both are available in the config' do
       expect(config.fetch('canaries')).to eq(3)
-      expect(config.fetch('canary_selection_params')).to eq({'test'=>true, 'size'=>'small'})
+      expect(config.fetch('canary_selection_params')).to eq('test' => true, 'size' => 'small')
     end
   end
 
@@ -228,7 +228,7 @@ MostCERTainlyACert
     let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_canary_selection_params.yml' }
 
     it 'succeeds' do
-      expect(config.fetch('canary_selection_params')).to eq({'test'=>true, 'size'=>'small'})
+      expect(config.fetch('canary_selection_params')).to eq('test' => true, 'size' => 'small')
     end
   end
 

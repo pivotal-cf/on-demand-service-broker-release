@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
 # This program and the accompanying materials are made available under the terms of the under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -16,10 +18,10 @@ RSpec.describe 'broker-post-start script' do
 
   context 'when the broker credentials contain special characters' do
     before(:all) do
-      @properties = VALID_MANDATORY_BROKER_PROPERTIES.merge({
-        "username" => "%username'\"t:%!",
-        "password" => "%password'\"t:%!"
-      })
+      @properties = VALID_MANDATORY_BROKER_PROPERTIES.merge(
+        'username' => "%username'\"t:%!",
+        'password' => "%password'\"t:%!"
+      )
     end
 
     it 'escapes the broker username' do

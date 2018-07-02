@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
 # This program and the accompanying materials are made available under the terms of the under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -7,8 +9,8 @@
 require 'spec_helper'
 
 RSpec.describe 'register-broker errand' do
-  let(:access_value) {'enable'}
-  let(:plans ) do
+  let(:access_value) { 'enable' }
+  let(:plans) do
     [
       {
         'name' => 'dedicated-vm',
@@ -29,7 +31,7 @@ RSpec.describe 'register-broker errand' do
       'broker' => {
         'instances' => [
           {
-            'address' => "123.456.789.101",
+            'address' => '123.456.789.101'
           }
         ],
         'properties' => {
@@ -48,7 +50,7 @@ RSpec.describe 'register-broker errand' do
     }]
   end
 
-  let(:renderer)  do
+  let(:renderer) do
     merged_context = BoshEmulator.director_merge(YAML.load_file(manifest_file), 'register-broker', links)
     Bosh::Template::Renderer.new(context: merged_context.to_json)
   end
@@ -69,7 +71,6 @@ RSpec.describe 'register-broker errand' do
   end
 
   context 'when there is one plan configured' do
-
     context 'and it has cf_service_access enabled' do
       it 'enables the access' do
         expect(rendered_template).to include 'cf enable-service-access'
@@ -77,7 +78,7 @@ RSpec.describe 'register-broker errand' do
     end
 
     context 'and it has cf_service_access disabled' do
-      let(:access_value) {'disable'}
+      let(:access_value) { 'disable' }
 
       it 'disables the access' do
         expect(rendered_template).to_not include 'cf enable-service-access'
@@ -86,7 +87,7 @@ RSpec.describe 'register-broker errand' do
     end
 
     context 'and it has cf_service_access manual' do
-      let(:access_value) {'manual'}
+      let(:access_value) { 'manual' }
 
       it "doesn't change the access" do
         expect(rendered_template).to_not include 'cf enable-service-access'
@@ -95,7 +96,7 @@ RSpec.describe 'register-broker errand' do
     end
 
     context 'and it does not specify cf_service_access' do
-      let(:plans ) {
+      let(:plans) do
         [
           {
             'name' => 'dedicated-vm',
@@ -109,7 +110,7 @@ RSpec.describe 'register-broker errand' do
             ]
           }
         ]
-      }
+      end
 
       it 'enables service access by default' do
         expect(rendered_template).to include 'cf enable-service-access'
@@ -117,17 +118,17 @@ RSpec.describe 'register-broker errand' do
     end
 
     context 'and it specifies an invalid value for cf_service_access' do
-      let(:access_value) {'foo-bar'}
+      let(:access_value) { 'foo-bar' }
       it 'fails to template the errand' do
-        expect {
+        expect do
           rendered_template
-        }.to raise_error(RuntimeError, "Unsupported value foo-bar for cf_service_access. Choose from \"enable\", \"disable\", \"manual\"")
+        end.to raise_error(RuntimeError, 'Unsupported value foo-bar for cf_service_access. Choose from "enable", "disable", "manual"')
       end
     end
   end
 
-  context "when there nil plans configured" do
-    let(:plans ) {
+  context 'when there nil plans configured' do
+    let(:plans) do
       [
         nil,
         {
@@ -143,7 +144,7 @@ RSpec.describe 'register-broker errand' do
         },
         nil
       ]
-    }
+    end
 
     it 'filters out nil plans' do
       expect(rendered_template.scan(/enable-service-access/).size).to eq(1), rendered_template
@@ -152,16 +153,16 @@ RSpec.describe 'register-broker errand' do
     end
   end
 
-  context "when there only nil plans configured" do
-    let(:plans ) { [nil, nil] }
+  context 'when there only nil plans configured' do
+    let(:plans) { [nil, nil] }
 
     it 'does not alter service access' do
       expect(rendered_template).to_not include 'service-access'
     end
   end
 
-  context "when there no plans configured" do
-    let(:plans ) { [] }
+  context 'when there no plans configured' do
+    let(:plans) { [] }
 
     it 'does not alter service access' do
       expect(rendered_template).to_not include 'service-access'
@@ -169,7 +170,7 @@ RSpec.describe 'register-broker errand' do
   end
 
   context 'when there are multiple plans configured' do
-    let(:plans) {
+    let(:plans) do
       [
         {
           'name' => 'enable-plan',
@@ -217,10 +218,10 @@ RSpec.describe 'register-broker errand' do
             'instances' => 1,
             'networks' => []
           ]
-        },
+        }
 
       ]
-    }
+    end
 
     it 'configures the service access accordingly' do
       expect(rendered_template).to include 'cf enable-service-access myservicename -p enable-plan'
@@ -257,7 +258,7 @@ RSpec.describe 'register-broker errand' do
             'broker' => {
               'instances' => [
                 {
-                  'address' => "123.456.789.101",
+                  'address' => '123.456.789.101'
                 }
               ],
               'properties' => {
@@ -274,9 +275,9 @@ RSpec.describe 'register-broker errand' do
         end
 
         let(:manifest_file) { 'spec/fixtures/register_broker_with_ssl_enabled.yml' }
-          it 'does not add the skip-ssl-validation flag' do
-            expect(rendered_template).to_not include 'cf api --skip-ssl-validation'
-          end
+        it 'does not add the skip-ssl-validation flag' do
+          expect(rendered_template).to_not include 'cf api --skip-ssl-validation'
+        end
 
         it 'exports the ssl_cert_file env variable from the cf link' do
           expect(rendered_template).to_not include 'export SSL_CERT_FILE="$cert_file"'

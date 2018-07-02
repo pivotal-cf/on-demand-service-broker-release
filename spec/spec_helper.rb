@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
 # This program and the accompanying materials are made available under the terms of the under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -11,13 +13,13 @@ require 'bosh/template/renderer'
 require 'bosh/template/property_helper'
 require 'bosh/template/test'
 
-VALID_MANDATORY_BROKER_PROPERTIES = YAML.
-  load_file('spec/fixtures/valid-mandatory-broker-config.yml').
-  fetch('instance_groups').
-  first.
-  fetch('jobs').
-  first.
-  fetch('properties')
+VALID_MANDATORY_BROKER_PROPERTIES = YAML
+                                    .load_file('spec/fixtures/valid-mandatory-broker-config.yml')
+                                    .fetch('instance_groups')
+                                    .first
+                                    .fetch('jobs')
+                                    .first
+                                    .fetch('properties')
 
 class BoshEmulator
   extend ::Bosh::Template::PropertyHelper
@@ -53,10 +55,10 @@ class BoshEmulator
       end
     end
 
-    manifest.merge({
+    manifest.merge(
       'properties' => effective_properties,
-      'links' => manifest_links,
-    })
+      'links' => manifest_links
+    )
   end
 end
 

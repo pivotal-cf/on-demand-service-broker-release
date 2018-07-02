@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
 # This program and the accompanying materials are made available under the terms of the under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -24,8 +26,8 @@ RSpec.describe 'delete-all-service-instances-and-deregister-broker errand' do
 
     it 'errand calls delete-all-service-instances-and-deregister-broker binary with config and broker name' do
       broker_name = 'test-broker'
-      binary_call = "/var/vcap/packages/delete-all-service-instances-and-deregister-broker/bin/delete-all-service-instances-and-deregister-broker \\\n" +
-      "  -configFilePath /var/vcap/jobs/delete-all-service-instances-and-deregister-broker/config/config.yml -brokerName #{broker_name}"
+      binary_call = "/var/vcap/packages/delete-all-service-instances-and-deregister-broker/bin/delete-all-service-instances-and-deregister-broker \\\n" \
+                    "  -configFilePath /var/vcap/jobs/delete-all-service-instances-and-deregister-broker/config/config.yml -brokerName #{broker_name}"
 
       expect(rendered_template).to include binary_call
     end

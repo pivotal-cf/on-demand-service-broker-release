@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
 # This program and the accompanying materials are made available under the terms of the under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -12,7 +14,7 @@ RSpec.describe 'orphan-deployments errand' do
       'broker' => {
         'instances' => [
           {
-            'address' => "123.456.789.101",
+            'address' => '123.456.789.101'
           }
         ],
         'properties' => {
@@ -25,7 +27,7 @@ RSpec.describe 'orphan-deployments errand' do
     merged_context = BoshEmulator.director_merge(
       YAML.load_file(manifest_file),
       'orphan-deployments',
-      links,
+      links
     )
     Bosh::Template::Renderer.new(context: merged_context.to_json)
   end
