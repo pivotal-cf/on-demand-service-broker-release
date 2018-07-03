@@ -127,6 +127,14 @@ if p('disable_cf_startup_checks')
   end
 end
 
+def enabled_errands(errands, errand_type)
+  errands.reject do |errand|
+    disabled = errand.fetch('disabled', false).to_s
+    raise "Plan property lifecycle_errands.#{errand_type}.disabled must be boolean value." unless %w[true false].include? disabled
+    disabled == 'true'
+  end
+end
+
 plans.each do |plan|
   validate_config(plan, required_plan_keys, "Invalid plan config - must specify ")
 
@@ -144,14 +152,22 @@ plans.each do |plan|
     end
   end
 
-  pre_delete = plan['lifecycle_errands'].to_h['pre_delete']
-  if pre_delete != nil && pre_delete.class == Hash
-    raise "Plan property lifecycle_errands.pre_delete must be an array."
+  pre_delete_errands = plan['lifecycle_errands'].to_h['pre_delete']
+  if pre_delete_errands != nil
+    if pre_delete_errands.class != Array
+      raise "Plan property lifecycle_errands.pre_delete must be an array."
+    end
+
+    plan['lifecycle_errands']['pre_delete'] = enabled_errands(pre_delete_errands, 'pre_delete')
   end
 
-  post_deploy = plan['lifecycle_errands'].to_h['post_deploy']
-  if post_deploy != nil && post_deploy.class == Hash
-    raise "Plan property lifecycle_errands.post_deploy must be an array."
+  post_deploy_errands = plan['lifecycle_errands'].to_h['post_deploy']
+  if post_deploy_errands != nil
+    if post_deploy_errands.class != Array
+      raise "Plan property lifecycle_errands.post_deploy must be an array."
+    end
+
+    plan['lifecycle_errands']['post_deploy'] = enabled_errands(post_deploy_errands, 'post_deploy')
   end
 
   if p('disable_cf_startup_checks')

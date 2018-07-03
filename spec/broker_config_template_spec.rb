@@ -860,6 +860,42 @@ RSpec.describe 'broker config templating' do
       it 'is included in the configuration' do
         expect(rendered_template).to include '- name: cleanup'
       end
+
+      context 'and disabled is set to true' do
+        let(:manifest_file) do
+          generate_test_manifest do |yaml|
+            yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog']['plans'][0]['lifecycle_errands'] = {'pre_delete' => [{'name' => 'cleanup', 'disabled' => true}]}
+          end
+        end
+
+        it 'is not included in the configuration' do
+          expect(rendered_template).not_to include "- name: cleanup"
+        end
+      end
+
+      context 'and disabled is set to false' do
+        let(:manifest_file) do
+          generate_test_manifest do |yaml|
+            yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog']['plans'][0]['lifecycle_errands'] = {'pre_delete' => [{'name' => 'cleanup', 'disabled' => false}]}
+          end
+        end
+
+        it 'is still included in the configuration' do
+          expect(rendered_template).to include "- name: cleanup"
+        end
+      end
+
+      context 'and disabled is set to non boolean' do
+        let(:manifest_file) do
+          generate_test_manifest do |yaml|
+            yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog']['plans'][0]['lifecycle_errands'] = {'pre_delete' => [{'name' => 'cleanup', 'disabled' => 'foo'}]}
+          end
+        end
+
+        it 'is still included in the configuration' do
+          expect{rendered_template}.to raise_exception "Plan property lifecycle_errands.pre_delete.disabled must be boolean value."
+        end
+      end
     end
 
     context 'when pre-delete errand is in the wrong format' do
@@ -885,6 +921,42 @@ RSpec.describe 'broker config templating' do
 
       it 'is included in the configuration' do
         expect(rendered_template).to include '- name: health-check'
+      end
+
+      context 'and disabled is set to true' do
+        let(:manifest_file) do
+          generate_test_manifest do |yaml|
+            yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog']['plans'][0]['lifecycle_errands'] = {'post_deploy' => [{'name' => 'cleanup', 'disabled' => true}]}
+          end
+        end
+
+        it 'is not included in the configuration' do
+          expect(rendered_template).not_to include "- name: cleanup"
+        end
+      end
+
+      context 'and disabled is set to false' do
+        let(:manifest_file) do
+          generate_test_manifest do |yaml|
+            yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog']['plans'][0]['lifecycle_errands'] = {'post_deploy' => [{'name' => 'cleanup', 'disabled' => false}]}
+          end
+        end
+
+        it 'is still included in the configuration' do
+          expect(rendered_template).to include "- name: cleanup"
+        end
+      end
+
+      context 'and disabled is set to non boolean' do
+        let(:manifest_file) do
+          generate_test_manifest do |yaml|
+            yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog']['plans'][0]['lifecycle_errands'] = {'post_deploy' => [{'name' => 'cleanup', 'disabled' => 'foo'}]}
+          end
+        end
+
+        it 'is still included in the configuration' do
+          expect{rendered_template}.to raise_exception "Plan property lifecycle_errands.post_deploy.disabled must be boolean value."
+        end
       end
     end
 
