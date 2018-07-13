@@ -990,7 +990,10 @@ RSpec.describe 'broker config templating' do
             {
               'name' => 'another-link-name',
               'link_provider' => 'another-provider-name',
-              'instance_group' => 'ig-2'
+              'instance_group' => 'ig-2',
+              'properties' => {
+                'azs' => [ 'europe-west1-a' ]
+              }
             }
           ]
         }
@@ -1025,6 +1028,48 @@ RSpec.describe 'broker config templating' do
             "Invalid binding with dns config - must specify #{key}"
           )
         end
+      end
+
+      it 'fails when an invalid property is passed' do
+        item = {
+          'name' => 'another-link-name',
+          'link_provider' => 'another-provider-name',
+          'instance_group' => 'ig-2',
+          'properties' => {
+            'not-a-valid-property' => 'irrelevant'
+          }
+        }
+        config = { 'binding_with_dns' => [item] }
+        catalog = VALID_MANDATORY_BROKER_PROPERTIES.dig('service_catalog')
+        catalog['plans'][0] = catalog['plans'][0].merge(config)
+        @properties = VALID_MANDATORY_BROKER_PROPERTIES.merge(
+          'service_catalog' => catalog
+        )
+        expect { @template.render(@properties) }.to raise_error(
+          RuntimeError,
+          "Invalid binding with dns config - not-a-valid-property is not a valid property"
+        )
+      end
+
+      it 'fails when azs is not a list' do
+        item = {
+          'name' => 'another-link-name',
+          'link_provider' => 'another-provider-name',
+          'instance_group' => 'ig-2',
+          'properties' => {
+            'azs' => 'europe-west1-a'
+          }
+        }
+        config = { 'binding_with_dns' => [item] }
+        catalog = VALID_MANDATORY_BROKER_PROPERTIES.dig('service_catalog')
+        catalog['plans'][0] = catalog['plans'][0].merge(config)
+        @properties = VALID_MANDATORY_BROKER_PROPERTIES.merge(
+          'service_catalog' => catalog
+        )
+        expect { @template.render(@properties) }.to raise_error(
+          RuntimeError,
+          "Invalid binding with dns config - azs must be a list"
+        )
       end
     end
   end

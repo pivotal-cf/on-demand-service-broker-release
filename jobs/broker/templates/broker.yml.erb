@@ -9,6 +9,7 @@ required_catalog_keys = ["id", "service_name", "service_description", "bindable"
 required_plan_keys = ['name', 'plan_id', 'description', 'instance_groups']
 required_instance_group_keys = ['name', "vm_type", "instances", "networks", "azs"]
 required_binding_with_dns_keys = ['name', 'link_provider', 'instance_group']
+valid_binding_with_dns_properties = ['azs']
 valid_cf_service_access_values = ['enable', 'disable', 'manual']
 
 def validate_config(hash, keys, message)
@@ -149,6 +150,17 @@ plans.each do |plan|
   if plan.has_key?('binding_with_dns')
     plan['binding_with_dns'].each do |bind_with_dns|
       validate_config(bind_with_dns, required_binding_with_dns_keys, 'Invalid binding with dns config - must specify ')
+
+      bind_with_dns.fetch('properties', {}).keys.each do |key|
+        unless valid_binding_with_dns_properties.include? key
+          raise "Invalid binding with dns config - #{key} is not a valid property"
+        end
+      end
+
+      azs = bind_with_dns.dig('properties', 'azs')
+      unless azs.nil? || azs.kind_of?(Array)
+        raise "Invalid binding with dns config - azs must be a list"
+      end
     end
   end
 
