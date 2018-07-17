@@ -992,7 +992,8 @@ RSpec.describe 'broker config templating' do
               'link_provider' => 'another-provider-name',
               'instance_group' => 'ig-2',
               'properties' => {
-                'azs' => [ 'europe-west1-a' ]
+                'azs' => [ 'europe-west1-a' ],
+                'status' => 'healthy'
               }
             }
           ]
@@ -1069,6 +1070,28 @@ RSpec.describe 'broker config templating' do
         expect { @template.render(@properties) }.to raise_error(
           RuntimeError,
           "Invalid binding with dns config - azs must be a list"
+        )
+      end
+
+      it 'fails when status is not a valid option' do
+        item = {
+          'name' => 'another-link-name',
+          'link_provider' => 'another-provider-name',
+          'instance_group' => 'ig-2',
+          'properties' => {
+            'azs' => ['europe-west1-a'],
+            'status' => 'not-valid'
+          }
+        }
+        config = { 'binding_with_dns' => [item] }
+        catalog = VALID_MANDATORY_BROKER_PROPERTIES.dig('service_catalog')
+        catalog['plans'][0] = catalog['plans'][0].merge(config)
+        @properties = VALID_MANDATORY_BROKER_PROPERTIES.merge(
+          'service_catalog' => catalog
+        )
+        expect { @template.render(@properties) }.to raise_error(
+          RuntimeError,
+          "Invalid binding with dns config - status must be one of the following: default, healthy, unhealthy, all"
         )
       end
     end
