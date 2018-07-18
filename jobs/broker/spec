@@ -77,7 +77,7 @@ properties:
 
   use_stdin:
     description: Pass arguments to service adapter over standard input instead of as command line arguments. Requires a compatible service adapter.
-    default: false
+    default: true
 
   bosh.url:
     description: BOSH URL

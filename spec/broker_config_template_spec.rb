@@ -819,8 +819,8 @@ RSpec.describe 'broker config templating' do
         end
       end
 
-      it 'defaults to false' do
-        expect(rendered_template).to include 'use_stdin: false'
+      it 'defaults to true' do
+        expect(rendered_template).to include 'use_stdin: true'
       end
     end
 
