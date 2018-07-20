@@ -94,6 +94,14 @@ blobxfer/urllib3-1.22.tar.gz:
   size: 226083
   object_id: 3be8363d-60d9-4c0f-4912-5d82c238b12f
   sha: 02c623c3bdceda4ef5bffdafdda472d2d9e34ef1
+go/go1.10.linux-amd64.tar.gz:
+  size: 119905205
+  object_id: a736e772-073c-4ab0-7d2f-60ac540a91ce
+  sha: 693e2dfd99ef2d608b41c450efd9d277bf2a7f2f
+pkg-config/pkg-config-0.29.2.tar.gz:
+  size: 2016830
+  object_id: 0e026ffc-8f7a-4e51-4b8e-1e30099469d0
+  sha: 76e501663b29cb7580245720edfb6106164fad2b
 python/Python-3.6.2.tgz:
   size: 22580749
   object_id: 8a08d759-e895-4632-70a4-e8cbce179223

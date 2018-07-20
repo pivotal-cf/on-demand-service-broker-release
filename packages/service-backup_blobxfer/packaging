@@ -15,6 +15,14 @@ pushd libffi-3.2.1
   make install
 popd
 
+tar xvf pkg-config/pkg-config-0.29.2.tar.gz
+pushd pkg-config-0.29.2
+  ./configure --prefix=${BOSH_INSTALL_TARGET} --with-internal-glib
+  make
+  make install
+popd
+export PKG_CONFIG=${BOSH_INSTALL_TARGET}/bin/pkg-config
+
 PIP_LOCATION=/var/vcap/packages/service-backup_python/bin/pip
 export PKG_CONFIG_PATH=${BOSH_INSTALL_TARGET}/lib/pkgconfig:$PKG_CONFIG_PATH
 
