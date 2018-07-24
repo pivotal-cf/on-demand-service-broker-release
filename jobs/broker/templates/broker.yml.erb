@@ -149,6 +149,10 @@ plans.each do |plan|
   end
 
   if plan.has_key?('binding_with_dns')
+    unless p('use_stdin')
+      raise "Plan #{plan['name']} configures binding_with_dns, but use_stdin is disabled"
+    end
+
     plan['binding_with_dns'].each do |bind_with_dns|
       validate_config(bind_with_dns, required_binding_with_dns_keys, 'Invalid binding with dns config - must specify ')
 

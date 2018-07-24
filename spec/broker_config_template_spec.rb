@@ -1094,6 +1094,25 @@ RSpec.describe 'broker config templating' do
           "Invalid binding with dns config - status must be one of the following: default, healthy, unhealthy, all"
         )
       end
+
+      it 'fails when use_stdin is disabled' do
+        item = {
+          'name' => 'my-link-name',
+          'link_provider' => 'provider-name',
+          'instance_group' => 'ig-1'
+        }
+        config = { 'binding_with_dns' => [item] }
+        catalog = VALID_MANDATORY_BROKER_PROPERTIES.dig('service_catalog')
+        catalog['plans'][0] = catalog['plans'][0].merge(config)
+        @properties = VALID_MANDATORY_BROKER_PROPERTIES.merge(
+          'use_stdin' => false,
+          'service_catalog' => catalog
+        )
+        expect { @template.render(@properties) }.to raise_error(
+          RuntimeError,
+          "Plan #{catalog['plans'][0]['name']} configures binding_with_dns, but use_stdin is disabled"
+        )
+      end
     end
   end
 end
