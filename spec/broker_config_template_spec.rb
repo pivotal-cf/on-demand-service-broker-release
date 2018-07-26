@@ -237,7 +237,37 @@ RSpec.describe 'broker config templating' do
     it 'fails with an error' do
       expect do
         rendered_template
-      end.to raise_error(RuntimeError, 'resolve_manifest_secrets_at_bind enabled without bosh credhub config')
+      end.to raise_error(RuntimeError, 'resolve_manifest_secrets_at_bind requires bosh_credhub_api to be configured, but bosh_credhub_api error: not configured')
+    end
+  end
+
+  context 'bosh_credhub_api is missing keys' do
+    let(:manifest_file) { File.open 'spec/fixtures/invalid_resolve_bind_secrets-missing_api_ca_cert.yml' }
+
+    it 'fails with an error' do
+      expect do
+        rendered_template
+      end.to raise_error(RuntimeError, 'resolve_manifest_secrets_at_bind requires bosh_credhub_api to be configured, but bosh_credhub_api error: missing root_ca_cert')
+    end
+  end
+
+  context 'bosh_credhub_api is missing authentication' do
+    let(:manifest_file) { File.open 'spec/fixtures/invalid_resolve_bind_secrets_missing_authentication.yml' }
+
+    it 'fails with an error' do
+      expect do
+        rendered_template
+      end.to raise_error(RuntimeError, 'resolve_manifest_secrets_at_bind requires bosh_credhub_api to be configured, but bosh_credhub_api error: missing authentication configuration')
+    end
+  end
+
+  context 'bosh_credhub_api is missing deep keys' do
+    let(:manifest_file) { File.open 'spec/fixtures/invalid_resolve_bind_secrets_missing_client_id.yml' }
+
+    it 'fails with an error' do
+      expect do
+        rendered_template
+      end.to raise_error(RuntimeError, 'resolve_manifest_secrets_at_bind requires bosh_credhub_api to be configured, but bosh_credhub_api error: missing authentication.uaa.client_credentials.client_id')
     end
   end
 

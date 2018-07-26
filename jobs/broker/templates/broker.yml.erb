@@ -243,18 +243,32 @@ def cf_config
   cf
 end
 
-def bosh_credhub_config_valid?
-  bosh_credhub = p('bosh_credhub_api')
-  ['url', 'root_ca_cert', 'authentication.uaa.client_credentials.client_id', 'authentication.uaa.client_credentials.client_secret'].all? do |k|
-    !bosh_credhub.dig(*k.split('.')).nil?
-  end
+def validate_bosh_credhub_api(bosh_credhub)
+    if ['url', 'root_ca_cert', 'authentication.uaa.client_credentials.client_id', 'authentication.uaa.client_credentials.client_secret'].all? do |k|
+        bosh_credhub.dig(*k.split('.')).nil?
+      end
+      raise 'bosh_credhub_api error: not configured'
+    end
+
+    required_bosh_cred_api_keys = ['url', 'root_ca_cert']
+    validate_config(bosh_credhub, required_bosh_cred_api_keys, 'bosh_credhub_api error: missing ')
+
+    if ['authentication.uaa.client_credentials.client_id', 'authentication.uaa.client_credentials.client_secret'].all? do |k|
+        bosh_credhub.dig(*k.split('.')).nil?
+      end
+      raise 'bosh_credhub_api error: missing authentication configuration'
+    end
+
+    required_bosh_client_credentials_keys = ['client_id', 'client_secret']
+    validate_config(bosh_credhub['authentication']['uaa']['client_credentials'], required_bosh_client_credentials_keys, 'bosh_credhub_api error: missing authentication.uaa.client_credentials.')
 end
 
-def bosh_credhub_config
-  if p('resolve_manifest_secrets_at_bind') && !bosh_credhub_config_valid?
-    raise 'resolve_manifest_secrets_at_bind enabled without bosh credhub config'
+if p('resolve_manifest_secrets_at_bind')
+  begin
+    validate_bosh_credhub_api p('bosh_credhub_api')
+  rescue StandardError => err
+    raise "resolve_manifest_secrets_at_bind requires bosh_credhub_api to be configured, but " + err.message
   end
-  p('bosh_credhub_api')
 end
 
 config = {
@@ -276,7 +290,7 @@ config = {
   "service_adapter" => p('service_adapter'),
   "service_deployment" => p('service_deployment'),
   "service_catalog" => service_catalog,
-  "bosh_credhub" => bosh_credhub_config
+  "bosh_credhub" => p('bosh_credhub_api')
 }.merge(credhub_config)
 %>
 
