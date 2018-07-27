@@ -209,11 +209,11 @@ RSpec.describe 'broker config templating' do
     end
   end
 
-  context 'when the resolve_manifest_secrets_at_bind flag is set to true' do
+  context 'when the enable_secure_manifests flag is set to true' do
     let(:manifest_file) { File.open 'spec/fixtures/valid_resolve_bind_secrets.yml' }
 
-    it 'includes the resolve_manifest_secrets_at_bind flag as true in the config' do
-      expect(rendered_template).to include 'resolve_manifest_secrets_at_bind: true'
+    it 'includes the enable_secure_manifests flag as true in the config' do
+      expect(rendered_template).to include 'enable_secure_manifests: true'
       yml = YAML.safe_load(rendered_template)
       expect(yml).to have_key 'bosh_credhub'
       expect(yml['bosh_credhub']).to include(
@@ -231,13 +231,13 @@ RSpec.describe 'broker config templating' do
     end
   end
 
-  context 'when the resolve_manifest_secrets_at_bind flag is set to true but we do not have bosh_credhub config' do
+  context 'when the enable_secure_manifests flag is set to true but we do not have bosh_credhub config' do
     let(:manifest_file) { File.open 'spec/fixtures/invalid_resolve_bind_secrets.yml' }
 
     it 'fails with an error' do
       expect do
         rendered_template
-      end.to raise_error(RuntimeError, 'resolve_manifest_secrets_at_bind requires bosh_credhub_api to be configured, but bosh_credhub_api error: not configured')
+      end.to raise_error(RuntimeError, 'enable_secure_manifests requires bosh_credhub_api to be configured, but bosh_credhub_api error: not configured')
     end
   end
 
@@ -247,7 +247,7 @@ RSpec.describe 'broker config templating' do
     it 'fails with an error' do
       expect do
         rendered_template
-      end.to raise_error(RuntimeError, 'resolve_manifest_secrets_at_bind requires bosh_credhub_api to be configured, but bosh_credhub_api error: missing root_ca_cert')
+      end.to raise_error(RuntimeError, 'enable_secure_manifests requires bosh_credhub_api to be configured, but bosh_credhub_api error: missing root_ca_cert')
     end
   end
 
@@ -257,7 +257,7 @@ RSpec.describe 'broker config templating' do
     it 'fails with an error' do
       expect do
         rendered_template
-      end.to raise_error(RuntimeError, 'resolve_manifest_secrets_at_bind requires bosh_credhub_api to be configured, but bosh_credhub_api error: missing authentication configuration')
+      end.to raise_error(RuntimeError, 'enable_secure_manifests requires bosh_credhub_api to be configured, but bosh_credhub_api error: missing authentication configuration')
     end
   end
 
@@ -267,7 +267,7 @@ RSpec.describe 'broker config templating' do
     it 'fails with an error' do
       expect do
         rendered_template
-      end.to raise_error(RuntimeError, 'resolve_manifest_secrets_at_bind requires bosh_credhub_api to be configured, but bosh_credhub_api error: missing authentication.uaa.client_credentials.client_id')
+      end.to raise_error(RuntimeError, 'enable_secure_manifests requires bosh_credhub_api to be configured, but bosh_credhub_api error: missing authentication.uaa.client_credentials.client_id')
     end
   end
 
