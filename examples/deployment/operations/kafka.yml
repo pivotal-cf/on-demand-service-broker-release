@@ -18,7 +18,7 @@
         jobs: [metron_agent]
     stemcell:
       os: ((stemcell_os))
-      version: ((kafka_stemcell_version))
+      version: ((stemcell_version))
 
 - type: replace
   path: /instance_groups/name=broker/jobs/-
