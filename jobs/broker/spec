@@ -131,7 +131,7 @@ properties:
   secure_binding_credentials.authentication.uaa.ca_cert:
     description: Internal UAA certificate
 
-  enable_secure_manifests:
+  resolve_manifest_secrets_at_bind:
     default: false
     description: Allow ODB to read and write service instance secrets using the BOSH CredHub. Required for removing plain text secrets from service instance manifests.
 
