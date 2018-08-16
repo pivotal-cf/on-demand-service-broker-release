@@ -263,11 +263,11 @@ def validate_bosh_credhub_api(bosh_credhub)
     validate_config(bosh_credhub['authentication']['uaa']['client_credentials'], required_bosh_client_credentials_keys, 'bosh_credhub_api error: missing authentication.uaa.client_credentials.')
 end
 
-if p('resolve_manifest_secrets_at_bind')
+if p('enable_secure_manifests')
   begin
     validate_bosh_credhub_api p('bosh_credhub_api')
   rescue StandardError => err
-    raise "resolve_manifest_secrets_at_bind requires bosh_credhub_api to be configured, but " + err.message
+    raise "enable_secure_manifests requires bosh_credhub_api to be configured, but " + err.message
   end
 end
 
@@ -283,7 +283,7 @@ config = {
     "expose_operational_errors" => p('expose_operational_errors'),
     "enable_plan_schemas" => p('enable_plan_schemas'),
     "use_stdin" => p('use_stdin'),
-    "resolve_manifest_secrets_at_bind" => p('resolve_manifest_secrets_at_bind'),
+    "enable_secure_manifests" => p('enable_secure_manifests'),
   },
   "bosh" => bosh_config,
   "cf" => cf_config,

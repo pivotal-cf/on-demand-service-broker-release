@@ -26,7 +26,6 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/mgmtapi/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/service/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/serviceadapter/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/task/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/tools/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/upgrader/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/clock/*.go # gosub

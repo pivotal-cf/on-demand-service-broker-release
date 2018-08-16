@@ -1,6 +1,6 @@
 ---
 - type: replace
-  path: /instance_groups/name=broker/jobs/name=broker/properties?/resolve_manifest_secrets_at_bind
+  path: /instance_groups/name=broker/jobs/name=broker/properties?/enable_secure_manifests
   value: true
 
 - type: replace
