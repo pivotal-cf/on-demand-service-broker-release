@@ -264,6 +264,10 @@ def validate_bosh_credhub_api(bosh_credhub)
 end
 
 if p('enable_secure_manifests')
+    unless p('use_stdin')
+      raise "enable_secure_manifests requires use_stdin to be enabled"
+    end
+
   begin
     validate_bosh_credhub_api p('bosh_credhub_api')
   rescue StandardError => err

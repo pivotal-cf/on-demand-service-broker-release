@@ -231,6 +231,16 @@ RSpec.describe 'broker config templating' do
     end
   end
 
+  context 'when the enable_secure_manifests flag is true, but use_stdin is false' do
+    let(:manifest_file) { File.open 'spec/fixtures/invalid_secure_manifests_enabled_but_use_stdin_false.yml' }
+
+    it 'fails with an error' do
+      expect do
+        rendered_template
+      end.to raise_error(RuntimeError, 'enable_secure_manifests requires use_stdin to be enabled')
+    end
+  end
+
   context 'when the enable_secure_manifests flag is set to true but we do not have bosh_credhub config' do
     let(:manifest_file) { File.open 'spec/fixtures/invalid_resolve_bind_secrets.yml' }
 
