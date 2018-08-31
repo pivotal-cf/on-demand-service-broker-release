@@ -20,6 +20,7 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/boshlinks/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/broker/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/brokercontext/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/brokerinitiator/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/cf/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/cmd/on-demand-service-broker/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/config/*.go # gosub
