@@ -8,7 +8,7 @@
 name: broker
 
 dependencies:
-- golang-1.10-linux
+- golang-1.11-linux
 
 files:
   - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/curve25519/*.s
