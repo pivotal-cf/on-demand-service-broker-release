@@ -40,9 +40,26 @@ export CF_DIAL_TIMEOUT=60
   <% end %>
 <% end %>
 
-cf api <%= '--skip-ssl-validation ' if p('disable_ssl_cert_verification') %><%= p('cf.api_url') %>
+cf_retry() {
+  set +e
+  cf_cmd="cf "$@
+  for i in 1 2 3; do
+    if output=$($cf_cmd); then
+      echo "${output}"
+      set -e
+      return 0
+    fi
+    echo retrying failed cf command
+    sleep 5
+  done
+  echo $output
+  set -e
+  return 1
+}
 
-cf auth <%= escape_shell(p('cf.admin_username')) %> <%= escape_shell(p('cf.admin_password')) %>
+cf_retry api <%= '--skip-ssl-validation ' if p('disable_ssl_cert_verification') %><%= p('cf.api_url') %>
+
+cf_retry auth <%= escape_shell(p('cf.admin_username')) %> <%= escape_shell(p('cf.admin_password')) %>
 
 broker_name=<%= p('broker_name') %>
 broker_cmd=$(cf_service_broker_command "${broker_name}")
