@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -u
-
 log() {
   if [ -z "$LOG_FILE" ]; then
     echo "$LOG_FILE environment variable needs to be set for logging"

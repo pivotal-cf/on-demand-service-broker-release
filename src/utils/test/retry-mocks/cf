@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+echo $@ >> ${ARGUMENTS_FILE:-/dev/null}
+
+if [ "$1" = "pass_on_1" ]; then
+  echo normal output
+  exit 0
+elif [ "$1" = "always_fails" ]; then
+  exit 1
+elif [ "$1" = "fail_twice" ]; then
+  test_retry_count=( $(<$TEST_COUNT_FILE) )
+  if [ $test_retry_count == 2 ]; then
+    echo "succeeded!!"
+    exit 0
+  fi
+  echo $(($test_retry_count+1)) > $TEST_COUNT_FILE
+  exit 1
+fi

@@ -9,4 +9,4 @@ name: broker_utils
 files:
 - utils/lib/log.sh
 - utils/lib/common.sh
-- utils/lib/cf_service_broker_command.sh
+- utils/lib/cf_commands.sh

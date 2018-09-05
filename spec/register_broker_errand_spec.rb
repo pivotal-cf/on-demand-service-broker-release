@@ -60,7 +60,7 @@ RSpec.describe 'register-broker errand' do
 
   context 'when the cf credentials contain special characters' do
     it 'escapes the cf username and password' do
-      expect(rendered_template).to include "cf auth '%cf_username'\\''\"t:%!' '%cf_password'\\''\"t:%!'"
+      expect(rendered_template).to include "cf_retry auth '%cf_username'\\''\"t:%!' '%cf_password'\\''\"t:%!'"
     end
   end
 
@@ -234,7 +234,7 @@ RSpec.describe 'register-broker errand' do
   describe 'ssl verification' do
     context 'when its disabled' do
       it 'adds the skip-ssl-validation flag' do
-        expect(rendered_template).to include 'cf api --skip-ssl-validation'
+        expect(rendered_template).to include 'cf_retry api --skip-ssl-validation'
       end
     end
 
@@ -248,7 +248,7 @@ RSpec.describe 'register-broker errand' do
         it 'exports the ssl_cert_file env variable from the cf link' do
           expect(rendered_template).to include 'echo -e "thats a certificate" > "$cert_file"'
           expect(rendered_template).to include 'export SSL_CERT_FILE="$cert_file"'
-          expect(rendered_template).to include 'cf api a-cf-url'
+          expect(rendered_template).to include 'cf_retry api a-cf-url'
         end
       end
 
