@@ -9,6 +9,14 @@
 require 'rspec'
 require 'yaml'
 
+module Psych
+  def self.load_file filename, fallback = false
+    File.open(filename, 'r:bom|utf-8') { |f|
+      self.safe_load f, [], [], false, filename
+    }
+  end
+end
+
 require 'bosh/template/renderer'
 require 'bosh/template/property_helper'
 require 'bosh/template/test'
