@@ -1,0 +1,47 @@
+name: service-backup
+version: 18.1.14
+commit_hash: bf64496
+uncommitted_changes: false
+jobs:
+- name: service-backup
+  version: c5aa4adc0dbd9afedb9af7e9b23a23f0c189d63e540760dcdebed63263b9b3c3
+  fingerprint: c5aa4adc0dbd9afedb9af7e9b23a23f0c189d63e540760dcdebed63263b9b3c3
+  sha1: sha256:459d267a72e6a75f3b992a615873e292ca74c4ba7edd3d33a8074c60d6da9242
+packages:
+- name: golang-1.11-linux
+  version: bb9ab510b4b82a163137540402017207b9fc7e06
+  fingerprint: bb9ab510b4b82a163137540402017207b9fc7e06
+  sha1: f76df378af8cfd97e8fd60cdbc5b00ee952d5caf
+  dependencies: []
+- name: service-backup
+  version: cb5314214b73a69cb4bcc4c87858f839fedad9dbe97f374e75afd1e96f166595
+  fingerprint: cb5314214b73a69cb4bcc4c87858f839fedad9dbe97f374e75afd1e96f166595
+  sha1: sha256:bb9593c7a104d494f64df8858cd31b60b62857e770594b40ce8efd59607cde67
+  dependencies:
+  - golang-1.11-linux
+- name: service-backup_aws-cli
+  version: ae2ddb0cd8e463b3a0e93490fdf066402ead2e62aafae344904715174b537f78
+  fingerprint: ae2ddb0cd8e463b3a0e93490fdf066402ead2e62aafae344904715174b537f78
+  sha1: sha256:d8f6af5ea99a89885d1318f667897a146ffbfe0b05c5104d61c318af47943b20
+  dependencies:
+  - service-backup_python
+- name: service-backup_blobxfer
+  version: 58de47b318d3ba114e6d86933dd48d014e803370f4a1f2e5117356a76ccd19a7
+  fingerprint: 58de47b318d3ba114e6d86933dd48d014e803370f4a1f2e5117356a76ccd19a7
+  sha1: sha256:104dacb9055fe4e6c10b91a5fdbee1f169f4d2f06ef0d30f5e52656d4a9e8c1a
+  dependencies:
+  - service-backup_python
+- name: service-backup_python
+  version: 6f053775e6934dffc3e08493efae04c5797cb231d18c2f935b71d2cd5905a284
+  fingerprint: 6f053775e6934dffc3e08493efae04c5797cb231d18c2f935b71d2cd5905a284
+  sha1: sha256:4c757ea4f0d7ebd1dcd2fdedf146edb5c69c34dc93392cfa718f576c6b819167
+  dependencies: []
+- name: service-backup_utils
+  version: 9760e8bf4bda9e7b63b034a0e1381c6ffde77889f37e5559871efd65d1f27455
+  fingerprint: 9760e8bf4bda9e7b63b034a0e1381c6ffde77889f37e5559871efd65d1f27455
+  sha1: sha256:b6e54dc31e8e35de29d298f334e668e7d95a805688413d7130465cd88c913822
+  dependencies: []
+license:
+  version: 5327c8fcea6fa89dc3c1e540dd4033845672f638e5a24191f86962a6999a9309
+  fingerprint: 5327c8fcea6fa89dc3c1e540dd4033845672f638e5a24191f86962a6999a9309
+  sha1: sha256:6bc889a817d4c7410bdb2672a3bfe79ca8bb6fc13a9909f01f547dba0c892fa1
