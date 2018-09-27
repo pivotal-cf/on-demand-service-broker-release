@@ -34,7 +34,7 @@ RSpec.describe 'upgrade-all-service-instances config' do
         'properties' => {
           'username' => "%username'\"t:%!",
           'password' => "%password'\"t:%!",
-          'port' => 8080
+          'port' => 8080,
         }
       }
     }
@@ -72,7 +72,37 @@ RSpec.describe 'upgrade-all-service-instances config' do
 
   context 'with service instances api specified' do
     let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_with_service_instances_api.yml' }
-
+    let(:siapi_root_ca_cert) {false}
+    let(:broker_link) do
+      bl = {
+        'broker' => {
+          'instances' => [
+            {
+              'address' => '123.456.789.101'
+            }
+          ],
+          'properties' => {
+            'username' => "%username'\"t:%!",
+            'password' => "%password'\"t:%!",
+            'port' => 8080,
+            'service_instances_api' => {
+              'authentication' => {
+                'basic' => {
+                  'username' => "myname",
+                  'password' => "supersecret"               
+                }
+              },
+              'url' => 'http://example.org/give-me/some-services',
+            }
+          }
+        }
+      }
+      if siapi_root_ca_cert
+        bl['broker']['properties']['service_instances_api']['root_ca_cert'] = siapi_root_ca_cert
+      end
+      bl
+    end
+    
     it 'is not empty' do
       expect(config).not_to be_empty
     end
@@ -102,13 +132,18 @@ RSpec.describe 'upgrade-all-service-instances config' do
     end
 
     context 'and root_ca_cert provided' do
-      let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_with_si_api_and_rootca.yml' }
-
+      let(:siapi_root_ca_cert) do
+        '-----BEGIN CERTIFICATE-----
+          MostCERTainlyACert
+          -----END CERTIFICATE-----
+        '
+      end  
+      
       it 'sets correct root_ca_cert' do
         expect(config.fetch('service_instances_api').fetch('root_ca_cert')).to eq('-----BEGIN CERTIFICATE-----
-MostCERTainlyACert
------END CERTIFICATE-----
-')
+          MostCERTainlyACert
+          -----END CERTIFICATE-----
+        ')
       end
     end
   end

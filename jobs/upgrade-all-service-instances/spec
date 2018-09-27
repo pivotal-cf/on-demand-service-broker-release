@@ -41,12 +41,3 @@ properties:
   canary_selection_params:
     description: "parameters to filter the canary instances"
     default: {}
-
-  service_instances_api.url:
-    description: "service instances API provider URL"
-  service_instances_api.root_ca_cert:
-    description: "root CA cert to validate TLS connection to service instances API provider"
-  service_instances_api.authentication.basic.username:
-    description: "HTTP basic auth username for connections to service instances API provider"
-  service_instances_api.authentication.basic.password:
-    description: "HTTP basic auth password for connections to service instances API provider"
