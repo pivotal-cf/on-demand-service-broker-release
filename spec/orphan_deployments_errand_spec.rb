@@ -35,7 +35,7 @@ RSpec.describe 'orphan-deployments errand' do
   let(:rendered_template) { renderer.render('jobs/orphan-deployments/templates/errand.sh.erb') }
 
   context 'when the broker credentials contain special characters' do
-    let(:manifest_file) { 'spec/fixtures/orphan_deployments_with_special_characters.yml' }
+    let(:manifest_file) { 'spec/fixtures/orphan_deployments_basic.yml' }
 
     it 'escapes the broker credentials' do
       expect(rendered_template).to include "-brokerUsername '%username'\\''\"t:%!'"
@@ -44,7 +44,7 @@ RSpec.describe 'orphan-deployments errand' do
   end
 
   context 'when the broker uri is configured' do
-    let(:manifest_file) { 'spec/fixtures/orphan_deployments_with_special_characters.yml' }
+    let(:manifest_file) { 'spec/fixtures/orphan_deployments_basic.yml' }
 
     it 'uses the configured broker uri' do
       expect(rendered_template).to include '-brokerUrl http://example.com:8080'
