@@ -12,11 +12,10 @@ packages:
 
 templates:
   errand.sh.erb: bin/run
+  config.yml.erb: config/config.yml
 
 consumes:
 - name: broker
   type: broker
 
-properties:
-  broker_uri:
-    description: URI of broker, if a route has been registered (optional)
+properties: {}
