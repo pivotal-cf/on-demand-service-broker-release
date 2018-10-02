@@ -95,6 +95,20 @@ def credhub_config
   credhub_properties
 end
 
+def service_instances_api_config
+  siapi_properties = {}
+
+  if_p('service_instances_api', "") do |config|
+    unless config["url"].nil?
+      siapi_properties = {
+        'service_instances_api' => config
+      }
+    end
+  end
+
+  siapi_properties
+end
+
 if has_values?('secure_binding_credentials.authentication.uaa')
   validate_config(p('secure_binding_credentials.authentication.uaa'), ['client_id', 'client_secret'], 'Invalid secure_binding_credentials config - must specify ')
 end
@@ -295,7 +309,7 @@ config = {
   "service_deployment" => p('service_deployment'),
   "service_catalog" => service_catalog,
   "bosh_credhub" => p('bosh_credhub_api')
-}.merge(credhub_config)
+}.merge(credhub_config).merge(service_instances_api_config)
 %>
 
 <%= config.to_yaml %>

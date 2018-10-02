@@ -1155,6 +1155,24 @@ RSpec.describe 'broker config templating' do
       end
     end
   end
+
+  describe 'services_instances_api' do
+    context "when it's not configured" do
+      let(:manifest_file) { File.open 'spec/fixtures/valid-mandatory-broker-config.yml' }
+
+      it "doesn't include the services_instances_api block" do
+        expect(rendered_template).to_not include('service_instances_api')
+      end
+    end
+
+    context "when it's configured" do
+      let(:manifest_file) { File.open 'spec/fixtures/valid-optional-broker-config.yml' }
+
+      it 'includes the service_instances_api block' do
+        expect(rendered_template).to include('service_instances_api')
+      end
+    end
+  end
 end
 
 def generate_test_manifest

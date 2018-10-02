@@ -12,6 +12,13 @@ instance_groups:
           username: foobar
           password: itsasecret
           startup_banner: true
+          service_instances_api:
+            url: some-fqdn
+            root_ca_cert: some-root-ca
+            authentication:
+              basic:
+                username: siapi-user
+                password: siapi-password
           bosh:
             url: some-url
             authentication:
