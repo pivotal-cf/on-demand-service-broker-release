@@ -45,13 +45,13 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/retrystrategy/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/system/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/uuid/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/go-socks5/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/socks5-proxy/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/coreos/go-semver/semver/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cppforlife/go-semi-semantic/version/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/craigfurman/herottp/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/dustin/go-humanize/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/fatih/color/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/genevievelesperance/go-socks5/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/gorilla/mux/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/mattn/go-colorable/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/mattn/go-isatty/*.go # gosub
