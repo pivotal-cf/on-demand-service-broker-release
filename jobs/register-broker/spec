@@ -38,6 +38,10 @@ properties:
   cf.admin_password:
     description: Cloud Foundry admin password
 
+  default_access_org:
+    description: Enable service access to the specified org if enable_service_access is set to true and cf_service_access is set to "manual"
+    example: system
+
   enable_service_access:
     default: true
     description: Enable service access to the listed service plans
