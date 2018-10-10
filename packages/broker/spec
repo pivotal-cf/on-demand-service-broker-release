@@ -36,19 +36,19 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/startupchecker/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/task/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/clock/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/credhub-cli/credhub/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/credhub-cli/credhub/auth/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/credhub-cli/credhub/auth/uaa/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/credhub-cli/credhub/credentials/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/credhub-cli/credhub/credentials/generate/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/credhub-cli/credhub/credentials/values/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/credhub-cli/credhub/permissions/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/credhub-cli/credhub/server/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/credhub-cli/errors/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/lager/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/bmatcuk/doublestar/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/charlievieth/fs/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cheggaaa/pb/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry-incubator/credhub-cli/credhub/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry-incubator/credhub-cli/credhub/auth/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry-incubator/credhub-cli/credhub/auth/uaa/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry-incubator/credhub-cli/credhub/credentials/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry-incubator/credhub-cli/credhub/credentials/generate/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry-incubator/credhub-cli/credhub/credentials/values/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry-incubator/credhub-cli/credhub/permissions/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry-incubator/credhub-cli/credhub/server/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry-incubator/credhub-cli/errors/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-cli/director/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-cli/uaa/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-cli/ui/*.go # gosub
@@ -61,13 +61,13 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/retrystrategy/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/system/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/uuid/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/go-socks5/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/socks5-proxy/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/coreos/go-semver/semver/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cppforlife/go-semi-semantic/version/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/craigfurman/herottp/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/dustin/go-humanize/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/fatih/color/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/genevievelesperance/go-socks5/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/gorilla/mux/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/hashicorp/go-version/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/mattn/go-colorable/*.go # gosub
