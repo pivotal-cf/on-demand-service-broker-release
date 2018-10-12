@@ -1,0 +1,91 @@
+# Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
+# This program and the accompanying materials are made available under the terms of the under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+instance_groups:
+  - name: broker
+    jobs:
+      - name: broker
+        properties:
+          username: foobar
+          password: itsasecret
+          tls:
+            certificate: |
+              -----BEGIN CERTIFICATE-----
+              MIIC+jCCAeICCQCs47RhzRSmGDANBgkqhkiG9w0BAQsFADA6MQwwCgYDVQQGEwNV
+              U0ExFjAUBgNVBAoTDUNsb3VkIEZvdW5kcnkxEjAQBgNVBAMTCWFwcFJvb3RDQTAe
+              Fw0xODEwMTExNjU5MzFaFw0yMDAyMjMxNjU5MzFaMEQxCzAJBgNVBAYTAkdCMQ8w
+              DQYDVQQIEwZMb25kb24xEDAOBgNVBAoTB1Bpdm90YWwxEjAQBgNVBAMTCWxvY2Fs
+              aG9zdDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMpFiBmFup4HpViR
+              boaXZ1iXSXdHnJedRCKl5BQA3VWs5+rTg4jRiX9ZAHmyYUsGN1J6UqdLC8O9IG6J
+              /CS/J8AzRzgMc317LVexXIPEIDvuOF4E2PmpM7JWDCpt48nxaLbHxv9+YIDldCVp
+              b/YnIIyQddBf0yNSPwVjkgdKH+0jxflWqHddDEZoXVeA2z7GPvlFxlOTnDntTXU8
+              iWQFE9gcde7g1GvkALnhCsdBYAgNG6Je7brKWekQagR3IqwEL6/u/kN1qdyuMQd/
+              nYRnQzeJZ99kxX7H4ISIPhWUbxnVVmWhqDeuZlYDgIfTZzCNK1syd9v4eOJ42kva
+              Hv3rjL8CAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAF8ZwBK3Gml3UMoJxg1dpmTs7
+              tH7iVAs2008ogbHC9bqUQZ8IO+aKXS8vwpvg6zly3K7cmGx3s5JKPN66Qo4vbmez
+              OGVLrbWfkVFcrFgUW//RCB2ukWKJD1ygUuYNEPKozIy9Vod4CZ8MmH5nlLYIyK9N
+              Z8zqmRE7c5J0Jk/ob2C4NxjgwH1Kud7gIIH6kcOpeOF6+QsIwi6Y+ArpFgFZ3ENo
+              T3AMJKkExoiAgPEzgz1LAmJEkHarxBdB6fegOwcXsBLpwrekQzpdKCTK0px9BA+O
+              DyLUGBYTQlO6Do6Wo/VnyizOEmsvAy+hFMf0geNxGafFVF5mjZVTdEUhw9F40A==
+              -----END CERTIFICATE-----
+            private_key: |
+              -----BEGIN RSA PRIVATE KEY-----
+              MIIEowIBAAKCAQEAykWIGYW6ngelWJFuhpdnWJdJd0ecl51EIqXkFADdVazn6tOD
+              iNGJf1kAebJhSwY3UnpSp0sLw70gbon8JL8nwDNHOAxzfXstV7Fcg8QgO+44XgTY
+              +akzslYMKm3jyfFotsfG/35ggOV0JWlv9icgjJB10F/TI1I/BWOSB0of7SPF+Vao
+              d10MRmhdV4DbPsY++UXGU5OcOe1NdTyJZAUT2Bx17uDUa+QAueEKx0FgCA0bol7t
+              uspZ6RBqBHcirAQvr+7+Q3Wp3K4xB3+dhGdDN4ln32TFfsfghIg+FZRvGdVWZaGo
+              N65mVgOAh9NnMI0rWzJ32/h44njaS9oe/euMvwIDAQABAoIBAH2YAPMAAykezD8b
+              RkqR9hyfC4Hh2EyX3Pe6k80L4GLTUsmPfgvVN4/4PoBSD3FbMbynsWyo/2wRofKh
+              AQv8GX2RGXam3IsckcHyoeQ7QlyUBTHzxpn2wt/H6BPsWdVJbWCY2WpJGTjPwHd+
+              aYOpNd+xz0WMSniTGAiLk9+s2fgO877I6SBP9/edC2tsDap3t22/f5XicojjemyV
+              +nsxALsY9KoZ/sOHKJjKaw64hvVugXucXMQU2KI7dtMqg03j7mmELDCHUSW5E14K
+              Q7CLyMWCj2GXlKzW4m0BY6wbkg2r4md8aDLM6f5fojalkFUq4zRJuqK5mCHsg54Z
+              HXmPGkECgYEA99MKZn1B0gQRNPSfTVEQ+ncjlLm5vIqtJXgDewFc+8q2xWGrXJap
+              sB0Df0VnQqk0xeQsAgeUT/AOM7Sa3X4oHo8kV6cB1ung4yCR3mliBjr6tBXDkS54
+              Ul51fBVltSNwpjuRtb7oXX6+fzYqC0ctZvYL/pI/so3yRDIJS2eyEWECgYEA0PHI
+              X6M+7WK5+6XgmP28M3G26T1I85MaxEuOVJRSMm+qLNFJN2dGJ16Fe//AEmylBQwm
+              2ihtdut9GBRm6JRJ0WQdQokhKyKzRyA8Xe+SYAAdtc5av+oyqLQpxByCaIyMKE7C
+              SWF4kX+oMrU7Ek1eR7gED/x5GRkD19td15cGsh8CgYB2C5eLpCRjFj7f+5mZ6YBt
+              3awcHq+DSIcbLuRxhf+1jCStNk26x6VCVz+gMv3xucmCbaIswVF7FjydkmymDn6r
+              t8E24z00EqllZtE0oPvpPdTHTQqfsAPuMEJD/ak5tAznkb5hVPM3/bRdwf4a6yeM
+              QK0L8LvYoFaC91aIDXe7YQKBgFg6D+raSqMAMhohc9IGKibq2FpqR1iagA3s/X+X
+              VZH4droP8UOUtxm+nsy6NEdTWubjt7AcrAQv8ZVuX/nLS9Q/2t8Sek/1ig/5e6QK
+              mhsxUVpIdSdeY9+6m3w0sZgl6LTIdN95aei+J66pufTDeJD+EbESYawIVQgbl+eF
+              3QzvAoGBAIKxYf2ToMa38HYah1RF1CU0eGb53Hv/eMdrLyfyc+MktAtjUxn0epkN
+              tChTiojA7gglG4SSbDCpuYyffpS2Bpl+HDWKqdFRgwVenZBRBb84L4OJz35Fcc+b
+              QyhmNaTMsDdVw7QK7rOZXj7Jbyt8aPM5GpwNCu8TVKQZBwN6xJBl
+              -----END RSA PRIVATE KEY-----
+          bosh:
+            url: some-url
+            authentication:
+              basic:
+                username: some-username
+                password: some-password
+          service_deployment:
+            releases:
+            - name: a-release
+              version: 1234
+              jobs: [job-1]
+            stemcell:
+              os: ubuntu-trusty
+              version: 1234
+          service_catalog:
+            id: some-id
+            service_name: some-name
+            service_description: desc
+            bindable: false
+            plan_updatable: false
+            plans: #required
+              - name: dedicated-vm #required - at least one plan
+                plan_id: 34170567-e1e3-46b8-af64-bf7556563cd2 #required
+                description: Dedicated Instance #required
+                instance_groups: #one instance group required
+                  - name: my-service-server #required
+                    vm_type: small #required
+                    instances: 1 #required
+                    networks: [my-service-network] #required
+                    azs: [az-north-42]

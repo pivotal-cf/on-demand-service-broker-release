@@ -88,6 +88,28 @@ RSpec.describe 'broker config templating' do
     end
   end
 
+  describe 'TLS configuration' do
+    context 'when a server cert and key are provided' do
+      let(:manifest_file) { File.open 'spec/fixtures/valid_TLS_enabled.yml' }
+      it 'adds the cert locations to the broker config' do
+        config = YAML.safe_load(rendered_template)
+        expected = {
+          'cert_file' => '/var/vcap/jobs/broker/certs/broker.crt',
+          'key_file' => '/var/vcap/jobs/broker/certs/broker.key'
+        }
+        expect(config['broker'].fetch('tls')).to eq(expected)
+      end
+    end
+
+    context 'when tls is not configured' do
+      let(:manifest_file) { File.open 'spec/fixtures/valid-mandatory-broker-config.yml' }
+      it 'does not add any tls config to the broker config' do
+        config = YAML.safe_load(rendered_template)
+        expect(config['broker']).not_to include('tls')
+      end
+    end
+  end
+
   describe 'bosh authentication configuration' do
     context 'when there is no authentication configured' do
       let(:manifest_file) { File.open 'spec/fixtures/invalid-missing-bosh-auth.yml' }

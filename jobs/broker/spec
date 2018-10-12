@@ -11,6 +11,8 @@ templates:
   broker-ctl.sh.erb: bin/broker-ctl.sh
   broker.yml.erb: config/broker.yml
   drain.sh.erb: bin/drain
+  broker.crt.erb: certs/broker.crt
+  broker.key.erb: certs/broker.key
 
 packages:
   - broker
@@ -59,6 +61,11 @@ properties:
     parameters:
       length: 40
       exclude_special: true
+
+  tls.certificate:
+    description: a server certificate for the broker to use
+  tls.private_key:
+    description: the matching private key
 
   disable_ssl_cert_verification:
     description: Disable SSL certificate verification. DO NOT USE IN PRODUCTION

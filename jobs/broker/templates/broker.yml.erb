@@ -278,15 +278,30 @@ def validate_bosh_credhub_api(bosh_credhub)
 end
 
 if p('enable_secure_manifests')
-    unless p('use_stdin')
-      raise "enable_secure_manifests requires use_stdin to be enabled"
-    end
+  unless p('use_stdin')
+    raise "enable_secure_manifests requires use_stdin to be enabled"
+  end
 
   begin
     validate_bosh_credhub_api p('bosh_credhub_api')
   rescue StandardError => err
     raise "enable_secure_manifests requires bosh_credhub_api to be configured, but " + err.message
   end
+end
+
+def tls_config
+  tls_conf = {}
+  if_p('tls') do |config|
+    unless config["certificate"].nil? || config["private_key"].nil?
+      tls_conf = {
+        'tls' => {
+          'cert_file' => '/var/vcap/jobs/broker/certs/broker.crt',
+          'key_file' => '/var/vcap/jobs/broker/certs/broker.key'
+        }
+      }
+    end
+  end
+  tls_conf
 end
 
 config = {
@@ -302,7 +317,7 @@ config = {
     "enable_plan_schemas" => p('enable_plan_schemas'),
     "use_stdin" => p('use_stdin'),
     "enable_secure_manifests" => p('enable_secure_manifests'),
-  },
+  }.merge(tls_config),
   "bosh" => bosh_config,
   "cf" => cf_config,
   "service_adapter" => p('service_adapter'),
