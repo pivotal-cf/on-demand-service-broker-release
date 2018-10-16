@@ -18,4 +18,7 @@
         execution_interval_seconds: 30
         origin: ((broker_deployment_name))
         monit_dependencies: [broker]
-
+        tls:
+          ca: ((loggregator.tls.ca_cert))
+          cert: ((loggregator.tls.metron.cert))
+          key: ((loggregator.tls.metron.key))
