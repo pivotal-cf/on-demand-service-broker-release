@@ -11,8 +11,19 @@ dependencies:
   - golang-1.11-linux
 
 files:
+  - github.com/pivotal-cf/on-demand-service-broker/authorizationheader/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/brokercontext/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/cmd/broker-post-start/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/config/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/loggerfactory/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/lager/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/craigfurman/herottp/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/gorilla/mux/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pborman/uuid/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/auth/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/on-demand-services-sdk/bosh/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/on-demand-services-sdk/serviceadapter/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pkg/errors/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/gopkg.in/go-playground/validator.v8/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/gopkg.in/yaml.v2/*.go # gosub
