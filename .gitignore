@@ -17,3 +17,4 @@ releases/**/*.tgz
 bin
 pkg
 .idea/
+.DS_Store
