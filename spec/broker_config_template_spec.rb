@@ -654,7 +654,7 @@ RSpec.describe 'broker config templating' do
       end
       it 'raises an error' do
         expect { rendered_template }.to(
-          raise_error(RuntimeError, "Unsupported value 'invalid' for cf_service_access. Choose from \"enable\", \"disable\", \"manual\"")
+          raise_error(RuntimeError, "Unsupported value 'invalid' for cf_service_access. Choose from \"enable\", \"disable\", \"manual\", \"org-restricted\"")
         )
       end
     end

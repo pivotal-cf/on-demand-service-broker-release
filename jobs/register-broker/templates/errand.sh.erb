@@ -67,8 +67,10 @@ cf $broker_cmd $broker_name <%= escape_shell(link('broker').p('username')) %> <%
         cf enable-service-access <%= link('broker').p('service_catalog.service_name') %> -p <%= plan.fetch('name') %>
       <% elsif plan.fetch('cf_service_access') == 'disable' %>
         cf disable-service-access <%= link('broker').p('service_catalog.service_name')%> -p <%= plan.fetch('name') %>
+      <% elsif plan.fetch('cf_service_access') == 'org-restricted' %>
+        cf enable-service-access <%= link('broker').p('service_catalog.service_name')%> -o <%= escape_shell(p('default_access_org')) %> -p <%= plan.fetch('name') %>
       <% elsif plan.fetch('cf_service_access') != 'manual'
-          raise "Unsupported value #{plan.fetch('cf_service_access')} for cf_service_access. Choose from \"enable\", \"disable\", \"manual\""
+          raise "Unsupported value #{plan.fetch('cf_service_access')} for cf_service_access. Choose from \"enable\", \"disable\", \"manual\", \"org-restricted\""
       %>
     <% end %>
   <% end %>
