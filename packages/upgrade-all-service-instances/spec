@@ -22,12 +22,12 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/cf/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/cmd/upgrade-all-service-instances/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/config/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/instanceiterator/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/loggerfactory/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/mgmtapi/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/service/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/serviceadapter/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/tools/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/upgrader/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/clock/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/lager/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/bmatcuk/doublestar/*.go # gosub
