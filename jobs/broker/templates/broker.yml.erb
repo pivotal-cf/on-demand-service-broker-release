@@ -11,7 +11,7 @@ required_instance_group_keys = ['name', "vm_type", "instances", "networks", "azs
 required_binding_with_dns_keys = ['name', 'link_provider', 'instance_group']
 valid_binding_with_dns_properties = ['azs', 'status']
 valid_dns_status = ['default', 'healthy', 'unhealthy', 'all']
-valid_cf_service_access_values = ['enable', 'disable', 'manual']
+valid_cf_service_access_values = ['enable', 'disable', 'manual', 'org-restricted']
 
 def validate_config(hash, keys, message)
   keys.each do |key|
@@ -159,7 +159,7 @@ plans.each do |plan|
   end
 
   if plan.has_key?('cf_service_access') && !valid_cf_service_access_values.include?(plan.fetch('cf_service_access'))
-    raise "Unsupported value '#{plan.fetch('cf_service_access')}' for cf_service_access. Choose from \"enable\", \"disable\", \"manual\""
+    raise "Unsupported value '#{plan.fetch('cf_service_access')}' for cf_service_access. Choose from \"enable\", \"disable\", \"manual\", \"org-restricted\""
   end
 
   if plan.has_key?('binding_with_dns')

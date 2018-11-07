@@ -95,6 +95,16 @@ RSpec.describe 'register-broker errand' do
       end
     end
 
+    context 'and it has cf_service_access org-restricted' do
+      let(:access_value) { 'org-restricted' }
+
+      it "change the access for default access org" do
+        expect(rendered_template).to include 'cf enable-service-access myservicename -o \'cf_org\''
+        expect(rendered_template).to_not include 'cf disable-service-access'
+      end
+    end
+
+
     context 'and it does not specify cf_service_access' do
       let(:plans) do
         [
@@ -122,7 +132,7 @@ RSpec.describe 'register-broker errand' do
       it 'fails to template the errand' do
         expect do
           rendered_template
-        end.to raise_error(RuntimeError, 'Unsupported value foo-bar for cf_service_access. Choose from "enable", "disable", "manual"')
+        end.to raise_error(RuntimeError, 'Unsupported value foo-bar for cf_service_access. Choose from "enable", "disable", "manual", "org-restricted"')
       end
     end
   end
