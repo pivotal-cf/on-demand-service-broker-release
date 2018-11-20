@@ -251,8 +251,8 @@ properties:
     description: hash of resource names and limit (integer) that may may be provisioned by on-demand broker
     default: {}
 
-  service_catalog.maintenance_info:
-    description: maintenance information to be returned in the service catalog for all plans
+  service_catalog.maintenance_info.public:
+    description: maintenance information to be returned as plain text in the service catalog for all plans
     default: {}
 
   service_catalog.plans:

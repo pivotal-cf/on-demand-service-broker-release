@@ -31,6 +31,16 @@ def any_fields_set?(hash)
   hash.any? { |_, v| !v.nil? }
 end
 
+def validate_maintenance_info(h)
+  unless h.nil?
+    h.each do |key, value|
+      if value.is_a?(Hash) || value.is_a?(Array)
+        raise 'the values for maintenance_info.public cannot be nested'
+      end
+    end
+  end
+end
+
 def validate_releases(service_deployment)
   if service_deployment['releases'].nil?
     raise "Invalid service_deployment config - must specify releases"
@@ -114,6 +124,12 @@ if has_values?('secure_binding_credentials.authentication.uaa')
 end
 
 service_catalog = p('service_catalog')
+if service_catalog.dig('maintenance_info', 'public').empty?
+  service_catalog.delete('maintenance_info')
+else
+  validate_maintenance_info(service_catalog.dig('maintenance_info', 'public'))
+end
+
 plans = service_catalog['plans'] || []
 plans.delete_if { |plan| plan.nil? }
 
@@ -153,6 +169,8 @@ end
 
 plans.each do |plan|
   validate_config(plan, required_plan_keys, "Invalid plan config - must specify ")
+
+  validate_maintenance_info(plan.dig('maintenance_info', 'public'))
 
   plan['instance_groups'].each do |instance_group|
     validate_config(instance_group, required_instance_group_keys, "Invalid instance group config - must specify ")

@@ -16,6 +16,16 @@ require 'spec_helper'
 require 'tempfile'
 
 RSpec.describe 'broker config templating' do
+  let(:brokerProperties) {
+    YAML
+      .load_file('spec/fixtures/valid-mandatory-broker-config.yml')
+      .fetch('instance_groups')
+      .first
+      .fetch('jobs')
+      .first
+      .fetch('properties')
+  }
+
   let(:links) { [] }
   let(:renderer) do
     Bosh::Template::Renderer.new(context: BoshEmulator.director_merge(
@@ -24,9 +34,10 @@ RSpec.describe 'broker config templating' do
   end
 
   let(:rendered_template) { renderer.render('jobs/broker/templates/broker.yml.erb') }
+  let(:manifest_file) { nil }
 
   after do
-    manifest_file.close
+    manifest_file.close unless manifest_file.nil?
   end
 
   before(:all) do
@@ -807,7 +818,7 @@ RSpec.describe 'broker config templating' do
       it 'raises an error' do
         expect { rendered_template }.to(
           raise_error(RuntimeError, 'You must configure the exact release and stemcell versions in broker.service_deployment.' \
-            " ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported.")
+                      " ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported.")
         )
       end
     end
@@ -823,7 +834,7 @@ RSpec.describe 'broker config templating' do
       it 'raises an error' do
         expect { rendered_template }.to(
           raise_error(RuntimeError, 'You must configure the exact release and stemcell versions in broker.service_deployment. ' \
-          "ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported.")
+                      "ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported.")
         )
       end
     end
@@ -839,7 +850,7 @@ RSpec.describe 'broker config templating' do
       it 'raises an error' do
         expect { rendered_template }.to(
           raise_error(RuntimeError, 'You must configure the exact release and stemcell versions in broker.service_deployment. ' \
-          "ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported.")
+                      "ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported.")
         )
       end
     end
@@ -855,7 +866,7 @@ RSpec.describe 'broker config templating' do
       it 'raises an error' do
         expect { rendered_template }.to(
           raise_error(RuntimeError, 'You must configure the exact release and stemcell versions in broker.service_deployment. ' \
-          "ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported.")
+                      "ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported.")
         )
       end
     end
@@ -1060,9 +1071,9 @@ RSpec.describe 'broker config templating' do
             }
           ]
         }
-        catalog = VALID_MANDATORY_BROKER_PROPERTIES.dig('service_catalog')
+        catalog = brokerProperties.dig('service_catalog')
         catalog['plans'][0] = catalog['plans'][0].merge(valid_dns_config)
-        @properties = VALID_MANDATORY_BROKER_PROPERTIES.merge(
+        @properties = brokerProperties.merge(
           'service_catalog' => catalog
         )
         broker_config = @template.render(@properties)
@@ -1081,9 +1092,9 @@ RSpec.describe 'broker config templating' do
           item_clone = item.clone
           item_clone.delete(key)
           config = { 'binding_with_dns' => [item_clone] }
-          catalog = VALID_MANDATORY_BROKER_PROPERTIES.dig('service_catalog')
+          catalog = brokerProperties.dig('service_catalog')
           catalog['plans'][0] = catalog['plans'][0].merge(config)
-          @properties = VALID_MANDATORY_BROKER_PROPERTIES.merge(
+          @properties = brokerProperties.merge(
             'service_catalog' => catalog
           )
           expect { @template.render(@properties) }.to raise_error(
@@ -1103,9 +1114,9 @@ RSpec.describe 'broker config templating' do
           }
         }
         config = { 'binding_with_dns' => [item] }
-        catalog = VALID_MANDATORY_BROKER_PROPERTIES.dig('service_catalog')
+        catalog = brokerProperties.dig('service_catalog')
         catalog['plans'][0] = catalog['plans'][0].merge(config)
-        @properties = VALID_MANDATORY_BROKER_PROPERTIES.merge(
+        @properties = brokerProperties.merge(
           'service_catalog' => catalog
         )
         expect { @template.render(@properties) }.to raise_error(
@@ -1124,9 +1135,9 @@ RSpec.describe 'broker config templating' do
           }
         }
         config = { 'binding_with_dns' => [item] }
-        catalog = VALID_MANDATORY_BROKER_PROPERTIES.dig('service_catalog')
+        catalog = brokerProperties.dig('service_catalog')
         catalog['plans'][0] = catalog['plans'][0].merge(config)
-        @properties = VALID_MANDATORY_BROKER_PROPERTIES.merge(
+        @properties = brokerProperties.merge(
           'service_catalog' => catalog
         )
         expect { @template.render(@properties) }.to raise_error(
@@ -1146,9 +1157,9 @@ RSpec.describe 'broker config templating' do
           }
         }
         config = { 'binding_with_dns' => [item] }
-        catalog = VALID_MANDATORY_BROKER_PROPERTIES.dig('service_catalog')
+        catalog = brokerProperties.dig('service_catalog')
         catalog['plans'][0] = catalog['plans'][0].merge(config)
-        @properties = VALID_MANDATORY_BROKER_PROPERTIES.merge(
+        @properties = brokerProperties.merge(
           'service_catalog' => catalog
         )
         expect { @template.render(@properties) }.to raise_error(
@@ -1164,9 +1175,9 @@ RSpec.describe 'broker config templating' do
           'instance_group' => 'ig-1'
         }
         config = { 'binding_with_dns' => [item] }
-        catalog = VALID_MANDATORY_BROKER_PROPERTIES.dig('service_catalog')
+        catalog = brokerProperties.dig('service_catalog')
         catalog['plans'][0] = catalog['plans'][0].merge(config)
-        @properties = VALID_MANDATORY_BROKER_PROPERTIES.merge(
+        @properties = brokerProperties.merge(
           'use_stdin' => false,
           'service_catalog' => catalog
         )
@@ -1192,6 +1203,56 @@ RSpec.describe 'broker config templating' do
 
       it 'includes the service_instances_api block' do
         expect(rendered_template).to include('service_instances_api')
+      end
+    end
+  end
+
+  describe 'service_catalog.maintenance_info and service_catalog.plan.maintenance_info' do
+    context "when it's not configured" do
+      let(:manifest_file) { File.open 'spec/fixtures/valid-mandatory-broker-config.yml' }
+
+      it "doesn't include the maintenance_info block" do
+        expect(rendered_template).to_not include('maintenance_info')
+      end
+    end
+
+    context "when it's configured" do
+      let(:manifest_file) { File.open 'spec/fixtures/valid_config_with_maintenance_info.yml' }
+
+      it "includes the maintenance_info block" do
+        config = YAML.load rendered_template
+        expect(config['service_catalog']['maintenance_info']['public']).to eq("global_key" => "global_value")
+        expect(config['service_catalog']['plans'].first['maintenance_info']['public']).to eq("plan_key" => "plan_value")
+      end
+    end
+
+    context "when it's misconfigured" do
+      let(:invalid_values) {
+        [ {"key":"value"}, ["1","2"] ]
+      }
+
+      it 'raises an error when the global maintenance_info has invalid types' do
+        invalid_values.each do |v|
+          catalog = brokerProperties.dig('service_catalog')
+          catalog['maintenance_info'] = {"public" => {"nested" => v}}
+          properties = brokerProperties.merge('service_catalog' => catalog)
+          expect { @template.render(properties) }.to raise_error(
+            RuntimeError,
+            'the values for maintenance_info.public cannot be nested'
+          ), "no error raised for type #{v.class}"
+        end
+      end
+
+      it 'raises an error when a plan maintenance_info has invalid types' do
+        invalid_values.each do |v|
+          catalog = brokerProperties.dig('service_catalog')
+          catalog['plans'].first['maintenance_info'] = {"public" => {"nested" => v}}
+          properties = brokerProperties.merge('service_catalog' => catalog)
+          expect { @template.render(properties) }.to raise_error(
+            RuntimeError,
+            'the values for maintenance_info.public cannot be nested'
+          ), "no error raised for type #{v.class}"
+        end
       end
     end
   end
