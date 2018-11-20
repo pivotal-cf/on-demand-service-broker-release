@@ -1,0 +1,43 @@
+# Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
+# This program and the accompanying materials are made available under the terms of the under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+---
+name: recreate-all-service-instances
+
+packages:
+  - broker_utils
+  - recreate-all-service-instances
+
+templates:
+  errand.sh.erb: bin/run
+  config.yml.erb: config/config.yml
+
+consumes:
+  - name: broker
+    type: broker
+
+properties:
+  polling_interval_seconds:
+    description: "interval in seconds when waiting for service instance to be processed"
+    default: 60
+  attempt_interval_seconds:
+    description: "interval in seconds between attempt batches"
+    default: 60
+  attempt_limit:
+    description: "maximum number of times the errand will try to process each instance if another task is in progress"
+    default: 5
+  request_timeout:
+    description: "timeout in seconds when sending requests during the errand"
+    default: 120
+  max_in_flight:
+    description: "the maximum number of instances that will be processed at the same time"
+    default: 1
+  canaries:
+    description: "number of instances to process first before processing the rest of the instances"
+    default: 0
+  canary_selection_params:
+    description: "parameters to filter the canary instances"
+    default: {}

@@ -1,0 +1,78 @@
+# Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
+# This program and the accompanying materials are made available under the terms of the under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+<%=
+  def validated_attempt_limit()
+    if p('attempt_limit') <= 0
+      raise 'Invalid recreate_all_service_instances.attempt_limit - must be greater or equal 1'
+    end
+    p('attempt_limit')
+  end
+
+  def validated_max_in_flight()
+    if p('max_in_flight') <= 0
+      raise 'Invalid recreate_all_service_instances.max_in_flight - must be greater or equal 1'
+    end
+    p('max_in_flight')
+  end
+
+  def validated_canaries()
+    if p('canaries') < 0
+      raise 'Invalid recreate_all_service_instances.canaries - must be greater or equal 0'
+    end
+    p('canaries')
+  end
+
+  config = {
+    "broker_api" => {
+      "url" => "http://#{link('broker').instances[0].address}:#{link('broker').p('port')}",
+      "authentication" => {
+        "basic" => {
+          "username" => link('broker').p('username'),
+          "password" => link('broker').p('password')
+        }
+      }
+    },
+    "polling_interval" => p('polling_interval_seconds'),
+    "attempt_interval" => p('attempt_interval_seconds'),
+    "attempt_limit" => validated_attempt_limit,
+    "request_timeout" => p('request_timeout'),
+    "max_in_flight" => validated_max_in_flight,
+    "canaries" => validated_canaries,
+    "canary_selection_params" => p('canary_selection_params'),
+  }
+  service_instances_api_block = {
+    "service_instances_api" => {
+      "url" => "http://#{link('broker').instances[0].address}:#{link('broker').p('port')}/mgmt/service_instances",
+      "authentication" => {
+        "basic" => {
+          "username" => link('broker').p('username'),
+          "password" => link('broker').p('password')
+        }
+      }
+    }
+  }
+  
+  link('broker').if_p('service_instances_api.url') do |url|
+    service_instances_api_block = {
+      "service_instances_api" => {
+        "url" => url,
+        "authentication" => {
+          "basic" => {
+            "username" => link('broker').p('service_instances_api.authentication.basic.username'),
+            "password" => link('broker').p('service_instances_api.authentication.basic.password')
+          }
+        }
+      }
+    }
+    link('broker').if_p('service_instances_api.root_ca_cert') do |root_ca_cert|
+      service_instances_api_block["service_instances_api"]["root_ca_cert"] = root_ca_cert
+    end
+  end
+  config.merge!(service_instances_api_block)
+
+  config.to_yaml
+%>
