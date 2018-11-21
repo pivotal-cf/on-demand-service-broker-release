@@ -1223,35 +1223,42 @@ RSpec.describe 'broker config templating' do
         config = YAML.load rendered_template
         expect(config['service_catalog']['maintenance_info']['public']).to eq("global_key" => "global_value")
         expect(config['service_catalog']['plans'].first['maintenance_info']['public']).to eq("plan_key" => "plan_value")
+        expect(config['service_catalog']['maintenance_info']['private']).to eq("global_private_key" => "global_private_value")
+        expect(config['service_catalog']['plans'].first['maintenance_info']['private']).to eq("plan_private_key" => "plan_private_value")
       end
     end
 
     context "when it's misconfigured" do
       let(:invalid_values) {
-        [ {"key":"value"}, ["1","2"] ]
+        [ {"key" => "value"}, ["1","2"] ]
       }
+      let(:top_level_keys) { %w{public private} }
 
       it 'raises an error when the global maintenance_info has invalid types' do
-        invalid_values.each do |v|
-          catalog = brokerProperties.dig('service_catalog')
-          catalog['maintenance_info'] = {"public" => {"nested" => v}}
-          properties = brokerProperties.merge('service_catalog' => catalog)
-          expect { @template.render(properties) }.to raise_error(
-            RuntimeError,
-            'the values for maintenance_info.public cannot be nested'
-          ), "no error raised for type #{v.class}"
+        top_level_keys.each do |top_level_key|
+          invalid_values.each do |v|
+            catalog = brokerProperties.dig('service_catalog')
+            catalog['maintenance_info'] = {top_level_key => {"nested" => v}}
+            properties = brokerProperties.merge('service_catalog' => catalog)
+            expect { @template.render(properties) }.to raise_error(
+              RuntimeError,
+              "the values for maintenance_info.#{top_level_key} cannot be nested"
+            ), "no error raised for type #{v.class} at #{top_level_key}"
+          end
         end
       end
 
       it 'raises an error when a plan maintenance_info has invalid types' do
-        invalid_values.each do |v|
-          catalog = brokerProperties.dig('service_catalog')
-          catalog['plans'].first['maintenance_info'] = {"public" => {"nested" => v}}
-          properties = brokerProperties.merge('service_catalog' => catalog)
-          expect { @template.render(properties) }.to raise_error(
-            RuntimeError,
-            'the values for maintenance_info.public cannot be nested'
-          ), "no error raised for type #{v.class}"
+        top_level_keys.each do |top_level_key|
+          invalid_values.each do |v|
+            catalog = brokerProperties.dig('service_catalog')
+            catalog['plans'].first['maintenance_info'] = {top_level_key => {"nested" => v}}
+            properties = brokerProperties.merge('service_catalog' => catalog)
+            expect { @template.render(properties) }.to raise_error(
+              RuntimeError,
+              "the values for maintenance_info.#{top_level_key} cannot be nested"
+            ), "no error raised for type #{v.class} at #{top_level_key}"
+          end
         end
       end
     end

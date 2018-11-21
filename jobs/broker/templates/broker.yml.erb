@@ -31,11 +31,14 @@ def any_fields_set?(hash)
   hash.any? { |_, v| !v.nil? }
 end
 
-def validate_maintenance_info(h)
-  unless h.nil?
-    h.each do |key, value|
-      if value.is_a?(Hash) || value.is_a?(Array)
-        raise 'the values for maintenance_info.public cannot be nested'
+def validate_maintenance_info(p)
+  %w{public private}.each do |k|
+    h = p.dig('maintenance_info', k)
+    unless h.nil?
+      h.each do |key, value|
+        if value.is_a?(Hash) || value.is_a?(Array)
+          raise "the values for maintenance_info.#{k} cannot be nested"
+        end
       end
     end
   end
@@ -124,10 +127,10 @@ if has_values?('secure_binding_credentials.authentication.uaa')
 end
 
 service_catalog = p('service_catalog')
-if service_catalog.dig('maintenance_info', 'public').empty?
+if service_catalog.dig('maintenance_info', 'public').empty? && service_catalog.dig('maintenance_info', 'private').empty?
   service_catalog.delete('maintenance_info')
 else
-  validate_maintenance_info(service_catalog.dig('maintenance_info', 'public'))
+  validate_maintenance_info(service_catalog)
 end
 
 plans = service_catalog['plans'] || []
@@ -170,7 +173,7 @@ end
 plans.each do |plan|
   validate_config(plan, required_plan_keys, "Invalid plan config - must specify ")
 
-  validate_maintenance_info(plan.dig('maintenance_info', 'public'))
+  validate_maintenance_info(plan)
 
   plan['instance_groups'].each do |instance_group|
     validate_config(instance_group, required_instance_group_keys, "Invalid instance group config - must specify ")

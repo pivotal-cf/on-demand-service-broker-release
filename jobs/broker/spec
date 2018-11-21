@@ -255,6 +255,10 @@ properties:
     description: maintenance information to be returned as plain text in the service catalog for all plans
     default: {}
 
+  service_catalog.maintenance_info.private:
+    description: maintenance information to be returned as a single hashed string in the service catalog for all plans
+    default: {}
+
   service_catalog.plans:
     description: the service plans to be presented to Cloud Foundry
 
