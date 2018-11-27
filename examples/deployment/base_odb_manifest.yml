@@ -19,17 +19,17 @@ releases:
 
 stemcells:
   - alias: &stemcell_alias ((stemcell_alias))
-    os: &stemcell_os ((stemcell_os))
-    version: &stemcell_version ((stemcell_version))
+    os: &stemcell_os ((bosh.stemcell.os))
+    version: &stemcell_version ((bosh.stemcell.version))
 
 instance_groups:
   - name: broker
     instances: 1
-    vm_type: ((vm_type))
+    vm_type: ((bosh.vm_type))
     vm_extensions: ((instance_groups_vm_extensions))
     stemcell: *stemcell_alias
-    networks: [{name: ((broker_network))}]
-    azs: [((instance_groups_azs))]
+    networks: [{name: ((bosh.services_subnet))}]
+    azs: [((bosh.az))]
     jobs:
       - name: register-broker
         release: ((broker_release))
@@ -119,7 +119,7 @@ instance_groups:
         consumes:
           nats:
             from: nats
-            deployment: ((cf_deployment_name))
+            deployment: ((cf.deployment_name))
         properties:
           route_registrar:
             routes:
@@ -163,10 +163,10 @@ instance_groups:
         consumes:
           consul_client:
             from: consul_client_link
-            deployment: ((cf_deployment_name))
+            deployment: ((cf.deployment_name))
           consul_common:
             from: consul_common_link
-            deployment: ((cf_deployment_name))
+            deployment: ((cf.deployment_name))
           consul_server: nil
 
 update:

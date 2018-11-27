@@ -22,8 +22,8 @@
         version: ((service_release_version))
         jobs: [redis-server, health-check, cleanup-data]
     stemcell:
-      os: ((stemcell_os))
-      version: ((stemcell_version))
+      os: ((bosh.stemcell.os))
+      version: ((bosh.stemcell.version))
 
 - type: replace
   path: /instance_groups/name=broker/jobs/-
