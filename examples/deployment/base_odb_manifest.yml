@@ -19,17 +19,17 @@ releases:
 
 stemcells:
   - alias: &stemcell_alias ((stemcell_alias))
-    os: &stemcell_os ((bosh.stemcell.os))
-    version: &stemcell_version ((bosh.stemcell.version))
+    os: &stemcell_os ((meta.stemcell.os))
+    version: &stemcell_version ((meta.stemcell.version))
 
 instance_groups:
   - name: broker
     instances: 1
-    vm_type: ((bosh.vm_type))
+    vm_type: ((meta.vm_type))
     vm_extensions: ((instance_groups_vm_extensions))
     stemcell: *stemcell_alias
-    networks: [{name: ((bosh.services_subnet))}]
-    azs: [((bosh.az))]
+    networks: [{name: ((meta.services_subnet))}]
+    azs: [((meta.az))]
     jobs:
       - name: register-broker
         release: ((broker_release))

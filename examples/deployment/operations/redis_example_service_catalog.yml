@@ -13,11 +13,11 @@
         service_instance_limit: 10
       instance_groups:
         - name: redis-server
-          vm_type: ((bosh.vm_type))
+          vm_type: ((meta.vm_type))
           persistent_disk_type: 10GB
           instances: 1
-          networks: [((bosh.services_subnet))]
-          azs: [((bosh.az))]
+          networks: [((meta.services_subnet))]
+          azs: [((meta.az))]
     - name: dedicated-high-memory-vm
       plan_id: redis-himem
       description: Dedicated high memory VM, no persistence, suitable for use as a cache
@@ -34,8 +34,8 @@
         persistence: false
       instance_groups:
         - name: redis-server
-          vm_type: ((bosh.vm_type))
+          vm_type: ((meta.vm_type))
           persistent_disk_type: 10GB
           instances: 1
-          networks: [((bosh.services_subnet))]
-          azs: [((bosh.az))]
+          networks: [((meta.services_subnet))]
+          azs: [((meta.az))]

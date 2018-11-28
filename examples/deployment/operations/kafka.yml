@@ -17,8 +17,8 @@
         version: "89.3"
         jobs: [metron_agent]
     stemcell:
-      os: ((bosh.stemcell.os))
-      version: ((bosh.stemcell.version))
+      os: ((meta.stemcell.os))
+      version: ((meta.stemcell.version))
 
 - type: replace
   path: /instance_groups/name=broker/jobs/-

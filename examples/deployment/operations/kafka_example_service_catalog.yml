@@ -6,17 +6,17 @@
     description: A Kafka deployment with a single instance of each job and persistent disk
     instance_groups:
       - name: kafka_server
-        vm_type: ((bosh.vm_type))
+        vm_type: ((meta.vm_type))
         instances: 1
         persistent_disk_type: 10GB
-        networks: [((bosh.services_subnet))]
-        azs: [((bosh.az))]
+        networks: [((meta.services_subnet))]
+        azs: [((meta.az))]
       - name: zookeeper_server
-        vm_type: ((bosh.vm_type))
+        vm_type: ((meta.vm_type))
         instances: 1
         persistent_disk_type: 10GB
-        networks: [((bosh.services_subnet))]
-        azs: [((bosh.az))]
+        networks: [((meta.services_subnet))]
+        azs: [((meta.az))]
     properties:
       auto_create_topics: true
       default_replication_factor: 1
