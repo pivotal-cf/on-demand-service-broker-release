@@ -42,6 +42,8 @@ RSpec.describe 'recreate-all-service-instances config' do
 
   let(:config) { YAML.safe_load(rendered_template) }
 
+  let(:manifest_file) { File.open 'spec/fixtures/recreate_all_minimal.yml' }
+
   context 'with no service instances api specified' do
     let(:manifest_file) { File.open 'spec/fixtures/recreate_all_minimal.yml' }
 
@@ -206,67 +208,6 @@ RSpec.describe 'recreate-all-service-instances config' do
     end
   end
 
-  context 'with max in flight provided' do
-    let(:manifest_file) { File.open 'spec/fixtures/recreate_all_with_max_in_flight.yml' }
-
-    it 'sets max in flight to 13' do
-      expect(config.fetch('max_in_flight')).to eq(13)
-    end
-  end
-
-  context 'without max in flight provided' do
-    let(:manifest_file) { File.open 'spec/fixtures/recreate_all_minimal.yml' }
-
-    it 'sets max in flight to the default of 1' do
-      expect(config.fetch('max_in_flight')).to eq(1)
-    end
-  end
-
-  context 'with an max in flight less or equal zero' do
-    let(:manifest_file) { File.open 'spec/fixtures/recreate_all_invalid_max_in_flight.yml' }
-
-    it 'fails' do
-      expect do
-        rendered_template
-      end.to raise_error(RuntimeError, 'Invalid recreate_all_service_instances.max_in_flight - must be greater or equal 1')
-    end
-  end
-
-  context 'when canaries are configured incorrectly' do
-    let(:manifest_file) { File.open 'spec/fixtures/recreate_all_invalid_canaries.yml' }
-
-    it 'fails if its less than zero' do
-      expect do
-        rendered_template
-      end.to raise_error(RuntimeError, 'Invalid recreate_all_service_instances.canaries - must be greater or equal 0')
-    end
-  end
-
-  context 'when canaries are configured' do
-    let(:manifest_file) { File.open 'spec/fixtures/recreate_all_minimal.yml' }
-
-    it 'ouputs the default value' do
-      expect(config.fetch('canaries')).to eq(0)
-    end
-  end
-
-  context 'when canaries and the canary_selection_params are configured' do
-    let(:manifest_file) { File.open 'spec/fixtures/recreate_all_canaries_and_canary_selection_params.yml' }
-
-    it 'both are available in the config' do
-      expect(config.fetch('canaries')).to eq(3)
-      expect(config.fetch('canary_selection_params')).to eq('test' => true, 'size' => 'small')
-    end
-  end
-
-  context 'when canary_selection_params are configured' do
-    let(:manifest_file) { File.open 'spec/fixtures/recreate_all_canary_selection_params.yml' }
-
-    it 'succeeds' do
-      expect(config.fetch('canary_selection_params')).to eq('test' => true, 'size' => 'small')
-    end
-  end
-
   context 'without request timeout provided' do
     let(:manifest_file) { File.open 'spec/fixtures/recreate_all_minimal.yml' }
 
@@ -282,4 +223,10 @@ RSpec.describe 'recreate-all-service-instances config' do
       expect(config.fetch('request_timeout')).to eq(300)
     end
   end
+
+  it 'configures canary and in-flight properties to default values' do
+    expect(config.fetch('max_in_flight')).to eq(1)
+    expect(config.fetch('canaries')).to eq(0)
+  end
+
 end
