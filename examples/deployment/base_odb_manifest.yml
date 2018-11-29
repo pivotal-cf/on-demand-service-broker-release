@@ -74,6 +74,11 @@ instance_groups:
         properties: {}
         jobs: []
 
+      - name: recreate-all-service-instances
+        release: ((broker_release))
+        properties: {}
+        jobs: []
+
       - name: broker
         release: ((broker_release))
         properties:
