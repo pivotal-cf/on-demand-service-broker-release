@@ -26,6 +26,15 @@ RSpec.describe 'register-broker errand' do
       }
     ]
   end
+
+  let(:cf_authentication) do {
+    'user_credentials' => {
+      'username' => 'my_username',
+      'password' => 'some password'
+      }
+    }
+  end
+
   let(:links) do
     [{
       'broker' => {
@@ -39,7 +48,8 @@ RSpec.describe 'register-broker errand' do
           'password' => "%broker_password'\"t:%!",
           'port' => 8080,
           'cf' => {
-            'root_ca_cert' => 'thats a certificate'
+            'root_ca_cert' => 'thats a certificate',
+            'authentication' => cf_authentication,
           },
           'service_catalog' => {
             'plans' => plans,
@@ -58,11 +68,169 @@ RSpec.describe 'register-broker errand' do
   let(:rendered_template) { renderer.render('jobs/register-broker/templates/errand.sh.erb') }
   let(:manifest_file) { 'spec/fixtures/register_broker_with_special_characters.yml' }
 
-  context 'when the cf credentials contain special characters' do
-    it 'escapes the cf username and password' do
-      expect(rendered_template).to include "cf_retry auth '%cf_username'\\''\"t:%!' '%cf_password'\\''\"t:%!'"
+  describe 'when the cf block is missing' do
+    let(:links) do
+      [{
+        'broker' => {
+          'instances' => [
+            {
+              'address' => '123.456.789.101'
+            }
+          ],
+          'properties' => {
+            'username' => "%broker_username'\"t:%!",
+            'password' => "%broker_password'\"t:%!",
+            'port' => 8080,
+            'service_catalog' => {
+              'plans' => plans,
+              'service_name' => 'myservicename'
+            }
+          }
+        }
+      }]
+    end
+    it 'fails with an error' do
+      expect do
+        rendered_template
+      end.to raise_error(RuntimeError, 'register-broker expected the broker link to contain property "cf"')
     end
   end
+
+  describe 'cf authentication' do
+    context 'when the authentication block is missing' do
+      let(:links) do
+        [{
+          'broker' => {
+            'instances' => [
+              {
+                'address' => '123.456.789.101'
+              }
+            ],
+            'properties' => {
+              'username' => "%broker_username'\"t:%!",
+              'password' => "%broker_password'\"t:%!",
+              'port' => 8080,
+              'cf' => {},
+              'service_catalog' => {
+                'plans' => plans,
+                'service_name' => 'myservicename'
+              }
+            }
+          }
+        }]
+      end
+      it 'fails with an error' do
+        expect do
+          rendered_template
+        end.to raise_error(RuntimeError, 'register-broker expected the broker link to contain property "cf.authentication"')
+      end
+    end
+
+    context 'when only client credentials are provided' do
+      let(:cf_authentication) do {
+        'client_credentials' => {
+          'client_id' => 'some_client',
+          'secret' => 'some_password'
+          }
+        }
+      end
+
+      it 'uses client_credentials to authenticate' do
+        expect(rendered_template).to include "cf_retry auth 'some_client' 'some_password' --client-credentials"
+      end
+    end
+
+    context 'when only user credentials are provided' do
+      let(:cf_authentication) do {
+          'client_credentials' => {
+            'client_id' => '',
+            'secret' => ''
+          },
+          'user_credentials' => {
+            'username' => 'my_username',
+            'password' => 'some password'
+          }
+        }
+      end
+      it 'uses user_credentials to authenticate' do
+        expect(rendered_template).to include "cf_retry auth 'my_username' 'some password'"
+      end
+    end
+
+    context 'when both client and user credentials are provided' do
+      let(:cf_authentication) do {
+        'user_credentials' => {
+          'username' => 'my_username',
+          'password' => 'some password'
+        },
+        'client_credentials' => {
+          'client_id' => 'some_client',
+          'secret' => 'some_password'
+          }
+        }
+      end
+
+      it 'uses client_credentials to authenticate' do
+        expect(rendered_template).to include "cf_retry auth 'some_client' 'some_password' --client-credentials"
+        expect(rendered_template).not_to include "cf_retry auth 'my_username' 'some password'"
+      end
+    end
+
+    context 'when the cf credentials contain special characters' do
+      let(:cf_authentication) do {
+        'user_credentials' => {
+          'username' => "%cf_username'\"t:%!",
+          'password' => "%cf_password'\"t:%!"
+          }
+        }
+      end
+
+      it 'escapes the cf username and password' do
+        expect(rendered_template).to include "cf_retry auth '%cf_username'\\''\"t:%!' '%cf_password'\\''\"t:%!'"
+      end
+    end
+
+    context 'when all credentials are blank' do
+      let(:cf_authentication) do {
+          'client_credentials' => {
+            'client_id' => '',
+            'secret' => ''
+          },
+          'user_credentials' => {
+            'username' => '',
+            'password' => ''
+          }
+        }
+      end
+
+      it 'fails with an error' do
+        expect do
+          rendered_template
+        end.to raise_error(RuntimeError, 'register-broker expected either cf.client_credentials or cf.user_credentials to not be blank')
+      end
+    end
+
+    context 'when all credentials are nil' do
+      let(:cf_authentication) do {
+          'client_credentials' => {
+            'client_id' => nil,
+            'secret' => nil
+          },
+          'user_credentials' => {
+            'username' => nil,
+            'password' => nil
+          }
+        }
+      end
+
+      it 'fails with an error' do
+        expect do
+          rendered_template
+        end.to raise_error(RuntimeError, 'register-broker expected either cf.client_credentials or cf.user_credentials to not be blank')
+      end
+    end
+  end
+
 
   context 'when the broker credentials contain special characters' do
     it 'escapes the broker credentials' do
@@ -242,13 +410,13 @@ RSpec.describe 'register-broker errand' do
   end
 
   describe 'ssl verification' do
-    context 'when its disabled' do
+    context 'when it is disabled' do
       it 'adds the skip-ssl-validation flag' do
         expect(rendered_template).to include 'cf_retry api --skip-ssl-validation'
       end
     end
 
-    context 'when its enabled' do
+    context 'when it is enabled' do
       context 'when cf link is present' do
         let(:manifest_file) { 'spec/fixtures/register_broker_with_ssl_enabled.yml' }
         it 'does not add the skip-ssl-validation flag' do
@@ -259,38 +427,6 @@ RSpec.describe 'register-broker errand' do
           expect(rendered_template).to include 'echo -e "thats a certificate" > "$cert_file"'
           expect(rendered_template).to include 'export SSL_CERT_FILE="$cert_file"'
           expect(rendered_template).to include 'cf_retry api a-cf-url'
-        end
-      end
-
-      context 'when cf link is not present' do
-        let(:links) do
-          [{
-            'broker' => {
-              'instances' => [
-                {
-                  'address' => '123.456.789.101'
-                }
-              ],
-              'properties' => {
-                'username' => "%broker_username'\"t:%!",
-                'password' => "%broker_password'\"t:%!",
-                'port' => 8080,
-                'service_catalog' => {
-                  'plans' => plans,
-                  'service_name' => 'myservicename'
-                }
-              }
-            }
-          }]
-        end
-
-        let(:manifest_file) { 'spec/fixtures/register_broker_with_ssl_enabled.yml' }
-        it 'does not add the skip-ssl-validation flag' do
-          expect(rendered_template).to_not include 'cf api --skip-ssl-validation'
-        end
-
-        it 'exports the ssl_cert_file env variable from the cf link' do
-          expect(rendered_template).to_not include 'export SSL_CERT_FILE="$cert_file"'
         end
       end
     end

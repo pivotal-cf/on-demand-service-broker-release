@@ -31,17 +31,45 @@ end
 export PATH=/var/vcap/packages/cf-cli/bin:$PATH
 export CF_DIAL_TIMEOUT=60
 
-<% if_link("broker") do |broker| %>
-  <% broker.if_p('cf.root_ca_cert') do |root_ca| %>
-    cert_file="$(mktemp)"
-    echo -e "<%= root_ca %>" > "$cert_file"
-    export SSL_CERT_FILE="$cert_file"
-    trap "rm -f $cert_file" EXIT
-  <% end %>
+<%
+  if not link('broker').properties['cf']
+    raise 'register-broker expected the broker link to contain property "cf"'
+  end
+  if not link('broker').properties['cf']['authentication']
+    raise 'register-broker expected the broker link to contain property "cf.authentication"'
+  end
+%>
+
+<% link('broker').if_p('cf.root_ca_cert') do |root_ca| %>
+  cert_file="$(mktemp)"
+  echo -e "<%= root_ca %>" > "$cert_file"
+  export SSL_CERT_FILE="$cert_file"
+  trap "rm -f $cert_file" EXIT
 <% end %>
 
 cf_retry api <%= '--skip-ssl-validation ' if p('disable_ssl_cert_verification') %><%= p('cf.api_url') %>
-cf_retry auth <%= escape_shell(p('cf.admin_username')) %> <%= escape_shell(p('cf.admin_password')) %>
+
+<%
+  authCmd = ""
+  hasAtLeastOneWayToAuthenticate = false
+
+  link('broker').if_p('cf.authentication.user_credentials') do | creds |
+    if creds.all? { |k,v| !v.nil? && !v.empty? }
+      authCmd = "cf_retry auth #{escape_shell(creds["username"])} #{escape_shell(creds["password"])}"
+      hasAtLeastOneWayToAuthenticate = true
+    end
+  end
+
+  link('broker').if_p('cf.authentication.client_credentials') do | creds |
+    if creds.all? { |k,v| !v.nil? && !v.empty? }
+      authCmd = "cf_retry auth #{escape_shell(creds["client_id"])} #{escape_shell(creds["secret"])} --client-credentials"
+      hasAtLeastOneWayToAuthenticate = true
+    end
+  end
+
+  if not hasAtLeastOneWayToAuthenticate then raise "register-broker expected either cf.client_credentials or cf.user_credentials to not be blank" end
+%>
+<%= authCmd %>
 
 broker_name=<%= p('broker_name') %>
 broker_cmd=$(cf_service_broker_command "${broker_name}")
