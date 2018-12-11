@@ -1,0 +1,10 @@
+---
+
+- type: remove
+  path: /instance_groups/name=broker/jobs/name=broker/properties/cf/authentication/client_credentials
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=broker/properties/cf/authentication/user_credentials?
+  value:
+    username: ((cf.user_credentials.username))
+    password: ((cf.user_credentials.password))
