@@ -18,7 +18,7 @@
         jobs: [metron_agent]
     stemcell:
       os: ((meta.stemcell.os))
-      version: ((meta.stemcell.version))
+      version: "((meta.stemcell.version))"
 
 - type: replace
   path: /instance_groups/name=broker/jobs/-

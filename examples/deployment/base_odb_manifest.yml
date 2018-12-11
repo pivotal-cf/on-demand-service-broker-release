@@ -20,7 +20,7 @@ releases:
 stemcells:
   - alias: &stemcell_alias ((stemcell_alias))
     os: &stemcell_os ((meta.stemcell.os))
-    version: &stemcell_version ((meta.stemcell.version))
+    version: &stemcell_version "((meta.stemcell.version))"
 
 instance_groups:
   - name: broker
@@ -39,8 +39,6 @@ instance_groups:
           disable_ssl_cert_verification: ((disable_ssl_cert_verification))
           cf:
             api_url: ((cf.api_url))
-            admin_username: ((cf.user_credentials.username))
-            admin_password: ((cf.user_credentials.password))
 
       - name: deregister-broker
         release: ((broker_release))
