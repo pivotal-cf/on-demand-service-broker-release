@@ -33,9 +33,6 @@ properties:
     default: false
     description: disable TLS certificate verification
 
-  cf.api_url:
-    description: Cloud Foundry API URL
-
   enable_service_access:
     default: true
     description: Enable service access to the listed service plans

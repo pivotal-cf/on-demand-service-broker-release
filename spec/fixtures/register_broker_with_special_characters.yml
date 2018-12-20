@@ -12,7 +12,3 @@ instance_groups:
         broker_name: a-broker
         disable_ssl_cert_verification: true
         default_access_org: "cf_org"
-        cf:
-          api_url: a-cf-url
-          admin_username: "%cf_username'\"t:%!"
-          admin_password: "%cf_password'\"t:%!"

@@ -37,8 +37,6 @@ instance_groups:
           broker_name: ((broker_name))
           broker_uri: https://((broker_uri))
           disable_ssl_cert_verification: ((disable_ssl_cert_verification))
-          cf:
-            api_url: ((cf.api_url))
 
       - name: deregister-broker
         release: ((broker_release))

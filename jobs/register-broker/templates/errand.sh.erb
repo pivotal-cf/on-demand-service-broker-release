@@ -47,7 +47,12 @@ export CF_DIAL_TIMEOUT=60
   trap "rm -f $cert_file" EXIT
 <% end %>
 
-cf_retry api <%= '--skip-ssl-validation ' if p('disable_ssl_cert_verification') %><%= p('cf.api_url') %>
+<%
+	if not link('broker').properties['cf']['url']
+		raise 'register-broker expected the broker link to contain property "cf.url"'
+	end
+%>
+cf_retry api <%= '--skip-ssl-validation ' if p('disable_ssl_cert_verification') %><%= link('broker').p('cf.url') %>
 
 <%
   authCmd = ""

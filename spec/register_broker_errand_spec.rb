@@ -50,6 +50,7 @@ RSpec.describe 'register-broker errand' do
           'cf' => {
             'root_ca_cert' => 'thats a certificate',
             'authentication' => cf_authentication,
+            'url' => 'https://api.sys.cloud.foundry.org'
           },
           'service_catalog' => {
             'plans' => plans,
@@ -229,6 +230,39 @@ RSpec.describe 'register-broker errand' do
         end.to raise_error(RuntimeError, 'register-broker expected either cf.client_credentials or cf.user_credentials to not be blank')
       end
     end
+  end
+
+  describe 'using cf api url from the broker link' do
+
+    context 'when cf.url is not set in broker link' do
+      let(:links) do
+        [{
+          'broker' => {
+            'instances' => [ { 'address' => '123.456.789.101' } ],
+            'properties' => {
+              'username' => "%broker_username'\"t:%!",
+              'password' => "%broker_password'\"t:%!",
+              'port' => 8080,
+              'cf' => { 'authentication' => { 'client_credentials' => { 'client_id' => 'some_client', 'secret' => 'some_password' } } },
+              'service_catalog' => { 'plans' => plans, 'service_name' => 'myservicename' }
+            }
+          }
+        }]
+      end
+
+      it 'fails with an error' do
+        expect do
+          rendered_template
+        end.to raise_error(RuntimeError, 'register-broker expected the broker link to contain property "cf.url"')
+      end
+    end
+
+    context 'when cf.url is set in broker link' do
+      it 'is used in the generated config' do
+        expect(rendered_template).to include 'cf_retry api --skip-ssl-validation https://api.sys.cloud.foundry.org'
+      end
+    end
+
   end
 
 
@@ -426,7 +460,7 @@ RSpec.describe 'register-broker errand' do
         it 'exports the ssl_cert_file env variable from the cf link' do
           expect(rendered_template).to include 'echo -e "thats a certificate" > "$cert_file"'
           expect(rendered_template).to include 'export SSL_CERT_FILE="$cert_file"'
-          expect(rendered_template).to include 'cf_retry api a-cf-url'
+          expect(rendered_template).to include 'cf_retry api https://api.sys.cloud.foundry.org'
         end
       end
     end

@@ -11,7 +11,3 @@ instance_groups:
       properties:
         broker_name: a-broker
         disable_ssl_cert_verification: false
-        cf:
-          api_url: a-cf-url
-          admin_username: "%cf_username'\"t:%!"
-          admin_password: "%cf_password'\"t:%!"
