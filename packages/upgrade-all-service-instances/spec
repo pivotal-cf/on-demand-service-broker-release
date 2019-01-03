@@ -60,6 +60,7 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pborman/uuid/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/auth/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/middlewares/originating_identity_header/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/on-demand-services-sdk/bosh/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/on-demand-services-sdk/serviceadapter/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/paraphernalia/secure/tlsconfig/*.go # gosub
