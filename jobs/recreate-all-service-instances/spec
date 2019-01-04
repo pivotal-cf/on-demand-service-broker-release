@@ -32,12 +32,3 @@ properties:
   request_timeout:
     description: "timeout in seconds when sending requests during the errand"
     default: 120
-  max_in_flight:
-    description: "the maximum number of instances that will be processed at the same time"
-    default: 1
-  canaries:
-    description: "number of instances to process first before processing the rest of the instances"
-    default: 0
-  canary_selection_params:
-    description: "parameters to filter the canary instances"
-    default: {}
