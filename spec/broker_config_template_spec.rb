@@ -330,6 +330,14 @@ RSpec.describe 'broker config templating' do
     end
   end
 
+  context 'when the manifest specifies true for disable_bosh_configs' do
+    let(:manifest_file) { File.open 'spec/fixtures/valid-broker-config-ignoring-bosh-configs.yml' }
+
+    it 'sets the value of disable_bosh_configs to true' do
+      expect(rendered_template).to include 'disable_bosh_configs: true'
+    end
+  end
+
   context 'when the manifest specifies a value for metadata.shareable' do
     let(:manifest_file) { File.open 'spec/fixtures/valid-shareable-config.yml' }
 

@@ -74,6 +74,10 @@ properties:
   disable_cf_startup_checks:
     default: false
 
+  disable_bosh_configs:
+    default: false
+    description: Deactivate the feature where when a service adapter returns BOSH configs, ODB applies the configs to BOSH
+
   shutdown_timeout_in_seconds:
     description: In seconds, allow the broker to close open connections before shutting down
     default: 60
