@@ -93,7 +93,7 @@ instance_groups:
             client_secret: ((bosh.authentication.password))
         root_ca_cert: ((bosh.root_ca_cert))
       cf:
-        root_ca_cert: ((cf.root_ca_cert))
+        root_ca_cert: ((cf.router.ca_cert))
         url: ((cf.api_url))
         authentication:
           url: ((cf.uaa.url))
