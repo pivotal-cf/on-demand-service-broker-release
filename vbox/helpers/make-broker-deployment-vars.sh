@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-BASE_DIR="$(dirname $0)"
-source "$BASE_DIR/config.sh"
+BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source "$BASE_DIR/../config.sh"
 
 indent_by() {
   if [ $# != 2 ]; then

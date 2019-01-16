@@ -2,7 +2,7 @@
 
 set -eu
 
-BASE_DIR="$(dirname $0)"
+BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 source "$BASE_DIR/config.sh"
 
 
@@ -22,10 +22,10 @@ bosh -e "$BOSH_ENV_ALIAS" delete-env "$BOSH_LITE_DIR/bosh.yml" \
 -o "$BOSH_LITE_DIR/jumpbox-user.yml" \
 -o "$BOSH_LITE_DIR/uaa.yml" \
 -o "$BOSH_LITE_DIR/credhub.yml" \
--v director_name="bosh-lite-director" \
+-v director_name="$BOSH_DIRECTOR_NAME" \
 -v internal_ip="$BOSH_DIRECTOR_IP_ADDRESS" \
 -v internal_gw="$BOSH_DIRECTOR_GATEWAY" \
 -v internal_cidr="$BOSH_DIRECTOR_CIDR" \
--v outbound_network_name=NatNetwork
+-v outbound_network_name="$NETWORK_NAME"
 
 

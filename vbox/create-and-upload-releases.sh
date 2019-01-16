@@ -2,7 +2,7 @@
 
 set -eu
 
-BASE_DIR="$(dirname $0)"
+BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 source "$BASE_DIR/config.sh"
 
 echo ""
@@ -46,4 +46,4 @@ echo "uploading release $release_name, version $newest_release_version..."
 echo "-------------------------------------------------------"
 echo ""
 
-bosh -e $target upload-release $newest_release_location --version=$newest_release_version
+bosh -e $BOSH_ENV_ALIAS upload-release $newest_release_location --version=$newest_release_version
