@@ -138,36 +138,6 @@ instance_groups:
             port: *broker_port
             uris: [((broker_uri))]
 
-  - name: metron_agent
-    release: loggregator
-    properties:
-      metron_agent:
-        deployment: ((broker_deployment_name))
-        etcd:
-          client_cert: ((metron_agent.etcd.client_cert))
-          client_key: ((metron_agent.etcd.client_key))
-        protocols:
-          - tls
-        tls:
-          metron:
-            cert: ((metron_agent.tls.metron.cert))
-            key: ((metron_agent.tls.metron.key))
-      metron_endpoint:
-        shared_secret: ((metron_endpoint.shared_secret))
-      loggregator:
-        etcd:
-          ca_cert: ((loggregator.etcd.ca_cert))
-          machines:
-          - cf-etcd.service.cf.internal
-          require_ssl: true
-        tls:
-          metron:
-            cert: ((loggregator.tls.metron.cert))
-            key: ((loggregator.tls.metron.key))
-          ca_cert: ((loggregator.tls.ca_cert))
-      loggregator_endpoint:
-        shared_secret: ((metron_endpoint.shared_secret))
-
 update:
   canaries: 1
   canary_watch_time: 3000-180000
