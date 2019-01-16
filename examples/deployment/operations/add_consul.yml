@@ -1,0 +1,20 @@
+- type: replace
+  path: /releases/-
+  value:
+    name: consul
+    version: latest
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/-
+  value:
+    name: consul_agent
+    release: consul
+    consumes:
+     consul_client:
+       from: consul_client_link
+       deployment: ((cf.deployment_name))
+     consul_common:
+       from: consul_common_link
+       deployment: ((cf.deployment_name))
+     consul_server: nil
+

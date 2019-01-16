@@ -14,13 +14,22 @@ releases:
   version: latest
 - name: loggregator
   version: latest
-- name: consul
+- name: bpm
   version: latest
 
 stemcells:
 - alias: &stemcell_alias ((stemcell_alias))
   os: &stemcell_os ((meta.stemcell.os))
   version: &stemcell_version "((meta.stemcell.version))"
+
+addons:
+- name: bpm
+  include:
+    stemcell:
+    - os: ubuntu-xenial
+  jobs:
+  - name: bpm
+    release: bpm
 
 instance_groups:
 - name: broker
@@ -158,17 +167,6 @@ instance_groups:
           ca_cert: ((loggregator.tls.ca_cert))
       loggregator_endpoint:
         shared_secret: ((metron_endpoint.shared_secret))
-
-  - name: consul_agent
-    release: consul
-    consumes:
-      consul_client:
-        from: consul_client_link
-        deployment: ((cf.deployment_name))
-      consul_common:
-        from: consul_common_link
-        deployment: ((cf.deployment_name))
-      consul_server: nil
 
 update:
   canaries: 1

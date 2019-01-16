@@ -5,7 +5,7 @@
     authentication:
       uaa:
         ca_cert: ((cf.uaa.ca_cert))
-        client_id: credhub_cli
+        client_id: ((credhub.client_id))
         client_secret: ((credhub.client_secret))
 
 - type: replace
