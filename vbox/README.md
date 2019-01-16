@@ -67,7 +67,7 @@ dynamic_bosh_config.
 
 ## Delete VM
 
-1. Run `cleanup` to delete deploymet and remove vm
+1. Run `cleanup` to delete deployment and remove VM
     ```bash
     $ cd $HOME/workspace/on-demand-service-broker-release/vbox
     $ ./cleanup
