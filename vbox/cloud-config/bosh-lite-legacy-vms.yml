@@ -1,0 +1,117 @@
+---
+- type: replace
+  path: /vm_types/-
+  value:
+    name: m3.medium
+- type: replace
+  path: /vm_types/-
+  value:
+    name: m3.large
+- type: replace
+  path: /vm_types/-
+  value:
+    name: m3.xlarge
+- type: replace
+  path: /vm_types/-
+  value:
+    name: m3.2xlarge
+- type: replace
+  path: /vm_types/-
+  value:
+    name: m4.large
+- type: replace
+  path: /vm_types/-
+  value:
+    name: m4.xlarge
+- type: replace
+  path: /vm_types/-
+  value:
+    name: m4.2xlarge
+- type: replace
+  path: /vm_types/-
+  value:
+    name: m4.4xlarge
+- type: replace
+  path: /vm_types/-
+  value:
+    name: m4.10xlarge
+- type: replace
+  path: /vm_types/-
+  value:
+    name: c3.large
+- type: replace
+  path: /vm_types/-
+  value:
+    name: c3.xlarge
+- type: replace
+  path: /vm_types/-
+  value:
+    name: c3.2xlarge
+- type: replace
+  path: /vm_types/-
+  value:
+    name: c3.4xlarge
+- type: replace
+  path: /vm_types/-
+  value:
+    name: c3.8xlarge
+- type: replace
+  path: /vm_types/-
+  value:
+    name: c4.large
+- type: replace
+  path: /vm_types/-
+  value:
+    name: c4.xlarge
+- type: replace
+  path: /vm_types/-
+  value:
+    name: c4.2xlarge
+- type: replace
+  path: /vm_types/-
+  value:
+    name: c4.4xlarge
+- type: replace
+  path: /vm_types/-
+  value:
+    name: c4.8xlarge
+- type: replace
+  path: /vm_types/-
+  value:
+    name: r3.large
+- type: replace
+  path: /vm_types/-
+  value:
+    name: r3.xlarge
+- type: replace
+  path: /vm_types/-
+  value:
+    name: r3.2xlarge
+- type: replace
+  path: /vm_types/-
+  value:
+    name: r3.4xlarge
+- type: replace
+  path: /vm_types/-
+  value:
+    name: r3.8xlarge
+- type: replace
+  path: /vm_types/-
+  value:
+    name: t2.nano
+- type: replace
+  path: /vm_types/-
+  value:
+    name: t2.micro
+- type: replace
+  path: /vm_types/-
+  value:
+    name: t2.small
+- type: replace
+  path: /vm_types/-
+  value:
+    name: t2.medium
+- type: replace
+  path: /vm_types/-
+  value:
+    name: t2.large

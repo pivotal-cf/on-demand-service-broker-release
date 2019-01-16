@@ -18,3 +18,4 @@ bin
 pkg
 .idea/
 .DS_Store
+vbox/artifacts/*
