@@ -14,12 +14,12 @@ export BOSH_NON_INTERACTIVE=true
 export BOSH_CA_CERT
 
 main() {
+  make_bosh_lite_accessible_via_dns
   create_director
   add_bosh_dns
   deploy_cf
   target_cf_and_create_org_and_space
   generate_broker_deployment_vars
-  make_bosh_lite_accessible_via_dns
   create_environment_alias
   upload_service_metrics_release
  }

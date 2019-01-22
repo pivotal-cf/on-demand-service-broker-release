@@ -14,7 +14,7 @@ BOSH_DIRECTOR_CIDR=192.168.50.0/24
 BOSH_CREDHUB_URL="https://$BOSH_DIRECTOR_IP_ADDRESS:8844"
 SYSTEM_DOMAIN=bosh-lite.com #This is a valid domain, no need to change!
 BOSH_LITE_STEMCELL=bosh-warden-boshlite-ubuntu-xenial-go_agent
-BOSH_LITE_STEMCELL_VERSION=170.16
+BOSH_LITE_STEMCELL_VERSION=170.19
 NETWORK_NAME=NatNetwork
 
 BOSH_CLIENT=admin
