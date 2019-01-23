@@ -39,37 +39,40 @@ and deployment themselves. When starting out, it may make sense to restrict your
 the new-style tests, which include lifecycle_tests/with_maintenance_info, recreate_all_tests and
 dynamic_bosh_config.
 
+1. Store the path to the ODB release for convenience
+    ```bash
+    $ ODB=$HOME/workspace/on-demand-service-broker-release
+    ```
+
 1. Create and upload the required releases from the ODB-release source tree:
     ```bash
-    $ cd $HOME/workspace/on-demand-service-broker-release
     $ # On-Demand-Broker
-    $ ./vbox/create-and-upload-releases.sh
+    $ cd $ODB
+    $ $ODB/vbox/create-and-upload-releases.sh
     $ # Redis Service
-    $ pushd examples/redis-example-service-release
-    $ ./vbox/create-and-upload-releases.sh
-    $ popd
+    $ cd $ODB/examples/redis-example-service-release
+    $ $ODB/vbox/create-and-upload-releases.sh
     $ # Redis Adapter
-    $ pushd examples/redis-example-service-adapter-release
-    $ ./vbox/create-and-upload-releases.sh
-    $ popd
+    $ cd $ODB/examples/redis-example-service-adapter-release
+    $ $ODB/vbox/create-and-upload-releases.sh
     ```
 
 1. Set the GOPATH:
     ```
-    $ export GOPATH=$HOME/workspace/on-demand-service-broker-release
+    $ export GOPATH=$ODB
     ```
 
 1. Run the required system test, e.g. dynamic_bosh_config:
     ```bash
-    $ cd src/github.com/pivotal-cf/on-demand-service-broker/system_tests
-    $ ./run_system_tests_local.sh ../../../../../vbox/artifacts/broker-deployment-vars.yml dynamic_bosh_config
+    $ cd $ODB/src/github.com/pivotal-cf/on-demand-service-broker/system_tests
+    $ ./run_system_tests_local.sh $ODB/vbox/artifacts/broker-deployment-vars.yml dynamic_bosh_config
     ```
 
 ## Delete VM
 
 1. Run `cleanup` to delete deployment and remove VM
     ```bash
-    $ cd $HOME/workspace/on-demand-service-broker-release/vbox
+    $ cd $ODB/vbox
     $ ./cleanup
     ```
 
