@@ -31,11 +31,6 @@ bosh_cmd() {
 }
 
 set +o pipefail
-if bosh_cmd --json releases | jq -e '.Tables[0].Rows[] | select(.name == "bpm")' > /dev/null ; then
-  bpm_available=true
-else
-  bpm_available=false
-fi
 stemcell_name=ubuntu-xenial
 stemcell_version=$(bosh_cmd --json stemcells | jq -r ".Tables[0].Rows[] | select(.os == \"$stemcell_name\") | .version " | head -n1)
 stemcell_version=${stemcell_version%\*}
@@ -69,7 +64,6 @@ meta:
   stemcell:
     os: $stemcell_name
     version: "$stemcell_version"
-  bpm_available: "$bpm_available"
 bosh_credhub_api:
   url: $bosh_credhub_url
   root_ca_cert: |
