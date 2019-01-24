@@ -39,11 +39,14 @@ and deployment themselves. When starting out, it may make sense to restrict your
 the new-style tests, which include lifecycle_tests/with_maintenance_info, recreate_all_tests and
 dynamic_bosh_config.
 
+1. Unset any environment variable that might conflict
+    ```bash
+    direnv deny
+    ```
 1. Store the path to the ODB release for convenience
     ```bash
     $ ODB=$HOME/workspace/on-demand-service-broker-release
     ```
-
 1. Create and upload the required releases from the ODB-release source tree:
     ```bash
     $ # On-Demand-Broker
