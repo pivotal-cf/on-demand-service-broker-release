@@ -15,6 +15,7 @@ instance_groups:
           service_instances_api:
             url: some-fqdn
             root_ca_cert: some-root-ca
+            disable_ssl_cert_verification: true
             authentication:
               basic:
                 username: siapi-user

@@ -36,6 +36,7 @@ provides:
     - cf.authentication.user_credentials.password
     - service_instances_api.url
     - service_instances_api.root_ca_cert
+    - service_instances_api.disable_ssl_cert_verification
     - service_instances_api.authentication.basic.username
     - service_instances_api.authentication.basic.password
     - service_catalog.service_name
@@ -138,6 +139,10 @@ properties:
 
   service_instances_api.root_ca_cert:
     description: "root CA cert to validate TLS connection to service instances API provider"
+
+  service_instances_api.disable_ssl_cert_verification:
+    description: Disable SSL certificate verification by the broker when communicating with Service Instances API.
+    default: false
 
   service_instances_api.authentication.basic.username:
     description: "HTTP basic auth username for connections to service instances API provider"

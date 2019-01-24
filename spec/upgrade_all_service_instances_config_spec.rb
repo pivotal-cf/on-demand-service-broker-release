@@ -71,7 +71,7 @@ RSpec.describe 'upgrade-all-service-instances config' do
   end
 
   context 'with service instances api specified' do
-    let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_with_service_instances_api.yml' }
+    let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_minimal.yml' }
     let(:siapi_root_ca_cert) {false}
     let(:broker_link) do
       bl = {
@@ -89,9 +89,10 @@ RSpec.describe 'upgrade-all-service-instances config' do
               'authentication' => {
                 'basic' => {
                   'username' => "myname",
-                  'password' => "supersecret"               
+                  'password' => "supersecret"
                 }
               },
+              'disable_ssl_cert_verification' => true,
               'url' => 'http://example.org/give-me/some-services',
             }
           }
@@ -102,7 +103,7 @@ RSpec.describe 'upgrade-all-service-instances config' do
       end
       bl
     end
-    
+
     it 'is not empty' do
       expect(config).not_to be_empty
     end
@@ -131,14 +132,18 @@ RSpec.describe 'upgrade-all-service-instances config' do
       expect(config.fetch('service_instances_api').key?('root_ca_cert')).to be_falsey
     end
 
+    it 'sets disable_ssl_cert_verification to true' do
+      expect(config.fetch('service_instances_api').fetch('disable_ssl_cert_verification')).to eq(true)
+    end
+
     context 'and root_ca_cert provided' do
       let(:siapi_root_ca_cert) do
         '-----BEGIN CERTIFICATE-----
           MostCERTainlyACert
           -----END CERTIFICATE-----
         '
-      end  
-      
+      end
+
       it 'sets correct root_ca_cert' do
         expect(config.fetch('service_instances_api').fetch('root_ca_cert')).to eq('-----BEGIN CERTIFICATE-----
           MostCERTainlyACert

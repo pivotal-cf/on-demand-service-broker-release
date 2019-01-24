@@ -46,6 +46,7 @@
     service_instances_api_block = {
       "service_instances_api" => {
         "url" => url,
+        "disable_ssl_cert_verification" => link('broker').p('service_instances_api.disable_ssl_cert_verification'),
         "authentication" => {
           "basic" => {
             "username" => link('broker').p('service_instances_api.authentication.basic.username'),

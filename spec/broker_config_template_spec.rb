@@ -1211,6 +1211,10 @@ RSpec.describe 'broker config templating' do
 
       it 'includes the service_instances_api block' do
         expect(rendered_template).to include('service_instances_api')
+
+        config = YAML.load rendered_template
+        expect(config['service_instances_api']['root_ca_cert']).to eq("some-root-ca")
+        expect(config['service_instances_api']['disable_ssl_cert_verification']).to eq(true)
       end
     end
   end
