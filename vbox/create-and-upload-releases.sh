@@ -2,6 +2,8 @@
 
 set -eu
 
+release_path=${1:-"."}
+
 BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 source "$BASE_DIR/config.sh"
 
@@ -18,19 +20,19 @@ fi
 echo BOSH target: "$BOSH_ENV_ALIAS"
 
 # get the release name from the final.yml
-final_config="./config/final.yml"
+final_config="$release_path/config/final.yml"
 
 if [ ! -f $final_config ]; then
-  echo "Cannot find ./config/final.yml. Ensure you are in the release directory."
+  echo "Cannot find $release_path/config/final.yml. Ensure you are in the release directory."
   exit 1
 fi
 
 release_name=$(grep name: $final_config | cut -d' ' -f2)${postfix}
 
-bosh -e "$BOSH_ENV_ALIAS" create-release --force --name $release_name
+bosh -e "$BOSH_ENV_ALIAS" create-release --force --name $release_name --dir $release_path
 
 # set the release folder to the current dev environment's release folder
-releases_dir="./dev_releases/$release_name"
+releases_dir="$release_path/dev_releases/$release_name"
 
 # get the .yml file for the most recently created release
 newest_release_file=$(ls -t $releases_dir/ | grep $release_name | head -1)
@@ -46,4 +48,4 @@ echo "uploading release $release_name, version $newest_release_version..."
 echo "-------------------------------------------------------"
 echo ""
 
-bosh -e $BOSH_ENV_ALIAS upload-release $newest_release_location --version=$newest_release_version
+bosh -e $BOSH_ENV_ALIAS upload-release $newest_release_location --version=$newest_release_version --dir $release_path
