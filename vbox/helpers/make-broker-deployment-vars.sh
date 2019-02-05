@@ -59,6 +59,7 @@ $(indent_by 4 "$bosh_root_ca")
     password: "$bosh_uaa_client_secret"
 meta:
   services_subnet: default
+  instance_groups_vm_extensions: []
   vm_type: t2.small
   az: z1
   stemcell:

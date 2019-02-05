@@ -35,7 +35,7 @@ instance_groups:
 - name: broker
   instances: 1
   vm_type: ((meta.vm_type))
-  vm_extensions: ((instance_groups_vm_extensions))
+  vm_extensions: ((meta.instance_groups_vm_extensions))
   stemcell: *stemcell_alias
   networks: [{name: ((meta.services_subnet))}]
   azs: [((meta.az))]
