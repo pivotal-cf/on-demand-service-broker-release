@@ -13,6 +13,10 @@
   end
 
   config = {
+    "bosh" => {
+      "url" => link('broker').p('bosh.url'),
+      "root_ca_cert" => link('broker').p('bosh.root_ca_cert')
+    },
     "broker_api" => {
       "url" => "http://#{link('broker').instances[0].address}:#{link('broker').p('port')}",
       "authentication" => {

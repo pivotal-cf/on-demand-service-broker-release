@@ -26,6 +26,8 @@ provides:
     - port
     - username
     - password
+    - bosh.url
+    - bosh.root_ca_cert
     - disable_ssl_cert_verification
     - cf.url
     - cf.root_ca_cert

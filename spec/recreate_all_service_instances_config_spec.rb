@@ -35,6 +35,10 @@ RSpec.describe 'recreate-all-service-instances config' do
           'username' => "%username'\"t:%!",
           'password' => "%password'\"t:%!",
           'port' => 8080,
+          'bosh' => {
+            'url' => 'the.bosh.url',
+            'root_ca_cert' => 'thecert'
+          }
         }
       }
     }
@@ -87,6 +91,10 @@ RSpec.describe 'recreate-all-service-instances config' do
             'username' => "%username'\"t:%!",
             'password' => "%password'\"t:%!",
             'port' => 8080,
+            'bosh' => {
+              'url' => 'the.bosh.url',
+              'root_ca_cert' => 'thecert'
+            },
             'service_instances_api' => {
               'authentication' => {
                 'basic' => {
@@ -232,6 +240,11 @@ RSpec.describe 'recreate-all-service-instances config' do
   it 'configures canary and in-flight properties to default values' do
     expect(config.fetch('max_in_flight')).to eq(1)
     expect(config.fetch('canaries')).to eq(0)
+  end
+
+  it 'includes bosh configuration' do
+    expect(config.dig('bosh', 'url')).to eq('the.bosh.url')
+    expect(config.dig('bosh', 'root_ca_cert')).to eq('thecert')
   end
 
 end
