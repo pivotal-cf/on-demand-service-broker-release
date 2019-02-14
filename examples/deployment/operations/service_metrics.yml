@@ -42,7 +42,7 @@
     consumes:
       doppler:
         from: doppler
-        deployment: cf
+        deployment: ((cf.deployment_name))
     properties:
       loggregator:
         tls:
