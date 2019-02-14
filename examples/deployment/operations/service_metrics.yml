@@ -1,6 +1,16 @@
 - type: replace
   path: /releases/-
-  value: {name: service-metrics, version: latest}
+  value:
+    name: loggregator-agent
+    version: latest
+
+- type: replace
+  path: /releases/-
+  value:
+    name: service-metrics
+    version: "1.10.0"
+    url: https://bosh.io/d/github.com/cloudfoundry/service-metrics-release?v=1.10.0
+    sha1: a687fba8686d777ba0d956dd42faaae5f02c4616
 
 - type: replace
   path: /instance_groups/name=broker/jobs/-
@@ -18,41 +28,27 @@
         execution_interval_seconds: 30
         origin: ((broker_deployment_name))
         monit_dependencies: [broker]
+        mount_paths:
+        - /var/vcap/jobs/service-metrics-adapter
         tls:
           ca: ((loggregator.tls.ca_cert))
-          cert: ((loggregator.tls.metron.cert))
-          key: ((loggregator.tls.metron.key))
+          cert: ((loggregator.tls.client.certificate))
+          key: ((loggregator.tls.client.private_key))
 
 - type: replace
   path: /instance_groups/name=broker/jobs/-
   value:
-    name: metron_agent
-    release: loggregator
+    name: loggregator_agent
+    consumes:
+      doppler:
+        from: doppler
+        deployment: cf
     properties:
-      metron_agent:
-        deployment: ((broker_deployment_name))
-        etcd:
-          client_cert: ((metron_agent.etcd.client_cert))
-          client_key: ((metron_agent.etcd.client_key))
-        protocols:
-          - tls
-        tls:
-          metron:
-            cert: ((metron_agent.tls.metron.cert))
-            key: ((metron_agent.tls.metron.key))
-      metron_endpoint:
-        shared_secret: ((metron_endpoint.shared_secret))
       loggregator:
-        etcd:
-          ca_cert: ((loggregator.etcd.ca_cert))
-          machines:
-          - cf-etcd.service.cf.internal
-          require_ssl: true
         tls:
-          metron:
-            cert: ((loggregator.tls.metron.cert))
-            key: ((loggregator.tls.metron.key))
+          agent:
+            cert: ((loggregator.tls.client.certificate))
+            key: ((loggregator.tls.client.private_key))
           ca_cert: ((loggregator.tls.ca_cert))
-      loggregator_endpoint:
-        shared_secret: ((metron_endpoint.shared_secret))
+    release: loggregator-agent
 
