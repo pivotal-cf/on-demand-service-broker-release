@@ -8,9 +8,7 @@
   path: /releases/-
   value:
     name: service-metrics
-    version: "1.10.0"
-    url: https://bosh.io/d/github.com/cloudfoundry/service-metrics-release?v=1.10.0
-    sha1: a687fba8686d777ba0d956dd42faaae5f02c4616
+    version: latest
 
 - type: replace
   path: /instance_groups/name=broker/jobs/-
