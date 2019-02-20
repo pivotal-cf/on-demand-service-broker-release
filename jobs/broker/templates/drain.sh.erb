@@ -5,7 +5,7 @@ set -eu
 source /var/vcap/packages/broker_utils/common.sh
 
 log_dir=/var/vcap/sys/log/broker
-run_dir=/var/vcap/sys/run/broker
+run_dir=/var/vcap/sys/run/bpm/broker
 drain_log="${log_dir}/drain.log"
 
 ensure_dir ${log_dir}
