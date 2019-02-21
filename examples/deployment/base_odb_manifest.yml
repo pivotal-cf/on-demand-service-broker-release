@@ -24,9 +24,6 @@ stemcells:
 
 addons:
 - name: bpm
-  include:
-    stemcell:
-    - os: ubuntu-xenial
   jobs:
   - name: bpm
     release: bpm
