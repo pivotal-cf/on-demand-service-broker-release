@@ -1,0 +1,65 @@
+#!/bin/bash -eu
+
+# Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
+# This program and the accompanying materials are made available under the terms of the under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+
+set -o pipefail
+
+job_dir=/var/vcap/jobs/broker
+log_dir=/var/vcap/sys/log/broker
+run_dir=/var/vcap/sys/run/broker
+run_script=/var/vcap/packages/broker/bin/on-demand-service-broker
+
+pidfile=$run_dir/broker.pid
+
+utils_path=/var/vcap/packages/broker_utils
+source ${utils_path}/log.sh
+source ${utils_path}/common.sh
+
+ensure_dir $job_dir
+ensure_dir $log_dir
+ensure_dir $run_dir
+
+export LOG_FILE=$log_dir/broker_ctl.log
+
+case $1 in
+  start)
+    log info "starting broker"
+    echo $$ > $pidfile
+    ensure_dir $run_dir
+
+    exec chpst -u vcap:vcap $run_script \
+      -configFilePath /var/vcap/jobs/broker/config/broker.yml \
+      >> $log_dir/broker.log 2>&1
+    ;;
+
+  stop)
+    log info "stopping broker"
+
+    set +e
+    kill -9 $(cat $pidfile)
+    kill_exit_code=$?
+
+    pkill -9 -f $run_script
+    pkill_exit_code=$?
+    set -e
+
+    if [[ $kill_exit_code -ne 0 && $pkill_exit_code -ne 0 ]]; then
+      echo "Failed to stop broker process"
+      exit 1
+    fi
+
+    rm -f $pidfile
+    ;;
+
+  *)
+    log warning "operation '$1' is not supported"
+    echo "Usage: broker-ctl.sh start/stop" >&2
+    exit 1
+    ;;
+
+esac

@@ -15,10 +15,6 @@
   value: redis
 
 - type: replace
-  path: /instance_groups/name=broker/jobs/name=broker/properties/service_adapter?/mount_paths?/-
-  value: /var/vcap/jobs/service-adapter/config/service-adapter.conf
-
-- type: replace
   path: /instance_groups/name=broker/jobs/name=broker/properties/service_deployment?
   value:
     releases:
