@@ -8,11 +8,11 @@
 name: broker
 templates:
   post-start.erb: bin/post-start
-  broker-ctl.sh.erb: bin/broker-ctl.sh
   broker.yml.erb: config/broker.yml
   drain.sh.erb: bin/drain
   broker.crt.erb: certs/broker.crt
   broker.key.erb: certs/broker.key
+  bpm.yml.erb: config/bpm.yml
 
 packages:
   - broker
@@ -182,8 +182,12 @@ properties:
     description: Secret of UAA client with permissions to read and write to BOSH CredHub
 
   service_adapter.path:
-    description: the path to the service adapter binary located on the host with the broker
-    default: /var/vcap/packages/odb-service-adapter/bin/service-adapter
+    description: The path to the service adapter binary located on the host with the broker
+    default: "/var/vcap/packages/odb-service-adapter/bin/service-adapter"
+
+  service_adapter.mount_paths:
+    description: "Filesystem paths to be mounted for use by the service adapter. This should include the paths to any config files."
+    default: []
 
   service_deployment.releases:
     description: releases to deploy for each instance

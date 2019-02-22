@@ -1,0 +1,6 @@
+---
+instance_groups:
+  - name: broker
+    jobs:
+      - name: broker
+        properties: {}

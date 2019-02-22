@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+<%=
+unrestricted_volumes = [{
+    'path' => p("service_adapter.path"),
+    'allow_executions' => true,
+    'mount_only' => true,
+    'writable' => false
+}]
+
+p("service_adapter.mount_paths").each do |e|
+    unrestricted_volumes << {
+        'path' => e,
+        'allow_executions' => true,
+        'mount_only' => true,
+        'writable' => false
+    }
+end
+
+bpm_config = {
+  'processes' => [{
+    'name' => 'broker',
+    'executable' => '/var/vcap/packages/broker/bin/on-demand-service-broker',
+    'args' => [
+      '-configFilePath',
+      '/var/vcap/jobs/broker/config/broker.yml'
+      ],
+    'unsafe' => {
+      'unrestricted_volumes' => unrestricted_volumes
+    }
+  }]
+}
+
+bpm_config.to_yaml
+%>
