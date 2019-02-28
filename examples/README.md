@@ -31,5 +31,5 @@ $ bosh -d kafka-example-odb deploy base_odb_manifest.yml \
 Notice that `example_vars.yml` needs to be populated according to your
 environment.
 
-
+Alternativelly, if you are using a [local BOSH-Lite](../vbox/), you can use the script `scripts/deploy-redis-to-local-bosh-lite` to quickly deploy using a single command.
 

@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+set -e
+set -x
+
+BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null 2>&1 && pwd )"
+
+VBOX_HOME="${BASE_DIR}/../vbox/artifacts"
+
+export BOSH_ENVIRONMENT BOSH_CA_CERT BOSH_CLIENT BOSH_CLIENT_SECRET BOSH_NON_INTERACTIVE BOSH_DEPLOYMENT
+
+BOSH_ENVIRONMENT='https://192.168.50.6:25555'
+BOSH_CA_CERT="$(mktemp)"
+BOSH_CLIENT='admin'
+BOSH_CLIENT_SECRET='admin'
+BOSH_NON_INTERACTIVE=true
+BOSH_DEPLOYMENT=redis-on-demand-broker
+
+yq -r '.default_ca.ca' "$VBOX_HOME/bosh-vars.yml" > "$BOSH_CA_CERT"
+
+main() {
+  upload_release "$BASE_DIR/redis-example-service-release"
+  upload_release "$BASE_DIR/redis-example-service-adapter-release"
+  deploy
+  bosh run-errand register-broker
+}
+
+upload_release() {
+  local release_path="${1:?}"
+
+  ( cd "$release_path" || exit 1
+    bosh sync-blobs
+    bosh create-release --force
+    bosh upload-release
+  )
+}
+
+deploy() {
+  bosh \
+    deploy "$BASE_DIR/redis-example-service-adapter-release/redis-example-service-adapter.yml" \
+      --vars-file="$BASE_DIR/deployment/vars-files/redis-example-service-adapter-vars.yml" \
+      --vars-file="$VBOX_HOME/broker-deployment-vars.yml" \
+      --vars-file="$VBOX_HOME/cf-vars.yml" \
+      --var=broker_deployment_name="$BOSH_DEPLOYMENT" \
+      --var=redis_service_version="$(get_latest_version_of "redis-service")" \
+      --no-redact \
+
+}
+
+get_latest_version_of() {
+  local release_name="${1:?}"
+
+  bosh --json releases | \
+    jq -r ".Tables[].Rows | map(select(.name == \"$release_name\")) | first | .version"
+}
+
+main

@@ -1,0 +1,9 @@
+---
+broker_release: on-demand-service-broker-local
+broker_version: latest
+broker_name: redis-service-broker
+
+service_adapter_release: redis-example-service-adapter
+service_adapter_version: latest
+
+disable_ssl_cert_verification: false # When talking to cf, don't verify the certificates
