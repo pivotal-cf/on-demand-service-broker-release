@@ -103,7 +103,7 @@ cf $broker_cmd $broker_name <%= escape_shell(link('broker').p('username')) %> <%
         cf disable-service-access <%= service_name %> -p <%= plan.fetch('name') %>
       <% elsif plan.fetch('cf_service_access') == 'org-restricted' %>
         <% org = escape_shell(p('default_access_org')) %>
-        if ! cf service-access -o <%= org %> -e <%= service_name %> | grep -q <%= plan.fetch('name') %>; then
+        if ! cf service-access -o <%= org %> -e <%= service_name %> | grep -q " <%= plan.fetch('name') %> "; then
           cf enable-service-access <%= service_name %> -o <%= escape_shell(p('default_access_org')) %> -p <%= plan.fetch('name') %>
         fi
       <% elsif plan.fetch('cf_service_access') != 'manual'
