@@ -2,9 +2,10 @@
 
 set -eu
 
-release_path=${1:-"."}
-
 BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+release_path=${1:-"$BASE_DIR/.."}
+
 source "$BASE_DIR/config.sh"
 
 echo ""
