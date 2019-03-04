@@ -1,7 +1,9 @@
 ---
-broker_release: on-demand-service-broker-local
+broker_release: on-demand-service-broker
 broker_version: latest
 broker_name: redis-service-broker
+
+service_release: redis-service
 
 service_adapter_release: redis-example-service-adapter
 service_adapter_version: latest
