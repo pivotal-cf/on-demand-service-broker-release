@@ -67,6 +67,7 @@ properties:
 
   tls.certificate:
     description: a server certificate for the broker to use
+
   tls.private_key:
     description: the matching private key
 

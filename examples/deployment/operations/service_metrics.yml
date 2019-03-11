@@ -49,4 +49,3 @@
             key: ((loggregator.tls.client.private_key))
           ca_cert: ((loggregator.tls.ca_cert))
     release: loggregator-agent
-

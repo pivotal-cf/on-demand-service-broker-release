@@ -13,9 +13,11 @@ def escape_shell(str)
   "'#{str.to_s.gsub(/'/, "'\\\\''")}'"
 end
 
-# Target the first broker instance
-broker_uri = "http://#{link('broker').instances[0].address}:#{link('broker').p('port')}"
+tlsCertificate = p('tls.ca_cert', "")
+s = "s" unless tlsCertificate.empty?
 
+# Target the first broker instance
+broker_uri = "http#{s}://#{link('broker').instances[0].address}:#{link('broker').p('port')}"
 if_p('broker_uri') do |uri|
   broker_uri = uri
 end
@@ -24,4 +26,6 @@ end
 /var/vcap/packages/collect-service-metrics/bin/collect-service-metrics \
   -brokerUsername <%= escape_shell(link('broker').p('username')) %> \
   -brokerPassword <%= escape_shell(link('broker').p('password')) %> \
-  -brokerUrl <%= broker_uri %>
+  -brokerUrl <%= broker_uri %> \
+  -tlsCertificate "<%= tlsCertificate %>" \
+  -disableSSLCertVerification=<%= p('tls.disable_ssl_cert_verification') %>
