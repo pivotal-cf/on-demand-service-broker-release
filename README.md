@@ -27,14 +27,17 @@ Once you have an ODB integration completed for your service you may wish to crea
 
 ## Releases and versioning
 
-The on-demand services SDK is pre-1.0.0 and uses semantic versioning. This means that we reserve the right to release breaking changes in minor versions. Breaking changes will always be clearly flagged in release notes. We do not backwards apply patches, as no version other than the current is in support. 
+- The on-demand services SDK is pre-1.0.0 and uses semantic versioning. 
+   - This means that we reserve the right to release breaking changes in minor versions. 
+- Breaking changes will always be clearly flagged in release notes. 
+- We do not backwards apply patches, as no version other than the current is in support. 
 
 ### A note on breaking changes
 
 There are three different categories of breaking changes when talking about ODB
-Behavioural/Functional breaking changes
-Manifest breaking changes
-SDK Interface breaking changes
+- Behavioural/Functional breaking changes
+- Manifest breaking changes
+- SDK Interface breaking changes
 
 It is safe to assume that, from version x to version x+1, ODB will not introduce Behavioural/Functional breaking changes. We may introduce new functionality, but it will be feature flagged and off by default (in most cases). Keep in mind that we might remove a feature flag (or most likely turn it on by default) from version x to version x+2.
 
