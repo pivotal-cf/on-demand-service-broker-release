@@ -9,7 +9,6 @@
       organization: pivotal
       alternative_names:
       - ((broker_uri))
-      - q-s0.broker.((meta.services_subnet)).((broker_deployment_name)).bosh
 
 - type: replace
   path: /instance_groups/name=broker/jobs/name=broker/properties/tls?
