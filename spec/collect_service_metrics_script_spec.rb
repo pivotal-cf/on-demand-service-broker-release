@@ -59,6 +59,25 @@ RSpec.describe 'collect-service-metrics script' do
   end
 
   context 'when the broker uri property is missing and TLS is enabled on the broker' do
+    let(:links) do
+      [{
+        'broker' => {
+          'instances' => [
+            {
+              'address' => '123.456.789.101'
+            }
+          ],
+          'properties' => {
+            'username' => "%username'\"t:%!",
+            'password' => "%password'\"t:%!",
+            'port' => 7070,
+            'tls' => {
+              'certificate' => 'some certificate'
+            }
+          }
+        }
+      }]
+    end
     let(:manifest_file) { 'spec/fixtures/collect_service_metrics_without_broker_uri_with_tls.yml' }
 
     it 'uses the broker job link with an https prefix' do
@@ -71,7 +90,7 @@ RSpec.describe 'collect-service-metrics script' do
       let(:manifest_file) { 'spec/fixtures/collect_service_metrics_with_disable_ssl_cert_verification.yml' }
 
       it 'is passed to the command line' do
-        expect(rendered_template).to include '-disableSSLCertVerification=true'
+        expect(rendered_template).to include '-skipTLSValidation=true'
       end
     end
 
@@ -79,7 +98,7 @@ RSpec.describe 'collect-service-metrics script' do
       let(:manifest_file) { 'spec/fixtures/collect_service_metrics_without_broker_uri.yml' }
 
       it 'is passed to the command line as false' do
-        expect(rendered_template).to include '-disableSSLCertVerification=false'
+        expect(rendered_template).to include '-skipTLSValidation=false'
       end
     end
   end
@@ -88,7 +107,7 @@ RSpec.describe 'collect-service-metrics script' do
     let(:manifest_file) { 'spec/fixtures/collect_service_metrics_with_tls_certificate.yml' }
 
     it 'is passed to the command line' do
-      expect(rendered_template).to include '-tlsCertificate "a certificate"'
+      expect(rendered_template).to include '-brokerCACert "a certificate"'
     end
   end
 

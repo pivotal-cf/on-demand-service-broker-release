@@ -22,7 +22,7 @@ properties:
   broker_uri:
     description: Broker URI, if a route is registered or TLS is enabled
     example: https://broker.example.com, https://broker-job.default-network.broker-deployment.bosh
-  tls.disable_ssl_cert_verification:
+  tls.skip_tls_validation:
     description: Set to true to disable SSL certificate verification when communicating with broker
     default: false
   tls.ca_cert:

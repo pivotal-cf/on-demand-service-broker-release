@@ -10,4 +10,4 @@ instance_groups:
   - name: service-metrics-adapter
     properties:
       tls:
-        ca_cert: "a certificate"
+        skip_tls_validation: true

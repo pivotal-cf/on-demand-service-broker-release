@@ -44,6 +44,7 @@ provides:
     - service_catalog.service_name
     - service_catalog.id
     - service_catalog.plans
+    - tls.certificate
 
 consumes:
 - name: credhub

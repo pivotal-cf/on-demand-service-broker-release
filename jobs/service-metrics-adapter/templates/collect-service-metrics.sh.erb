@@ -13,8 +13,8 @@ def escape_shell(str)
   "'#{str.to_s.gsub(/'/, "'\\\\''")}'"
 end
 
-tlsCertificate = p('tls.ca_cert', "")
-s = "s" unless tlsCertificate.empty?
+brokerCert = link('broker').p('tls.certificate', "")
+s = "s" unless brokerCert.empty?
 
 # Target the first broker instance
 broker_uri = "http#{s}://#{link('broker').instances[0].address}:#{link('broker').p('port')}"
@@ -27,5 +27,5 @@ end
   -brokerUsername <%= escape_shell(link('broker').p('username')) %> \
   -brokerPassword <%= escape_shell(link('broker').p('password')) %> \
   -brokerUrl <%= broker_uri %> \
-  -tlsCertificate "<%= tlsCertificate %>" \
-  -disableSSLCertVerification=<%= p('tls.disable_ssl_cert_verification') %>
+  -brokerCACert "<%= p('tls.ca_cert', '') %>" \
+  -skipTLSValidation=<%= p('tls.skip_tls_validation') %>
