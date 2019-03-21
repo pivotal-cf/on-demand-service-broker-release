@@ -90,7 +90,7 @@ RSpec.describe 'collect-service-metrics script' do
       let(:manifest_file) { 'spec/fixtures/collect_service_metrics_with_disable_ssl_cert_verification.yml' }
 
       it 'is passed to the command line' do
-        expect(rendered_template).to include '-skipTLSValidation=true'
+        expect(rendered_template).to include '-disableTLSCertificateVerification=true'
       end
     end
 
@@ -98,7 +98,7 @@ RSpec.describe 'collect-service-metrics script' do
       let(:manifest_file) { 'spec/fixtures/collect_service_metrics_without_broker_uri.yml' }
 
       it 'is passed to the command line as false' do
-        expect(rendered_template).to include '-skipTLSValidation=false'
+        expect(rendered_template).to include '-disableTLSCertificateVerification=false'
       end
     end
   end

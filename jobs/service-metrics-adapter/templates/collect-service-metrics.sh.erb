@@ -28,4 +28,4 @@ end
   -brokerPassword <%= escape_shell(link('broker').p('password')) %> \
   -brokerUrl <%= broker_uri %> \
   -brokerCACert "<%= p('tls.ca_cert', '') %>" \
-  -skipTLSValidation=<%= p('tls.skip_tls_validation') %>
+  -disableTLSCertificateVerification=<%= p('tls.disable_ssl_cert_verification') %>
