@@ -15,6 +15,10 @@
   value:
     name: service-metrics-adapter
     release: ((broker_release))
+    properties:
+      broker_uri: https://((broker_uri))
+      tls:
+        ca_cert: ((cf.router.ca_cert)) 
 
 - type: replace
   path: /instance_groups/name=broker/jobs/-
