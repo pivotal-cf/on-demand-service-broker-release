@@ -215,6 +215,29 @@ RSpec.describe 'broker config templating' do
           expect(YAML.safe_load(rendered_template)).not_to have_key('credhub')
         end
       end
+
+      context 'and credhub.internal_url includes the protocol' do
+        let(:links) do
+          [{
+            'credhub' => {
+              'instances' => [],
+              'properties' => {
+                'credhub' => {
+                  'port' => 8844,
+                  'ca_certificate' => 'credhub_ca_cert',
+                  'internal_url' => 'https://my.credhub.internal'
+                }
+              }
+            }
+          }]
+        end
+  
+        it 'includes the correct credhub.api_url' do
+          expect(YAML.safe_load(rendered_template).dig('credhub', 'api_url')).to eq(
+            'https://my.credhub.internal:8844',
+          )
+        end
+      end
     end
 
     context 'when credhub link is provided but set to empty' do

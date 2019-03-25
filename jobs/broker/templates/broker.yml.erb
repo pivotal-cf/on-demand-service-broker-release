@@ -91,9 +91,12 @@ def credhub_config
     if_link('credhub') do |credhub|
       raise "Secure service binding is enabled but CredHub link is empty" unless credhub_link_valid?(credhub)
 
+      credhub_url = credhub.p('credhub.internal_url')
+      credhub_url = "https://#{credhub_url}" unless credhub_url.start_with?('http')
+
       credhub_properties = {
         'credhub' => {
-          'api_url' => "https://#{credhub.p('credhub.internal_url')}:#{credhub.p('credhub.port')}",
+          'api_url' => "#{credhub_url}:#{credhub.p('credhub.port')}",
           'ca_cert' => credhub.p('credhub.ca_certificate'),
           'client_id' => p('secure_binding_credentials.authentication.uaa.client_id'),
           'client_secret' => p('secure_binding_credentials.authentication.uaa.client_secret'),
