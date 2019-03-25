@@ -69,6 +69,62 @@ RSpec.describe 'register-broker errand' do
   let(:rendered_template) { renderer.render('jobs/register-broker/templates/errand.sh.erb') }
   let(:manifest_file) { 'spec/fixtures/register_broker_with_special_characters.yml' }
 
+  describe 'broker URI' do
+
+    context 'when it is specified' do
+      let(:manifest_file) { 'spec/fixtures/register_broker_with_broker_uri.yml' }
+
+      it 'includes the given broker_uri in the register-broker call' do
+        expect(rendered_template).to include "broker_uri=https://my.external.broker.address/"
+      end
+    end
+
+    context 'when it is not specified' do
+
+      context 'and broker uses plain HTTP' do
+        it 'includes the IP address' do
+          expect(rendered_template).to include "broker_uri=http://123.456.789.101:8080"
+        end
+      end
+
+      context 'and broker uses TLS' do
+        let(:links) do
+          [{
+            'broker' => {
+              'instances' => [
+                {
+                  'address' => '123.456.789.101'
+                }
+              ],
+              'properties' => {
+                'username' => "%broker_username'\"t:%!",
+                'password' => "%broker_password'\"t:%!",
+                'port' => 8080,
+                'cf' => {
+                  'root_ca_cert' => 'thats a certificate',
+                  'authentication' => cf_authentication,
+                  'url' => 'https://api.sys.cloud.foundry.org'
+                },
+                'service_catalog' => {
+                  'plans' => plans,
+                  'service_name' => 'myservicename'
+                },
+                'tls' => {
+                  'certificate': 'another fine certificate'
+                }
+              }
+            }
+          }]
+        end
+
+        it 'includes the IP address with an https protocol' do
+          expect(rendered_template).to include "broker_uri=https://123.456.789.101:8080"
+        end
+
+      end
+    end
+  end
+
   describe 'when the cf block is missing' do
     let(:links) do
       [{

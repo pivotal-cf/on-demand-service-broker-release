@@ -79,14 +79,16 @@ cf_retry api <%= '--skip-ssl-validation ' if p('disable_ssl_cert_verification') 
 broker_name=<%= p('broker_name') %>
 broker_cmd=$(cf_service_broker_command "${broker_name}")
 
-<% if_p('broker_uri') do |broker_uri| %>
-broker_uri=<%= broker_uri %>
-<% end %>
+<%
+brokerCert = link('broker').p('tls.certificate', "")
+s = "s" unless brokerCert.empty?
+brokerURI="http#{s}://#{link('broker').instances[0].address}:#{link('broker').p('port')}"
+if_p('broker_uri') do |broker_uri|
+  brokerURI=broker_uri
+end
+%>
 
-if [ -z "$broker_uri" ]; then
-  # We assume that if no route is registered, there is only 1 broker instance
-  broker_uri=http://<%= link('broker').instances[0].address %>:<%= link('broker').p('port') %>
-fi
+broker_uri=<%= brokerURI %>
 
 cf $broker_cmd $broker_name <%= escape_shell(link('broker').p('username')) %> <%= escape_shell(link('broker').p('password')) %> $broker_uri
 
