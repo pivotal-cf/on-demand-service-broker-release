@@ -3,7 +3,7 @@
   value: true
 
 - type: remove
-  path: /instance_groups/name=broker/jobs/name=route-registrar
+  path: /instance_groups/name=broker/jobs/name=route_registrar
 
 - type: remove
   path: /instance_groups/name=broker/jobs/name=register-broker
