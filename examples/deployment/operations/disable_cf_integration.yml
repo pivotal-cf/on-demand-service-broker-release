@@ -3,4 +3,16 @@
   value: true
 
 - type: remove
+  path: /instance_groups/name=broker/jobs/name=register-broker
+
+- type: remove
+  path: /instance_groups/name=broker/jobs/name=deregister-broker
+
+- type: remove
+  path: /instance_groups/name=broker/jobs/name=delete-all-service-instances-and-deregister-broker
+
+- type: remove
+  path: /instance_groups/name=broker/jobs/name=delete-all-service-instances
+
+- type: remove
   path: /instance_groups/name=broker/jobs/name=broker/properties/cf
