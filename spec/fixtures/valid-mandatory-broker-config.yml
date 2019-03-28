@@ -22,9 +22,10 @@ instance_groups:
             - name: a-release
               version: 1234
               jobs: [job-1]
-            stemcell:
-              os: ubuntu-trusty
-              version: 1234
+            stemcells:
+              - os: ubuntu-trusty
+                version: 1234
+                alias: default
           service_catalog:
             id: some-id
             service_name: some-name

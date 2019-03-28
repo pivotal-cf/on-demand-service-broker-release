@@ -194,6 +194,13 @@ properties:
   service_deployment.releases:
     description: releases to deploy for each instance
 
+  service_deployment.stemcells:
+    description: stemcells to deploy for each instance
+    default: []
+    example:
+      - os: ubuntu
+        version: 1234
+
   service_deployment.stemcell.os:
     description: stemcell OS to use for every job in the service deployment
 

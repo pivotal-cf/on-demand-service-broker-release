@@ -65,10 +65,33 @@ def validate_releases(service_deployment)
   end
 end
 
-def validate_stemcell(service_deployment)
+def prepare_stemcells(service_deployment)
+  legacy_stemcell = service_deployment['stemcell']
+  legacy_os = service_deployment['stemcell']['os'] || nil # nil
+  legacy_version = service_deployment['stemcell']['version'] || nil # 12334
+
+  if !service_deployment['stemcells'].empty? && !legacy_os.nil? && !legacy_version.nil? then
+    raise 'You cannot configure both "stemcell" and "stemcells" in broker.service_deployment.'
+  end
+
+  if !legacy_os.nil? || !legacy_version.nil? then
+    service_deployment['stemcells'] << legacy_stemcell
+  end
+  service_deployment['stemcell'] = nil
+
+  if service_deployment['stemcells'].empty?  then
+    raise 'Invalid service_deployment config - at least one stemcell must be specified'
+  end
+
+  service_deployment['stemcells'].each do |stemcell|
+    validate_stemcell stemcell
+  end
+end
+
+def validate_stemcell(stemcell)
   required_stemcell_keys = %w{os version}
-  validate_config(service_deployment['stemcell'], required_stemcell_keys, "Invalid service_deployment.stemcell config - must specify ")
-  if service_deployment['stemcell']['version'] =~ /latest$/
+  validate_config(stemcell, required_stemcell_keys, "Invalid service_deployment stemcell config - must specify ")
+  if stemcell['version'] =~ /latest$/
     raise "You must configure the exact release and stemcell versions in broker.service_deployment. " +
       "ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported."
   end
@@ -151,7 +174,7 @@ end
 
 service_deployment = p('service_deployment')
 validate_releases(service_deployment)
-validate_stemcell(service_deployment)
+prepare_stemcells(service_deployment)
 
 if p('disable_cf_startup_checks')
   global_limit = service_catalog.dig('global_quotas', 'service_instance_limit')
@@ -346,7 +369,7 @@ config = {
   "bosh" => bosh_config,
   "cf" => cf_config,
   "service_adapter" => p('service_adapter'),
-  "service_deployment" => p('service_deployment'),
+  "service_deployment" => service_deployment,
   "service_catalog" => service_catalog,
   "bosh_credhub" => p('bosh_credhub_api')
 }.merge(credhub_config).merge(service_instances_api_config)

@@ -25,9 +25,10 @@
       - name: ((service_release))
         version: ((service_release_version))
         jobs: [redis-server, health-check, cleanup-data]
-    stemcell:
-      os: ((meta.stemcell.os))
+    stemcells:
+    - os: ((meta.stemcell.os))
       version: "((meta.stemcell.version))"
+      alias: default
 
 - type: replace
   path: /instance_groups/name=broker/jobs/-

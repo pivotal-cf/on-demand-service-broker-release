@@ -808,33 +808,129 @@ RSpec.describe 'broker config templating' do
       end
     end
 
-    context 'when no stemcell os is configured' do
+    describe '"stemcells" property' do
+      let(:manifest_file) { File.open 'spec/fixtures/valid-mandatory-broker-config.yml' }
+
+      it "is included in the configuration" do
+        obj = YAML.load(rendered_template)
+        expect(obj['service_deployment']['stemcells']).to eq([{"os"=>"ubuntu-trusty", "version"=>1234, "alias"=>"default"}])
+      end
+
+      context 'when "stemcell" is also configured' do
+        let(:manifest_file) do
+          generate_test_manifest do |yaml|
+            yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcell'] = {
+              'os' => 'ubuntu-trusty','version' => 1234
+            }
+            yaml
+          end
+        end
+
+        it 'raises an error' do
+          expect { rendered_template }.to(
+            raise_error(RuntimeError, 'You cannot configure both "stemcell" and "stemcells" in broker.service_deployment.')
+          )
+        end
+      end
+
+      context 'when one of the stemcells does not configure OS' do
+        let(:manifest_file) do
+          generate_test_manifest do |yaml|
+            yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcells'][0]['os'] = nil
+            yaml
+          end
+        end
+
+        it 'raises an error' do
+          expect { rendered_template }.to(
+            raise_error(RuntimeError, 'Invalid service_deployment stemcell config - must specify os')
+          )
+        end
+      end
+
+      context 'when one of the stemcells does not configure version' do
+        let(:manifest_file) do
+          generate_test_manifest do |yaml|
+            yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcells'][0]['version'] = nil
+            yaml
+          end
+        end
+
+        it 'raises an error' do
+          expect { rendered_template }.to(
+              raise_error(RuntimeError, 'Invalid service_deployment stemcell config - must specify version')
+          )
+        end
+      end
+    end
+
+    context 'when neither "stemcell" nor "stemcells" is configured' do
       let(:manifest_file) do
         generate_test_manifest do |yaml|
-          yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcell']['os'] = nil
+          yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcells'] = nil
           yaml
         end
       end
 
       it 'raises an error' do
         expect { rendered_template }.to(
-          raise_error(RuntimeError, 'Invalid service_deployment.stemcell config - must specify os')
+            raise_error(RuntimeError, 'Invalid service_deployment config - at least one stemcell must be specified')
         )
       end
     end
 
-    context 'when no stemcell version is configured' do
+    describe 'deprecated "stemcell" property' do
       let(:manifest_file) do
         generate_test_manifest do |yaml|
-          yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcell']['version'] = nil
+          yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcells'] = []
+          yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcell'] = {
+              'os' => 'ubuntu-trusty', 'version' => 2311
+          }
           yaml
         end
       end
 
-      it 'raises an error' do
-        expect { rendered_template }.to(
-          raise_error(RuntimeError, 'Invalid service_deployment.stemcell config - must specify version')
-        )
+
+      it 'generates the config with "stemcells"' do
+        obj = YAML.load(rendered_template)
+        expect(obj['service_deployment']['stemcells']).to eq([{"os"=>"ubuntu-trusty", "version"=>2311}])
+        expect(obj['service_deployment']['stemcell']).to be_nil
+      end
+
+      context 'when no stemcell os is configured' do
+        let(:manifest_file) do
+          generate_test_manifest do |yaml|
+            yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcells'] = []
+            yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcell'] = {
+                'os' => nil, 'version' => 2311
+            }
+            yaml
+          end
+        end
+
+        it 'raises an error' do
+          expect { rendered_template }.to(
+            raise_error(RuntimeError, 'Invalid service_deployment stemcell config - must specify os')
+          )
+        end
+      end
+
+      context 'when no stemcell version is configured' do
+        let(:manifest_file) do
+          generate_test_manifest do |yaml|
+            yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcells'] = []
+            yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcell'] = {
+                'os' => 'ubuntu-xenial', 'version' => nil
+            }
+            yaml
+          end
+        end
+
+        it 'raises an error' do
+          expect { rendered_template }.to(
+            raise_error(RuntimeError, 'Invalid service_deployment stemcell config - must specify version')
+          )
+        end
       end
     end
 
@@ -873,7 +969,7 @@ RSpec.describe 'broker config templating' do
     context 'when a stemcell version is latest' do
       let(:manifest_file) do
         generate_test_manifest do |yaml|
-          yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcell']['version'] = 'latest'
+          yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcells'] = [{'version' => 'latest', 'os' => 'ubuntu-trusty'}]
           yaml
         end
       end
@@ -889,7 +985,7 @@ RSpec.describe 'broker config templating' do
     context 'when a stemcell version is n.latest' do
       let(:manifest_file) do
         generate_test_manifest do |yaml|
-          yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcell']['version'] = '22.latest'
+          yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcells'][0]['version'] = '22.latest'
           yaml
         end
       end
