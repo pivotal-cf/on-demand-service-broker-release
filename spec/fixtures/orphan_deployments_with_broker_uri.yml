@@ -8,3 +8,5 @@ instance_groups:
 - name: broker
   jobs:
   - name: orphan-deployments
+    properties: 
+        broker_uri: "https://example-broker.com"

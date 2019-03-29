@@ -9,8 +9,8 @@
 require 'spec_helper'
 
 RSpec.describe 'orphan-deployments config' do
-  let(:broker_link) do
-    {
+  let(:broker_links) do
+    [{
       'broker' => {
         'instances' => [
           {
@@ -23,14 +23,14 @@ RSpec.describe 'orphan-deployments config' do
           'port' => 7070
         }
       }
-    }
+    }]
   end
 
   let(:renderer) do
     merged_context = BoshEmulator.director_merge(
       YAML.load_file(manifest_file),
       'orphan-deployments',
-      [broker_link]
+      broker_links
     )
     Bosh::Template::Renderer.new(context: merged_context.to_json)
   end
@@ -48,4 +48,73 @@ RSpec.describe 'orphan-deployments config' do
       expect(basic_auth_block.fetch('password')).to eq("%password'\"t:%!")
     end
   end
+
+  context 'when broker uri is not provided' do
+
+    context 'when broker uses TLS' do
+      let(:broker_links) do
+        [{
+        'broker' => {
+          'instances' => [
+            {
+              'address' => '123.456.789.101'
+            }
+          ],
+          'properties' => {
+            'username' => "%username'\"t:%!",
+            'password' => "%password'\"t:%!",
+            'port' => 8080,
+            'tls' => {
+              'certificate': 'some certificate'
+            }
+          }        
+        }
+      }]
+      end
+
+      let(:manifest_file) { 'spec/fixtures/orphan_deployments_for_tls_broker.yml' }
+
+      it 'passes tls ca cert when provided' do    
+        expect(config.fetch('broker_api').fetch('tls').fetch('ca_cert')).to eq('correct ca cert')
+      end
+
+      it 'uses https protocol to broker address' do    
+        expect(config.fetch('broker_api').fetch('url')).to eq('https://123.456.789.101:8080') 
+      end      
+    end 
+
+    context 'when broker does not use TLS' do 
+      let(:broker_links) do
+        [{
+        'broker' => {
+          'instances' => [
+            {
+              'address' => '123.456.789.101'
+            }
+          ],
+          'properties' => {
+            'username' => "%username'\"t:%!",
+            'password' => "%password'\"t:%!",
+            'port' => 7070,
+          }        
+        }
+      }]
+      end
+
+      let(:manifest_file) { 'spec/fixtures/orphan_deployments_basic.yml' }
+
+      it 'uses http protocol for broker address' do        
+        expect(config.fetch('broker_api').fetch('url')).to eq('http://123.456.789.101:7070')
+      end
+    end
+
+  end
+
+  context 'when broker uri is provided' do
+    let(:manifest_file) { 'spec/fixtures/orphan_deployments_with_broker_uri.yml' }
+    it 'uses http protocol for broker address' do
+      expect(config.fetch('broker_api').fetch('url')).to eq('https://example-broker.com')
+    end
+  end
+ 
 end

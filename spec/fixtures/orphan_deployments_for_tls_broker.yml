@@ -4,30 +4,10 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
-<%=
-  broker_link = link('broker')
-
-brokerCert = broker_link.p('tls.certificate', "")
-s = "s" unless brokerCert.empty?
-broker_address = "http#{s}://#{broker_link.instances[0].address}:#{broker_link.p('port')}"
-if_p('broker_uri') do |uri|
-  broker_address = uri
-end
-
-  config = {
-    "broker_api" => {
-      "url" => broker_address,
-      "authentication" => {
-        "basic" => {
-          "username" => broker_link.p('username'),
-          "password" => broker_link.p('password')
-        }
-      },
-      "tls" => {
-        "ca_cert" => p('tls.ca_cert', "")
-      }
-    }
-  }
-
-  config.to_yaml
-%>
+instance_groups:
+- name: broker
+  jobs:
+  - name: orphan-deployments
+    properties: 
+        tls:
+            ca_cert: "correct ca cert"

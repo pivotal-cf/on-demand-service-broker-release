@@ -18,4 +18,9 @@ consumes:
 - name: broker
   type: broker
 
-properties: {}
+properties: 
+  broker_uri:
+    description: Broker URI, if a route is registered or TLS is enabled
+    example: https://broker.example.com, https://broker-job.default-network.broker-deployment.bosh
+  tls.ca_cert:
+    description: The ca certificate used when communicating with the broker
