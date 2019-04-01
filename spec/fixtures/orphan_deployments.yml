@@ -8,5 +8,8 @@ instance_groups:
 - name: broker
   jobs:
   - name: orphan-deployments
-    properties: 
+    properties:
         broker_uri: "https://example-broker.com"
+        tls:
+          ca_cert: "some cert"
+          disable_ssl_cert_verification: true

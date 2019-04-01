@@ -24,7 +24,8 @@ end
         }
       },
       "tls" => {
-        "ca_cert" => p('tls.ca_cert', "")
+        "ca_cert" => p('tls.ca_cert', ''),
+        "disable_ssl_cert_verification" => p('tls.disable_ssl_cert_verification')
       }
     }
   }
