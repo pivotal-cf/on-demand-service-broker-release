@@ -48,203 +48,122 @@ RSpec.describe 'recreate-all-service-instances config' do
 
   let(:manifest_file) { File.open 'spec/fixtures/recreate_all_minimal.yml' }
 
-  context 'with no service instances api specified' do
+  it 'includes bosh configuration' do
+    expect(config.dig('bosh', 'url')).to eq('the.bosh.url')
+    expect(config.dig('bosh', 'root_ca_cert')).to eq('thecert')
+  end
+
+  context 'without any property configured' do
     let(:manifest_file) { File.open 'spec/fixtures/recreate_all_minimal.yml' }
 
-    it 'is not empty' do
-      expect(config).not_to be_empty
+    it 'configures the errand with default values' do
+      expect(config.fetch('polling_interval')).to eq(60)
+      expect(config.fetch('attempt_interval')).to eq(60)
+      expect(config.fetch('attempt_limit')).to eq(5)
+      expect(config.fetch('request_timeout')).to eq(120)
+      expect(config.fetch('max_in_flight')).to eq(1)
+      expect(config.fetch('canaries')).to eq(0)
     end
 
-    it 'sets broker_api.url' do
+    it 'configures the broker api correctly' do
       expect(config.fetch('broker_api').fetch('url')).to eq('http://123.456.789.101:8080')
-    end
-
-    it 'sets correct broker api authentication' do
       basic_auth_block = config.fetch('broker_api').fetch('authentication').fetch('basic')
       expect(basic_auth_block.fetch('username')).to eq("%username'\"t:%!")
       expect(basic_auth_block.fetch('password')).to eq("%password'\"t:%!")
+      expect(config.dig('broker_api', 'tls', 'ca_cert')).to eq ''
+      expect(config.dig('broker_api', 'tls', 'disable_ssl_cert_verification')).to eq false
     end
 
-    it 'sets service_instances_api.url' do
+    it 'configures the service_instances_api to use the mgmt endpoint to get instances' do
       expect(config.fetch('service_instances_api').fetch('url')).to eq('http://123.456.789.101:8080/mgmt/service_instances')
-    end
-
-    it 'sets correct service instances api authentication' do
+      expect(config.dig('service_instances_api', 'root_ca_cert')).to eq ''
+      expect(config.dig('service_instances_api', 'disable_ssl_cert_verification')).to eq false
       basic_auth_block = config.fetch('service_instances_api').fetch('authentication').fetch('basic')
       expect(basic_auth_block.fetch('username')).to eq("%username'\"t:%!")
       expect(basic_auth_block.fetch('password')).to eq("%password'\"t:%!")
+    end
+  end
+
+  context 'with every property configured' do
+    let(:manifest_file) { File.open 'spec/fixtures/recreate_all_fully_configured.yml' }
+
+    it 'configures the errand accordingly' do
+      expect(config.fetch('polling_interval')).to eq(101)
+      expect(config.fetch('attempt_interval')).to eq(36)
+      expect(config.fetch('attempt_limit')).to eq(42)
+      expect(config.fetch('request_timeout')).to eq(300)
+    end
+
+    it 'configures the broker api correctly' do
+      expect(config.dig('broker_api', 'tls', 'ca_cert')).to eq 'cert'
+      expect(config.dig('broker_api', 'tls', 'disable_ssl_cert_verification')).to eq true
+      expect(config.dig('broker_api', 'url')).to eq 'https://felisia.dev'
+    end
+
+    it 'configures the service instances api correctly' do
+      expect(config.dig('service_instances_api', 'root_ca_cert')).to eq 'cert'
+      expect(config.dig('service_instances_api', 'disable_ssl_cert_verification')).to eq true
+      expect(config.dig('service_instances_api', 'url')).to eq 'https://felisia.dev/mgmt/service_instances'
+    end
+
+    describe 'attempt limit property' do
+      let(:manifest_file) { File.open 'spec/fixtures/recreate_all_invalid_attempt_limit.yml' }
+
+      it 'fails when it is less or equal zero' do
+        expect { rendered_template }.to raise_error(
+          RuntimeError,
+          'Invalid recreate_all_service_instances.attempt_limit - must be greater or equal 1'
+        )
+      end
     end
   end
 
   context 'with service instances api specified' do
     let(:manifest_file) { File.open 'spec/fixtures/recreate_all_minimal.yml' }
-    let(:siapi_root_ca_cert) {false}
-    let(:broker_link) do
-      bl = {
-        'broker' => {
-          'instances' => [
-            {
-              'address' => '123.456.789.101'
+
+    before(:each) do
+      broker_link['broker']['properties']['service_instances_api']  = {
+          'authentication' => {
+            'basic' => {
+              'username' => "myname",
+              'password' => "supersecret"
             }
-          ],
-          'properties' => {
-            'username' => "%username'\"t:%!",
-            'password' => "%password'\"t:%!",
-            'port' => 8080,
-            'bosh' => {
-              'url' => 'the.bosh.url',
-              'root_ca_cert' => 'thecert'
-            },
-            'service_instances_api' => {
-              'authentication' => {
-                'basic' => {
-                  'username' => "myname",
-                  'password' => "supersecret"
-                }
-              },
-              'disable_ssl_cert_verification' => true,
-              'url' => 'http://example.org/give-me/some-services',
-            }
-          }
+          },
+          'disable_ssl_cert_verification' => true,
+          'url' => 'http://example.org/give-me/some-services'
         }
-      }
-      if siapi_root_ca_cert
-        bl['broker']['properties']['service_instances_api']['root_ca_cert'] = siapi_root_ca_cert
-      end
-      bl
     end
 
-    it 'is not empty' do
-      expect(config).not_to be_empty
-    end
-
-    it 'sets broker_api.url' do
-      expect(config.fetch('broker_api').fetch('url')).to eq('http://123.456.789.101:8080')
-    end
-
-    it 'sets correct broker api authentication' do
-      basic_auth_block = config.fetch('broker_api').fetch('authentication').fetch('basic')
-      expect(basic_auth_block.fetch('username')).to eq("%username'\"t:%!")
-      expect(basic_auth_block.fetch('password')).to eq("%password'\"t:%!")
-    end
-
-    it 'sets service_instances_api.url' do
-      expect(config.fetch('service_instances_api').fetch('url')).to eq('http://example.org/give-me/some-services')
-    end
-
-    it 'sets correct service instances api authentication' do
+    it 'consumes the broker link to configure the service_instances_api' do
       basic_auth_block = config.fetch('service_instances_api').fetch('authentication').fetch('basic')
       expect(basic_auth_block.fetch('username')).to eq('myname')
       expect(basic_auth_block.fetch('password')).to eq('supersecret')
-    end
 
-    it 'doesnt set root_ca_cert' do
-      expect(config.fetch('service_instances_api').key?('root_ca_cert')).to be_falsey
-    end
-
-    it 'doesnt set disable_ssl_cert_verification to true' do
+      expect(config.fetch('service_instances_api').fetch('url')).to eq('http://example.org/give-me/some-services')
       expect(config.fetch('service_instances_api').fetch('disable_ssl_cert_verification')).to eq(true)
     end
 
-    context 'and root_ca_cert provided' do
-      let(:siapi_root_ca_cert) do
-        '-----BEGIN CERTIFICATE-----
-          MostCERTainlyACert
-          -----END CERTIFICATE-----
-        '
-      end
+    it 'does not include the root_ca_cert in the config when it is not set' do
+      expect(config.dig('service_instances_api', 'root_ca_cert')).to be_empty
+    end
 
-      it 'sets correct root_ca_cert' do
-        expect(config.fetch('service_instances_api').fetch('root_ca_cert')).to eq('-----BEGIN CERTIFICATE-----
-          MostCERTainlyACert
-          -----END CERTIFICATE-----
-        ')
-      end
+    it 'includes the root_ca_cert in the config when it is set' do
+      broker_link['broker']['properties']['service_instances_api']['root_ca_cert'] = 'cert'
+      expect(config.fetch('service_instances_api').fetch('root_ca_cert')).to eq('cert')
     end
   end
 
-  context 'with polling interval provided' do
-    let(:manifest_file) { File.open 'spec/fixtures/recreate_all_with_polling_interval.yml' }
-
-    it 'sets polling interval to 101' do
-      expect(config.fetch('polling_interval')).to eq(101)
+  context 'broker TLS is configured' do
+    before(:each) do
+      broker_link['broker']['properties']['tls']  = {
+          'certificate': 'some certificate'
+        }
     end
-  end
 
-  context 'without polling interval provided' do
-    let(:manifest_file) { File.open 'spec/fixtures/recreate_all_minimal.yml' }
-
-    it 'sets polling interval to the default' do
-      expect(config.fetch('polling_interval')).to eq(60)
+    it 'uses HTTPS for the fallback uri protocol' do
+      expect(config.dig('broker_api', 'url')).to eq('https://123.456.789.101:8080')
+      expect(config.dig('service_instances_api', 'url')).to eq('https://123.456.789.101:8080/mgmt/service_instances')
     end
-  end
-
-  context 'with attempt interval provided' do
-    let(:manifest_file) { File.open 'spec/fixtures/recreate_all_with_attempt_interval.yml' }
-
-    it 'sets polling interval to 36' do
-      expect(config.fetch('attempt_interval')).to eq(36)
-    end
-  end
-
-  context 'without attempt interval provided' do
-    let(:manifest_file) { File.open 'spec/fixtures/recreate_all_minimal.yml' }
-
-    it 'sets attempt interval to the default' do
-      expect(config.fetch('attempt_interval')).to eq(60)
-    end
-  end
-
-  context 'with attempt limit provided' do
-    let(:manifest_file) { File.open 'spec/fixtures/recreate_all_with_attempt_limit.yml' }
-
-    it 'sets attempt limit to 42' do
-      expect(config.fetch('attempt_limit')).to eq(42)
-    end
-  end
-
-  context 'without attempt limit provided' do
-    let(:manifest_file) { File.open 'spec/fixtures/recreate_all_minimal.yml' }
-
-    it 'sets attempt limit to the default' do
-      expect(config.fetch('attempt_limit')).to eq(5)
-    end
-  end
-
-  context 'with an attempt limit less or equal zero' do
-    let(:manifest_file) { File.open 'spec/fixtures/recreate_all_invalid_attempt_limit.yml' }
-
-    it 'fails' do
-      expect do
-        rendered_template
-      end.to raise_error(RuntimeError, 'Invalid recreate_all_service_instances.attempt_limit - must be greater or equal 1')
-    end
-  end
-
-  context 'without request timeout provided' do
-    let(:manifest_file) { File.open 'spec/fixtures/recreate_all_minimal.yml' }
-
-    it 'sets request timeout to 120' do
-      expect(config.fetch('request_timeout')).to eq(120)
-    end
-  end
-
-  context 'with request timeout provided' do
-    let(:manifest_file) { File.open 'spec/fixtures/recreate_all_with_request_timeout.yml' }
-
-    it 'sets request timeout to the provided value' do
-      expect(config.fetch('request_timeout')).to eq(300)
-    end
-  end
-
-  it 'configures canary and in-flight properties to default values' do
-    expect(config.fetch('max_in_flight')).to eq(1)
-    expect(config.fetch('canaries')).to eq(0)
-  end
-
-  it 'includes bosh configuration' do
-    expect(config.dig('bosh', 'url')).to eq('the.bosh.url')
-    expect(config.dig('bosh', 'root_ca_cert')).to eq('thecert')
   end
 
 end

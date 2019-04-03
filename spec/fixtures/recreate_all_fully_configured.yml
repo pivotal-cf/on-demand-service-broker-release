@@ -9,4 +9,11 @@ instance_groups:
   jobs:
   - name: recreate-all-service-instances
     properties:
+      attempt_limit: 42
+      attempt_interval_seconds: 36
       polling_interval_seconds: 101
+      request_timeout: 300
+      tls:
+        ca_cert: 'cert'
+        disable_ssl_cert_verification: true
+      broker_uri: 'https://felisia.dev'
