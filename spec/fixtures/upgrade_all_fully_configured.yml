@@ -10,3 +10,11 @@ instance_groups:
   - name: upgrade-all-service-instances
     properties:
       attempt_interval_seconds: 36
+      polling_interval_seconds: 101
+      attempt_limit: 42
+      max_in_flight: 13
+      request_timeout: 300
+      canaries: 3
+      canary_selection_params:
+        test: true
+        size: small
