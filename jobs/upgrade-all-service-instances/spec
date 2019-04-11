@@ -20,6 +20,9 @@ consumes:
     type: broker
 
 properties:
+  broker_uri:
+    description: Broker URI, if a route is registered or TLS is enabled
+    example: https://broker.example.com, https://broker-job.default-network.broker-deployment.bosh
   polling_interval_seconds:
     description: "interval in seconds when waiting for service instance to be upgraded"
     default: 60
@@ -41,3 +44,8 @@ properties:
   canary_selection_params:
     description: "parameters to filter the canary instances"
     default: {}
+  tls.ca_cert:
+    description: The ca certificate used when communicating with the broker
+  tls.disable_ssl_cert_verification:
+    default: false
+    description: Do not perform TLS certificate verification when communicating to the broker. Not recommended for production use.

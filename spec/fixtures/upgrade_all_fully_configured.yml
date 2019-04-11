@@ -9,6 +9,7 @@ instance_groups:
   jobs:
   - name: upgrade-all-service-instances
     properties:
+      broker_uri: https://example.com
       attempt_interval_seconds: 36
       polling_interval_seconds: 101
       attempt_limit: 42
@@ -18,3 +19,6 @@ instance_groups:
       canary_selection_params:
         test: true
         size: small
+      tls:
+        ca_cert: "a valid certificate"
+        disable_ssl_cert_verification: true

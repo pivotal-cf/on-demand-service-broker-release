@@ -153,14 +153,14 @@ RSpec.describe 'recreate-all-service-instances config' do
     end
   end
 
-  context 'broker TLS is configured' do
+  context 'broker tls is configured' do
     before(:each) do
       broker_link['broker']['properties']['tls']  = {
           'certificate': 'some certificate'
         }
     end
 
-    it 'uses HTTPS for the fallback uri protocol' do
+    it 'uses https for the fallback uri protocol' do
       expect(config.dig('broker_api', 'url')).to eq('https://123.456.789.101:8080')
       expect(config.dig('service_instances_api', 'url')).to eq('https://123.456.789.101:8080/mgmt/service_instances')
     end
