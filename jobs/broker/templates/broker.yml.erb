@@ -338,15 +338,18 @@ end
 
 def tls_config
   tls_conf = {}
-  if_p('tls') do |config|
-    unless config["certificate"].nil? || config["private_key"].nil?
-      tls_conf = {
-        'tls' => {
-          'cert_file' => '/var/vcap/jobs/broker/certs/broker.crt',
-          'key_file' => '/var/vcap/jobs/broker/certs/broker.key'
-        }
+  config = p('tls')
+  if config["certificate"] && config["private_key"]
+    tls_conf = {
+      'tls' => {
+        'cert_file' => '/var/vcap/jobs/broker/certs/broker.crt',
+        'key_file' => '/var/vcap/jobs/broker/certs/broker.key'
       }
-    end
+    }
+  elsif config["certificate"] && config["private_key"].nil?
+    raise "Invalid TLS config - missing tls.private_key"
+  elsif config["private_key"] && config["certificate"].nil?
+    raise "Invalid TLS config - missing tls.certificate"
   end
   tls_conf
 end

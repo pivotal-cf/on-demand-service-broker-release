@@ -119,6 +119,24 @@ RSpec.describe 'broker config templating' do
         expect(config['broker']).not_to include('tls')
       end
     end
+
+    context 'when tls config has the certificate but is missing the private key' do
+      let(:manifest_file) { File.open 'spec/fixtures/TLS-only-certificate-broker-config.yml' }
+      it 'throws an error' do
+        expect do
+          rendered_template
+        end.to raise_error(RuntimeError, 'Invalid TLS config - missing tls.private_key')
+      end
+    end
+
+    context 'when tls config has the private key but is missing the certificate' do
+      let(:manifest_file) { File.open 'spec/fixtures/TLS-only-private-key-broker-config.yml' }
+      it 'throws an error' do
+        expect do
+          rendered_template
+        end.to raise_error(RuntimeError, 'Invalid TLS config - missing tls.certificate')
+      end
+    end
   end
 
   describe 'bosh authentication configuration' do
