@@ -42,6 +42,20 @@ def validate_maintenance_info(p)
       end
     end
   end
+
+  version = p.dig('maintenance_info', 'version')
+  validate_is_semver(version)
+end
+
+def validate_is_semver(version)
+  unless version.nil?
+    require 'semantic'
+    begin
+      semver = Semantic::Version.new(version)
+    rescue ArgumentError
+      raise "maintenance_info.version must respect semver"
+    end
+  end
 end
 
 def validate_releases(service_deployment)
@@ -153,7 +167,7 @@ if has_values?('secure_binding_credentials.authentication.uaa')
 end
 
 service_catalog = p('service_catalog')
-if service_catalog.dig('maintenance_info', 'public').empty? && service_catalog.dig('maintenance_info', 'private').empty?
+if service_catalog.dig('maintenance_info', 'public').empty? && service_catalog.dig('maintenance_info', 'private').empty? && service_catalog.dig('maintenance_info', 'version').nil?
   service_catalog.delete('maintenance_info')
 else
   validate_maintenance_info(service_catalog)

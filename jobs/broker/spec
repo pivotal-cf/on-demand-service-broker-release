@@ -275,6 +275,11 @@ properties:
     description: hash of resource names and limit (integer) that may may be provisioned by on-demand broker
     default: {}
 
+  service_catalog.maintenance_info.version:
+    description: maintenance information version for all plans. See https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#maintenance-info
+    example: 1.2.3
+    default:
+
   service_catalog.maintenance_info.public:
     description: maintenance information to be returned as plain text in the service catalog for all plans
     default: {}

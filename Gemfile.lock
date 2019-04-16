@@ -18,6 +18,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
+    semantic (1.6.1)
     semi_semantic (1.2.0)
 
 PLATFORMS
@@ -27,6 +28,7 @@ DEPENDENCIES
   bosh-template
   rake
   rspec
+  semantic
 
 RUBY VERSION
    ruby 2.6.2p47

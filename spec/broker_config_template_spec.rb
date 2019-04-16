@@ -249,7 +249,7 @@ RSpec.describe 'broker config templating' do
             }
           }]
         end
-  
+
         it 'includes the correct credhub.api_url' do
           expect(YAML.safe_load(rendered_template).dig('credhub', 'api_url')).to eq(
             'https://my.credhub.internal:8844',
@@ -1374,40 +1374,70 @@ RSpec.describe 'broker config templating' do
         expect(config['service_catalog']['plans'].first['maintenance_info']['public']).to eq("plan_key" => "plan_value")
         expect(config['service_catalog']['maintenance_info']['private']).to eq("global_private_key" => "global_private_value")
         expect(config['service_catalog']['plans'].first['maintenance_info']['private']).to eq("plan_private_key" => "plan_private_value")
+
+        expect(config['service_catalog']['maintenance_info']['version']).to eq("1.2.3+foo.123")
+        expect(config['service_catalog']['plans'].first['maintenance_info']['version']).to eq("1.2.5+bar.555")
       end
     end
 
     context "when it's misconfigured" do
-      let(:invalid_values) {
-        [ {"key" => "value"}, ["1","2"] ]
-      }
-      let(:top_level_keys) { %w{public private} }
 
-      it 'raises an error when the global maintenance_info has invalid types' do
-        top_level_keys.each do |top_level_key|
-          invalid_values.each do |v|
-            catalog = brokerProperties.dig('service_catalog')
-            catalog['maintenance_info'] = {top_level_key => {"nested" => v}}
-            properties = brokerProperties.merge('service_catalog' => catalog)
-            expect { @template.render(properties) }.to raise_error(
-              RuntimeError,
-              "the values for maintenance_info.#{top_level_key} cannot be nested"
-            ), "no error raised for type #{v.class} at #{top_level_key}"
+      describe 'public and private' do
+        let(:invalid_values) {
+          [ {"key" => "value"}, ["1","2"] ]
+        }
+        let(:top_level_keys) { %w{public private} }
+
+        it 'raises an error when the global maintenance_info has invalid types' do
+          top_level_keys.each do |top_level_key|
+            invalid_values.each do |v|
+              catalog = brokerProperties.dig('service_catalog')
+              catalog['maintenance_info'] = {top_level_key => {"nested" => v}}
+              properties = brokerProperties.merge('service_catalog' => catalog)
+              expect { @template.render(properties) }.to raise_error(
+                RuntimeError,
+                "the values for maintenance_info.#{top_level_key} cannot be nested"
+              ), "no error raised for type #{v.class} at #{top_level_key}"
+            end
+          end
+        end
+
+        it 'raises an error when a plan maintenance_info has invalid types' do
+          top_level_keys.each do |top_level_key|
+            invalid_values.each do |v|
+              catalog = brokerProperties.dig('service_catalog')
+              catalog['plans'].first['maintenance_info'] = {top_level_key => {"nested" => v}}
+              properties = brokerProperties.merge('service_catalog' => catalog)
+              expect { @template.render(properties) }.to raise_error(
+                RuntimeError,
+                "the values for maintenance_info.#{top_level_key} cannot be nested"
+              ), "no error raised for type #{v.class} at #{top_level_key}"
+            end
           end
         end
       end
 
-      it 'raises an error when a plan maintenance_info has invalid types' do
-        top_level_keys.each do |top_level_key|
-          invalid_values.each do |v|
-            catalog = brokerProperties.dig('service_catalog')
-            catalog['plans'].first['maintenance_info'] = {top_level_key => {"nested" => v}}
-            properties = brokerProperties.merge('service_catalog' => catalog)
-            expect { @template.render(properties) }.to raise_error(
-              RuntimeError,
-              "the values for maintenance_info.#{top_level_key} cannot be nested"
-            ), "no error raised for type #{v.class} at #{top_level_key}"
-          end
+      describe 'version' do
+        it 'raises an error when global maintenance_info version is not semver' do
+          catalog = brokerProperties.dig('service_catalog')
+          catalog['maintenance_info'] = {'version' => 'abacate'}
+
+          properties = brokerProperties.merge('service_catalog' => catalog)
+          expect { @template.render(properties) }.to raise_error(
+            RuntimeError,
+            "maintenance_info.version must respect semver"
+          ), "no error raised for non-semver version"
+        end
+
+        it 'raises an error when plan maintenance_info version is not semver' do
+          catalog = brokerProperties.dig('service_catalog')
+          catalog['plans'].first['maintenance_info'] = {'version' => 'felisia'}
+
+          properties = brokerProperties.merge('service_catalog' => catalog)
+          expect { @template.render(properties) }.to raise_error(
+            RuntimeError,
+            "maintenance_info.version must respect semver"
+          ), "no error raised for non-semver version"
         end
       end
     end
