@@ -32,7 +32,7 @@ instance_groups:
             bindable: false
             plan_updatable: false
             maintenance_info:
-              version: 1.2.3+foo.123
+              version: 1.0.0-beta+exp.sha.5114f85
               private:
                 global_private_key: global_private_value
               public:

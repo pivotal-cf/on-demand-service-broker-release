@@ -48,11 +48,9 @@ def validate_maintenance_info(p)
 end
 
 def validate_is_semver(version)
+  validSemVerRegexp = /\A(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][a-zA-Z0-9-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][a-zA-Z0-9-]*))*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?\Z/
   unless version.nil?
-    require 'semantic'
-    begin
-      semver = Semantic::Version.new(version)
-    rescue ArgumentError
+    unless version =~ validSemVerRegexp
       raise "maintenance_info.version must respect semver"
     end
   end

@@ -1375,7 +1375,7 @@ RSpec.describe 'broker config templating' do
         expect(config['service_catalog']['maintenance_info']['private']).to eq("global_private_key" => "global_private_value")
         expect(config['service_catalog']['plans'].first['maintenance_info']['private']).to eq("plan_private_key" => "plan_private_value")
 
-        expect(config['service_catalog']['maintenance_info']['version']).to eq("1.2.3+foo.123")
+        expect(config['service_catalog']['maintenance_info']['version']).to eq("1.0.0-beta+exp.sha.5114f85")
         expect(config['service_catalog']['plans'].first['maintenance_info']['version']).to eq("1.2.5+bar.555")
       end
     end
