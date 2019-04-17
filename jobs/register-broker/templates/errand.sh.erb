@@ -102,14 +102,12 @@ cf $broker_cmd $broker_name <%= escape_shell(link('broker').p('username')) %> <%
     .each do |plan| %>
     # fetch the cf_service_access property. set it to enable by default
       <% if plan.fetch('cf_service_access', 'enable') == 'enable' %>
-        cf enable-service-access <%= service_name %> -p <%= plan.fetch('name') %>
+cf enable-service-access <%= service_name %> -p <%= plan.fetch('name') %>
       <% elsif plan.fetch('cf_service_access') == 'disable' %>
-        cf disable-service-access <%= service_name %> -p <%= plan.fetch('name') %>
+cf disable-service-access <%= service_name %> -p <%= plan.fetch('name') %>
       <% elsif plan.fetch('cf_service_access') == 'org-restricted' %>
-        <% org = escape_shell(p('default_access_org')) %>
-        if ! cf service-access -o <%= org %> -e <%= service_name %> | grep -q " <%= plan.fetch('name') %> "; then
-          cf enable-service-access <%= service_name %> -o <%= escape_shell(p('default_access_org')) %> -p <%= plan.fetch('name') %>
-        fi
+cf disable-service-access <%= service_name %> -p <%= plan.fetch('name') %>
+cf enable-service-access <%= service_name %> -o <%= escape_shell(p('default_access_org')) %> -p <%= plan.fetch('name') %>
       <% elsif plan.fetch('cf_service_access') != 'manual'
           raise "Unsupported value #{plan.fetch('cf_service_access')} for cf_service_access. Choose from \"enable\", \"disable\", \"manual\", \"org-restricted\""
       %>

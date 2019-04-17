@@ -357,8 +357,8 @@ RSpec.describe 'register-broker errand' do
       let(:access_value) { 'org-restricted' }
 
       it "change the access for default access org" do
-        expect(rendered_template).to include 'cf enable-service-access myservicename -o \'cf_org\''
-        expect(rendered_template).to_not include 'cf disable-service-access'
+        expect(rendered_template).to include 'cf disable-service-access myservicename -p dedicated-vm'
+        expect(rendered_template).to include 'cf enable-service-access myservicename -o \'cf_org\' -p dedicated-vm'
       end
     end
 
