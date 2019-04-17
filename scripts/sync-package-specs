@@ -40,6 +40,7 @@ sync_package broker-post-start -app github.com/pivotal-cf/on-demand-service-brok
 sync_package orphan-deployments -app github.com/pivotal-cf/on-demand-service-broker/cmd/orphan-deployments
 sync_package delete-all-service-instances-and-deregister-broker -app github.com/pivotal-cf/on-demand-service-broker/cmd/delete-all-service-instances-and-deregister-broker
 sync_package deregister-broker -app github.com/pivotal-cf/on-demand-service-broker/cmd/deregister-broker
+sync_package register-broker -app github.com/pivotal-cf/on-demand-service-broker/cmd/register-broker
 
 
 wait

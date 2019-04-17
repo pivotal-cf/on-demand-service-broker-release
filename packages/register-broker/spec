@@ -1,0 +1,8 @@
+---
+name: register-broker
+
+dependencies:
+  - golang-1-linux
+
+files:
+  - github.com/pivotal-cf/on-demand-service-broker/cmd/register-broker/*.go # gosub
