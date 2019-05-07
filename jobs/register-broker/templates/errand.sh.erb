@@ -92,7 +92,9 @@ end
 
 broker_uri=<%= brokerURI %>
 
-cf $broker_cmd $broker_name <%= escape_shell(link('broker').p('username')) %> <%= escape_shell(link('broker').p('password')) %> $broker_uri
+/var/vcap/packages/register-broker/bin/register-broker \
+  -configPath /var/vcap/jobs/register-broker/config/config.yml  
+
 
 <% service_name = link('broker').p('service_catalog.service_name')%>
 <% if p('enable_service_access') %>
@@ -114,5 +116,3 @@ cf enable-service-access <%= service_name %> -o <%= escape_shell(p('default_acce
     <% end %>
   <% end %>
 <% end %>
-
-/var/vcap/packages/register-broker/bin/register-broker

@@ -322,12 +322,6 @@ RSpec.describe 'register-broker errand' do
   end
 
 
-  context 'when the broker credentials contain special characters' do
-    it 'escapes the broker credentials' do
-      expect(rendered_template).to include "cf $broker_cmd $broker_name '%broker_username'\\''\"t:%!' '%broker_password'\\''\"t:%!'"
-    end
-  end
-
   context 'when there is one plan configured' do
     context 'and it has cf_service_access enabled' do
       it 'enables the access' do
