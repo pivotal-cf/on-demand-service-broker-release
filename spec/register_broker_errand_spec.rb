@@ -323,12 +323,6 @@ RSpec.describe 'register-broker errand' do
 
 
   context 'when there is one plan configured' do
-    context 'and it has cf_service_access enabled' do
-      it 'enables the access' do
-        expect(rendered_template).to include 'cf enable-service-access'
-      end
-    end
-
     context 'and it has cf_service_access disabled' do
       let(:access_value) { 'disable' }
 
@@ -353,29 +347,6 @@ RSpec.describe 'register-broker errand' do
       it "change the access for default access org" do
         expect(rendered_template).to include 'cf disable-service-access myservicename -p dedicated-vm'
         expect(rendered_template).to include 'cf enable-service-access myservicename -o \'cf_org\' -p dedicated-vm'
-      end
-    end
-
-
-    context 'and it does not specify cf_service_access' do
-      let(:plans) do
-        [
-          {
-            'name' => 'dedicated-vm',
-            'plan_id' => 'some-plan-id',
-            'description' => 'a lovely plan',
-            'instance_groups' => [
-              'name' => 'my-service-server',
-              'vm_type' => 'small',
-              'instances' => 1,
-              'networks' => []
-            ]
-          }
-        ]
-      end
-
-      it 'enables service access by default' do
-        expect(rendered_template).to include 'cf enable-service-access'
       end
     end
 
@@ -409,8 +380,6 @@ RSpec.describe 'register-broker errand' do
     end
 
     it 'filters out nil plans' do
-      expect(rendered_template.scan(/enable-service-access/).size).to eq(1), rendered_template
-      expect(rendered_template).to include 'dedicated-vm-99'
       expect(rendered_template).to_not include 'disable-service-access'
     end
   end
@@ -434,29 +403,6 @@ RSpec.describe 'register-broker errand' do
   context 'when there are multiple plans configured' do
     let(:plans) do
       [
-        {
-          'name' => 'enable-plan',
-          'plan_id' => 'some-plan-id',
-          'description' => 'a lovely plan',
-          'cf_service_access' => 'enable',
-          'instance_groups' => [
-            'name' => 'my-service-server',
-            'vm_type' => 'small',
-            'instances' => 1,
-            'networks' => []
-          ]
-        },
-        {
-          'name' => 'unconfigured-plan',
-          'plan_id' => 'some-plan-id',
-          'description' => 'a lovely plan',
-          'instance_groups' => [
-            'name' => 'my-service-server',
-            'vm_type' => 'small',
-            'instances' => 1,
-            'networks' => []
-          ]
-        },
         {
           'name' => 'disable-plan',
           'plan_id' => 'disable-access-id',
@@ -486,8 +432,6 @@ RSpec.describe 'register-broker errand' do
     end
 
     it 'configures the service access accordingly' do
-      expect(rendered_template).to include 'cf enable-service-access myservicename -p enable-plan'
-      expect(rendered_template).to include 'cf enable-service-access myservicename -p unconfigured-plan'
       expect(rendered_template).to include 'cf disable-service-access myservicename -p disable-plan'
       expect(rendered_template).to_not include 'manual-plan'
     end

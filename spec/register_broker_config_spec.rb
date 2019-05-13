@@ -44,6 +44,17 @@ RSpec.describe 'register-broker config' do
                   'password' => 'some-password'
                 }
               }
+            },
+            'service_catalog' => {
+              'service_name' => 'service-name',
+              'plans' => [
+                nil,
+                {
+                  'name' => 'dedicated-vm',
+                  'cf_service_access' => 'enable'
+                }, {
+                  'name' => 'other-plan'
+              }]
             }
           }
         }
@@ -70,5 +81,18 @@ RSpec.describe 'register-broker config' do
       expect(config.dig('broker_username')).to eq('foo')
       expect(config.dig('broker_password')).to eq('bar')
       expect(config.dig('broker_url')).to eq('some-uri')
+    end
+
+    it 'includes plan details and service name' do
+      expect(config.dig('service_name')).to eq('service-name')
+      expect(config.dig('plans')).to include({'name' => 'dedicated-vm', 'cf_service_access' => 'enable'})
+    end
+
+    it 'sets "cf_service_access" for a plan to "enable" if the plan is not configured with "cf_service_access"' do
+      expect(config.dig('plans')).to include({'name' => 'other-plan', 'cf_service_access' => 'enable'})
+    end
+
+    it 'does not include "nil" plans' do
+      expect(config.dig('plans').size).to eq(2)
     end
 end

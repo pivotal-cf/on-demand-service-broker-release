@@ -93,23 +93,22 @@ end
 broker_uri=<%= brokerURI %>
 
 /var/vcap/packages/register-broker/bin/register-broker \
-  -configPath /var/vcap/jobs/register-broker/config/config.yml  
+  -configPath /var/vcap/jobs/register-broker/config/config.yml
 
 
 <% service_name = link('broker').p('service_catalog.service_name')%>
 <% if p('enable_service_access') %>
   <% link('broker')
     .p('service_catalog.plans')
-    .reject { |plan| plan.nil?}
+    .reject { |plan| plan.nil? }
     .each do |plan| %>
-    # fetch the cf_service_access property. set it to enable by default
       <% if plan.fetch('cf_service_access', 'enable') == 'enable' %>
-cf enable-service-access <%= service_name %> -p <%= plan.fetch('name') %>
+        # skip -- logic in the binary
       <% elsif plan.fetch('cf_service_access') == 'disable' %>
-cf disable-service-access <%= service_name %> -p <%= plan.fetch('name') %>
+        cf disable-service-access <%= service_name %> -p <%= plan.fetch('name') %>
       <% elsif plan.fetch('cf_service_access') == 'org-restricted' %>
-cf disable-service-access <%= service_name %> -p <%= plan.fetch('name') %>
-cf enable-service-access <%= service_name %> -o <%= escape_shell(p('default_access_org')) %> -p <%= plan.fetch('name') %>
+        cf disable-service-access <%= service_name %> -p <%= plan.fetch('name') %>
+        cf enable-service-access <%= service_name %> -o <%= escape_shell(p('default_access_org')) %> -p <%= plan.fetch('name') %>
       <% elsif plan.fetch('cf_service_access') != 'manual'
           raise "Unsupported value #{plan.fetch('cf_service_access')} for cf_service_access. Choose from \"enable\", \"disable\", \"manual\", \"org-restricted\""
       %>

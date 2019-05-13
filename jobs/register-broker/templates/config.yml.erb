@@ -23,12 +23,20 @@
     cf
   end
 
+  def plans
+    link('broker').p('service_catalog.plans').reject{|plan| plan.nil?}.map do |plan|
+      { 'name' => plan['name'], 'cf_service_access' => plan['cf_service_access'] || 'enable' }
+    end
+  end
+
   config = {
     'broker_name' => p('broker_name'),
     'broker_username' => link('broker').p('username'),
     'broker_password' => link('broker').p('password'),
     'broker_url' => p('broker_uri'),
     'disable_ssl_cert_verification' => link('broker').p('disable_ssl_cert_verification'),
-    'cf' => cf_config
+    'cf' => cf_config,
+    'service_name' => link('broker').p('service_catalog.service_name'),
+    'plans' => plans
   }.to_yaml
 %>
