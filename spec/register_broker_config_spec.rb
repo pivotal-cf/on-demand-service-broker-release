@@ -49,11 +49,18 @@ RSpec.describe 'register-broker config' do
               'service_name' => 'service-name',
               'plans' => [
                 nil,{
-                  'name' => 'dedicated-vm',
+                  'name' => 'enabled-plan',
                   'cf_service_access' => 'enable'
                 },{
-                  'name' => 'dedicated-vm-disabled',
+                  'name' => 'disabled-plan',
                   'cf_service_access' => 'disable'
+                },{
+                  'name' => 'org-restricted-plan',
+                  'cf_service_access' => 'org-restricted',
+                  'service_access_org' => 'some-org'
+                },{
+                  'name' => 'manual-plan',
+                  'cf_service_access' => 'manual'
                 },{
                   'name' => 'other-plan'
               }]
@@ -87,15 +94,38 @@ RSpec.describe 'register-broker config' do
 
     it 'includes plan details and service name' do
       expect(config.dig('service_name')).to eq('service-name')
-      expect(config.dig('plans')).to include({'name' => 'dedicated-vm', 'cf_service_access' => 'enable'})
-      expect(config.dig('plans')).to include({'name' => 'dedicated-vm-disabled', 'cf_service_access' => 'disable'})
+      expect(config.dig('plans')).to include({'name' => 'enabled-plan', 'cf_service_access' => 'enable', 'service_access_org' => nil})
+      expect(config.dig('plans')).to include({'name' => 'disabled-plan', 'cf_service_access' => 'disable', 'service_access_org' => nil})
+      expect(config.dig('plans')).to include({'name' => 'org-restricted-plan', 'cf_service_access' => 'org-restricted', 'service_access_org' => 'some-org'})
+
+      manual_plan = config.dig('plans').filter {|p| p['name'] == 'manual-plan'}
+      expect(manual_plan).to be_empty
     end
 
     it 'sets "cf_service_access" for a plan to "enable" if the plan is not configured with "cf_service_access"' do
-      expect(config.dig('plans')).to include({'name' => 'other-plan', 'cf_service_access' => 'enable'})
+      expect(config.dig('plans')).to include({'name' => 'other-plan', 'cf_service_access' => 'enable', 'service_access_org' => nil })
     end
 
     it 'does not include "nil" plans' do
-      expect(config.dig('plans').size).to eq(3)
+      expect(config.dig('plans').size).to eq(4)
+    end
+
+    it 'fails when "cf_service_access" is set to "enable" and a "service_access_org" is set' do
+      broker_link['broker']['properties']['service_catalog']['plans'] = [{
+        'name' => 'enabled-plan',
+        'cf_service_access' => 'enable',
+        'service_access_org' => 'cabana'
+      }]
+
+      expect { config }.to raise_error('Unexpected "service_access_org" for plan "enabled-plan". "service_access_org" is only valid for org-restricted plans.')
+    end
+
+    it 'fails when "cf_service_access" is set to "org-restricted" and a "service_access_org" is not set' do
+      broker_link['broker']['properties']['service_catalog']['plans'] = [{
+        'name' => 'enabled-plan',
+        'cf_service_access' => 'org-restricted',
+      }]
+
+        expect { config }.to raise_error('Unexpected "service_access_org" for plan "enabled-plan". "service_access_org" must be set for org-restricted plans.')
     end
 end

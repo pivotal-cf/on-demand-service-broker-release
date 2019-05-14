@@ -27,10 +27,6 @@ properties:
   broker_uri:
     description: URI of broker, if a route has been registered (optional)
 
-  default_access_org:
-    default: system
-    description: Enable service access to the specified org if enable_service_access is set to true and cf_service_access is set to "org-restricted"
-
   disable_ssl_cert_verification:
     default: false
     description: disable TLS certificate verification

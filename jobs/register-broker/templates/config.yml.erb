@@ -23,10 +23,30 @@
     cf
   end
 
-  def plans
-    link('broker').p('service_catalog.plans').reject{|plan| plan.nil?}.map do |plan|
-      { 'name' => plan['name'], 'cf_service_access' => plan['cf_service_access'] || 'enable' }
+  def access plan
+    access_org = plan['service_access_org']
+    access_type = plan['cf_service_access']
+    
+    if access_type != "org-restricted" && ! (access_org.nil? || access_org.empty?) then
+      raise "Unexpected \"service_access_org\" for plan \"#{plan['name']}\". \"service_access_org\" is only valid for org-restricted plans."
     end
+
+    if access_type == "org-restricted" && (access_org.nil? || access_org.empty?) then
+      raise "Unexpected \"service_access_org\" for plan \"#{plan['name']}\". \"service_access_org\" must be set for org-restricted plans."
+    end
+    access_org
+  end
+
+  def plans
+    link('broker').p('service_catalog.plans')
+      .reject{ |plan| plan.nil? || plan['cf_service_access'] == 'manual' }
+      .map do |plan|
+        {
+          'name' => plan['name'],
+          'cf_service_access' => plan['cf_service_access'] || 'enable',
+          'service_access_org' => access(plan)
+        }
+      end
   end
 
   config = {

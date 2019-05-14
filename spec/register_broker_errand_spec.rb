@@ -332,15 +332,6 @@ RSpec.describe 'register-broker errand' do
       end
     end
 
-    context 'and it has cf_service_access org-restricted' do
-      let(:access_value) { 'org-restricted' }
-
-      it "change the access for default access org" do
-        expect(rendered_template).to include 'cf disable-service-access myservicename -p dedicated-vm'
-        expect(rendered_template).to include 'cf enable-service-access myservicename -o \'cf_org\' -p dedicated-vm'
-      end
-    end
-
     context 'and it specifies an invalid value for cf_service_access' do
       let(:access_value) { 'foo-bar' }
       it 'fails to template the errand' do
@@ -348,46 +339,6 @@ RSpec.describe 'register-broker errand' do
           rendered_template
         end.to raise_error(RuntimeError, 'Unsupported value foo-bar for cf_service_access. Choose from "enable", "disable", "manual", "org-restricted"')
       end
-    end
-  end
-
-  context 'when there nil plans configured' do
-    let(:plans) do
-      [
-        nil,
-        {
-          'name' => 'dedicated-vm-99',
-          'plan_id' => 'some-plan-id',
-          'description' => 'a lovely plan',
-          'instance_groups' => [
-            'name' => 'my-service-server',
-            'vm_type' => 'small',
-            'instances' => 1,
-            'networks' => []
-          ]
-        },
-        nil
-      ]
-    end
-
-    it 'filters out nil plans' do
-      expect(rendered_template).to_not include 'disable-service-access'
-    end
-  end
-
-  context 'when there only nil plans configured' do
-    let(:plans) { [nil, nil] }
-
-    it 'does not alter service access' do
-      expect(rendered_template).to_not include 'service-access'
-    end
-  end
-
-  context 'when there no plans configured' do
-    let(:plans) { [] }
-
-    it 'does not alter service access' do
-      expect(rendered_template).to_not include 'service-access'
     end
   end
 

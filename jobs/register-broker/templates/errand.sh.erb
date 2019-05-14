@@ -107,8 +107,7 @@ broker_uri=<%= brokerURI %>
       <% elsif plan.fetch('cf_service_access') == 'disable' %>
         # skip -- logic in binary
       <% elsif plan.fetch('cf_service_access') == 'org-restricted' %>
-        cf disable-service-access <%= service_name %> -p <%= plan.fetch('name') %>
-        cf enable-service-access <%= service_name %> -o <%= escape_shell(p('default_access_org')) %> -p <%= plan.fetch('name') %>
+        # skip -- logic in the binary
       <% elsif plan.fetch('cf_service_access') != 'manual'
           raise "Unsupported value #{plan.fetch('cf_service_access')} for cf_service_access. Choose from \"enable\", \"disable\", \"manual\", \"org-restricted\""
       %>
