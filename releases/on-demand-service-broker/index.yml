@@ -49,6 +49,8 @@ builds:
     version: 0.17.1
   7e1e401f-3b9b-4f31-73e7-07d8bc33e6b7:
     version: 0.22.0-alpha.1
+  81c3bb4e-1083-4cd3-64d5-19aecbcc3446:
+    version: 0.29.0
   86217712-2a27-4bf1-486d-e99cac99c6fc:
     version: 0.26.1
   8f1fb19b-01ea-45bb-80c5-f12eec0f6285:
