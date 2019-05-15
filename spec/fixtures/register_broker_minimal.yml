@@ -10,4 +10,3 @@ instance_groups:
     - name: register-broker
       properties:
         broker_name: "broker-name"
-        broker_uri: "some-uri"

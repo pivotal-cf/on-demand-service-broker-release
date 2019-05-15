@@ -25,10 +25,13 @@ RSpec.describe 'register-broker config' do
     let(:broker_link) do
       {
         'broker' => {
-          'instances' => [{}],
+          'instances' => [{
+            'address' => '111.22.233.123'
+          }],
           'properties' => {
             'username' => "foo",
             'password' => "bar",
+            'port' => '3333',
             'disable_ssl_cert_verification' => true,
             'cf' => {
               'url' => 'https://api.cf-app.com',
@@ -72,7 +75,7 @@ RSpec.describe 'register-broker config' do
 
     let(:config) { YAML.safe_load(rendered_template) }
 
-    let(:manifest_file) { File.open 'spec/fixtures/register_broker_minimal.yml' }
+    let(:manifest_file) { File.open 'spec/fixtures/register_broker_with_broker_uri.yml' }
 
     it 'includes CF configuration' do
       expect(config.dig('cf', 'url')).to eq('https://api.cf-app.com')
@@ -89,7 +92,7 @@ RSpec.describe 'register-broker config' do
       expect(config.dig('broker_name')).to eq('broker-name')
       expect(config.dig('broker_username')).to eq('foo')
       expect(config.dig('broker_password')).to eq('bar')
-      expect(config.dig('broker_url')).to eq('some-uri')
+      expect(config.dig('broker_url')).to eq('http://some-uri.something')
     end
 
     it 'includes plan details and service name' do
@@ -97,7 +100,9 @@ RSpec.describe 'register-broker config' do
       expect(config.dig('plans')).to include({'name' => 'enabled-plan', 'cf_service_access' => 'enable', 'service_access_org' => nil})
       expect(config.dig('plans')).to include({'name' => 'disabled-plan', 'cf_service_access' => 'disable', 'service_access_org' => nil})
       expect(config.dig('plans')).to include({'name' => 'org-restricted-plan', 'cf_service_access' => 'org-restricted', 'service_access_org' => 'some-org'})
+    end
 
+    it 'does not include plans with service_access set to manual' do
       manual_plan = config.dig('plans').filter {|p| p['name'] == 'manual-plan'}
       expect(manual_plan).to be_empty
     end
@@ -110,22 +115,45 @@ RSpec.describe 'register-broker config' do
       expect(config.dig('plans').size).to eq(4)
     end
 
-    it 'fails when "cf_service_access" is set to "enable" and a "service_access_org" is set' do
+    it 'fails when "service_access_org" is set but "cf_service_access" is not "org-restricted"' do
       broker_link['broker']['properties']['service_catalog']['plans'] = [{
-        'name' => 'enabled-plan',
+        'name' => 'a-plan',
         'cf_service_access' => 'enable',
         'service_access_org' => 'cabana'
       }]
 
-      expect { config }.to raise_error('Unexpected "service_access_org" for plan "enabled-plan". "service_access_org" is only valid for org-restricted plans.')
+      expect { config }.to raise_error('Unexpected "service_access_org" for plan "a-plan". "service_access_org" is only valid for org-restricted plans.')
     end
 
     it 'fails when "cf_service_access" is set to "org-restricted" and a "service_access_org" is not set' do
       broker_link['broker']['properties']['service_catalog']['plans'] = [{
-        'name' => 'enabled-plan',
+        'name' => 'a-plan',
         'cf_service_access' => 'org-restricted',
       }]
 
-        expect { config }.to raise_error('Unexpected "service_access_org" for plan "enabled-plan". "service_access_org" must be set for org-restricted plans.')
+      expect { config }.to raise_error('Unexpected "service_access_org" for plan "a-plan". "service_access_org" must be set for org-restricted plans.')
+    end
+
+    it 'fails when "cf_service_access" is not valid' do
+      broker_link['broker']['properties']['service_catalog']['plans'] = [{
+        'name' => 'a-plan',
+        'cf_service_access' => 'invalid',
+      }]
+
+      expect { config }.to raise_error('Unexpected "cf_service_access: invalid" for plan "a-plan". "cf_service_access" must be one of: enable, disable, org-restricted, manual.')
+    end
+
+    context '"broker_uri is not configured"' do
+      let(:manifest_file) { File.open 'spec/fixtures/register_broker_minimal.yml' }
+
+      it 'uses the broker ip if "broker_uri" is not configured' do
+        expect(config.dig('broker_url')).to eq('http://111.22.233.123:3333')
+      end
+
+      it 'uses "https" when the broker certificate is present' do
+        broker_link['broker']['properties']['tls'] = {'certificate' => "some-cert" }
+
+        expect(config.dig('broker_url')).to eq('https://111.22.233.123:3333')
+      end
     end
 end

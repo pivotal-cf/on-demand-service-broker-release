@@ -10,12 +10,12 @@
     cf_auth = cf['authentication']
     client_credentials = cf_auth['client_credentials']
     cf_auth['uaa'] = {
-        'url' => cf_auth['url'],
-        'client_credentials' => {
+      'url' => cf_auth['url'],
+      'client_credentials' => {
         'client_id' => client_credentials['client_id'],
         'client_secret' => client_credentials['secret']
-        },
-        'user_credentials' => cf_auth['user_credentials']
+      },
+      'user_credentials' => cf_auth['user_credentials']
     }
     cf_auth.delete('url')
     cf_auth.delete('client_credentials')
@@ -23,10 +23,29 @@
     cf
   end
 
-  def access plan
+  def broker_default_address
+    brokerCert = link('broker').p('tls.certificate', "")
+    s = "s" unless brokerCert.empty?
+    "http#{s}://#{link('broker').instances[0].address}:#{link('broker').p('port')}"
+  end
+
+  def broker_url
+    p('broker_uri', broker_default_address)
+  end
+
+  def service_access plan
+    valid_access_types = %w{enable disable org-restricted manual}
+    access_type = plan['cf_service_access'] || 'enable'
+    unless valid_access_types.include? access_type
+      raise "Unexpected \"cf_service_access: #{access_type}\" for plan \"#{plan['name']}\". \"cf_service_access\" must be one of: #{valid_access_types.join(", ")}."
+    end
+    access_type
+  end
+
+  def access_org plan
     access_org = plan['service_access_org']
     access_type = plan['cf_service_access']
-    
+
     if access_type != "org-restricted" && ! (access_org.nil? || access_org.empty?) then
       raise "Unexpected \"service_access_org\" for plan \"#{plan['name']}\". \"service_access_org\" is only valid for org-restricted plans."
     end
@@ -43,8 +62,8 @@
       .map do |plan|
         {
           'name' => plan['name'],
-          'cf_service_access' => plan['cf_service_access'] || 'enable',
-          'service_access_org' => access(plan)
+          'cf_service_access' => service_access(plan),
+          'service_access_org' => access_org(plan)
         }
       end
   end
@@ -53,7 +72,7 @@
     'broker_name' => p('broker_name'),
     'broker_username' => link('broker').p('username'),
     'broker_password' => link('broker').p('password'),
-    'broker_url' => p('broker_uri'),
+    'broker_url' => broker_url,
     'disable_ssl_cert_verification' => link('broker').p('disable_ssl_cert_verification'),
     'cf' => cf_config,
     'service_name' => link('broker').p('service_catalog.service_name'),

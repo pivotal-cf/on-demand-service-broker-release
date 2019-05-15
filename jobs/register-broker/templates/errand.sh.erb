@@ -8,8 +8,6 @@ set -e
 # http://www.apache.org/licenses/LICENSE-2.0
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
-PATH=$PATH:/var/vcap/packages/cf-cli-6-linux/bin
-
 LOG_DIR=/var/vcap/sys/log/register-broker
 mkdir -p $LOG_DIR
 
@@ -21,96 +19,5 @@ touch $STDERR_LOG
 exec 1> >(tee $STDOUT_LOG)
 exec 2> >(tee $STDERR_LOG >&2)
 
-utils_path=/var/vcap/packages/broker_utils
-source ${utils_path}/cf_commands.sh
-
-<%
-def escape_shell(str)
-  "'#{str.to_s.gsub(/'/, "'\\\\''")}'"
-end
-%>
-
-export PATH=/var/vcap/packages/cf-cli/bin:$PATH
-export CF_DIAL_TIMEOUT=60
-
-<%
-  if not link('broker').properties['cf']
-    raise 'register-broker expected the broker link to contain property "cf"'
-  end
-  if not link('broker').properties['cf']['authentication']
-    raise 'register-broker expected the broker link to contain property "cf.authentication"'
-  end
-%>
-
-<% link('broker').if_p('cf.root_ca_cert') do |root_ca| %>
-  cert_file="$(mktemp)"
-  echo -e "<%= root_ca %>" > "$cert_file"
-  export SSL_CERT_FILE="$cert_file"
-  trap "rm -f $cert_file" EXIT
-<% end %>
-
-<%
-	if not link('broker').properties['cf']['url']
-		raise 'register-broker expected the broker link to contain property "cf.url"'
-	end
-%>
-cf_retry api <%= '--skip-ssl-validation ' if p('disable_ssl_cert_verification') %><%= link('broker').p('cf.url') %>
-
-<%
-  authCmd = ""
-  hasAtLeastOneWayToAuthenticate = false
-
-  link('broker').if_p('cf.authentication.user_credentials') do | creds |
-    if creds.all? { |k,v| !v.nil? && !v.empty? }
-      authCmd = "cf_retry auth #{escape_shell(creds["username"])} #{escape_shell(creds["password"])}"
-      hasAtLeastOneWayToAuthenticate = true
-    end
-  end
-
-  link('broker').if_p('cf.authentication.client_credentials') do | creds |
-    if creds.all? { |k,v| !v.nil? && !v.empty? }
-      authCmd = "cf_retry auth #{escape_shell(creds["client_id"])} #{escape_shell(creds["secret"])} --client-credentials"
-      hasAtLeastOneWayToAuthenticate = true
-    end
-  end
-
-  if not hasAtLeastOneWayToAuthenticate then raise "register-broker expected either cf.client_credentials or cf.user_credentials to not be blank" end
-%>
-<%= authCmd %>
-
-broker_name=<%= p('broker_name') %>
-broker_cmd=$(cf_service_broker_command "${broker_name}")
-
-<%
-brokerCert = link('broker').p('tls.certificate', "")
-s = "s" unless brokerCert.empty?
-brokerURI="http#{s}://#{link('broker').instances[0].address}:#{link('broker').p('port')}"
-if_p('broker_uri') do |broker_uri|
-  brokerURI=broker_uri
-end
-%>
-
-broker_uri=<%= brokerURI %>
-
 /var/vcap/packages/register-broker/bin/register-broker \
   -configPath /var/vcap/jobs/register-broker/config/config.yml
-
-
-<% service_name = link('broker').p('service_catalog.service_name')%>
-<% if p('enable_service_access') %>
-  <% link('broker')
-    .p('service_catalog.plans')
-    .reject { |plan| plan.nil? }
-    .each do |plan| %>
-      <% if plan.fetch('cf_service_access', 'enable') == 'enable' %>
-        # skip -- logic in the binary
-      <% elsif plan.fetch('cf_service_access') == 'disable' %>
-        # skip -- logic in binary
-      <% elsif plan.fetch('cf_service_access') == 'org-restricted' %>
-        # skip -- logic in the binary
-      <% elsif plan.fetch('cf_service_access') != 'manual'
-          raise "Unsupported value #{plan.fetch('cf_service_access')} for cf_service_access. Choose from \"enable\", \"disable\", \"manual\", \"org-restricted\""
-      %>
-    <% end %>
-  <% end %>
-<% end %>

@@ -9,7 +9,6 @@ instance_groups:
   jobs:
     - name: register-broker
       properties:
-        broker_name: a-broker
+        broker_name: broker-name
         disable_ssl_cert_verification: true
-        default_access_org: "cf_org"
-        broker_uri: https://my.external.broker.address/
+        broker_uri: http://some-uri.something

@@ -8,8 +8,6 @@
 name: register-broker
 
 packages:
-  - cf-cli-6-linux
-  - broker_utils
   - register-broker
 
 templates:
