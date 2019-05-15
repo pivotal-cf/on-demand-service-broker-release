@@ -28,7 +28,3 @@ properties:
   disable_ssl_cert_verification:
     default: false
     description: disable TLS certificate verification
-
-  enable_service_access:
-    default: true
-    description: Enable service access to the listed service plans
