@@ -75,7 +75,7 @@
     'broker_url' => broker_url,
     'disable_ssl_cert_verification' => link('broker').p('disable_ssl_cert_verification'),
     'cf' => cf_config,
-    'service_name' => link('broker').p('service_catalog.service_name'),
+    'service_offering_id' => link('broker').p('service_catalog.id'),
     'plans' => plans
   }.to_yaml
 %>

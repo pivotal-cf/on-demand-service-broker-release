@@ -49,7 +49,7 @@ RSpec.describe 'register-broker config' do
               }
             },
             'service_catalog' => {
-              'service_name' => 'service-name',
+              'id' => 'service-catalog-id',
               'plans' => [
                 nil,{
                   'name' => 'enabled-plan',
@@ -96,7 +96,7 @@ RSpec.describe 'register-broker config' do
     end
 
     it 'includes plan details and service name' do
-      expect(config.dig('service_name')).to eq('service-name')
+      expect(config.dig('service_offering_id')).to eq('service-catalog-id')
       expect(config.dig('plans')).to include({'name' => 'enabled-plan', 'cf_service_access' => 'enable', 'service_access_org' => nil})
       expect(config.dig('plans')).to include({'name' => 'disabled-plan', 'cf_service_access' => 'disable', 'service_access_org' => nil})
       expect(config.dig('plans')).to include({'name' => 'org-restricted-plan', 'cf_service_access' => 'org-restricted', 'service_access_org' => 'some-org'})
