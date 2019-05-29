@@ -64,14 +64,6 @@ RSpec.describe 'upgrade-all-service-instances config' do
       expect(config.dig('broker_api', 'tls', 'ca_cert')).to eq ''
       expect(config.dig('broker_api', 'tls', 'disable_ssl_cert_verification')).to eq false
     end
-
-    it 'configures the service_instances_api to use the mgmt endpoint to get instances' do
-      expect(config.dig('service_instances_api', 'url')).to eq('http://123.456.789.101:8080/mgmt/service_instances')
-
-      basic_auth_block = config.dig('service_instances_api', 'authentication', 'basic')
-      expect(basic_auth_block.fetch('username')).to eq("%username'\"t:%!")
-      expect(basic_auth_block.fetch('password')).to eq("%password'\"t:%!")
-    end
   end
 
   context 'with every property configured' do
@@ -100,17 +92,6 @@ RSpec.describe 'upgrade-all-service-instances config' do
 
       expect(config.dig('broker_api', 'tls', 'ca_cert')).to eq 'a valid certificate'
       expect(config.dig('broker_api', 'tls', 'disable_ssl_cert_verification')).to eq true
-    end
-
-    it 'configures the service instances api correctly' do
-      expect(config.dig('service_instances_api', 'url')).to eq('https://example.com/mgmt/service_instances')
-
-      basic_auth_block = config.dig('service_instances_api', 'authentication', 'basic')
-      expect(basic_auth_block.fetch('username')).to eq("%username'\"t:%!")
-      expect(basic_auth_block.fetch('password')).to eq("%password'\"t:%!")
-
-      expect(config.dig('service_instances_api', 'root_ca_cert')).to eq 'a valid certificate'
-      expect(config.dig('service_instances_api', 'disable_ssl_cert_verification')).to eq true
     end
 
     describe 'attempt limit property' do
@@ -145,41 +126,6 @@ RSpec.describe 'upgrade-all-service-instances config' do
     end
   end
 
-  context 'with service instances api specified' do
-    let(:manifest_file) { File.open 'spec/fixtures/upgrade_all_minimal.yml' }
-
-    before(:each) do
-      broker_link['broker']['properties']['service_instances_api']  = {
-          'authentication' => {
-            'basic' => {
-              'username' => "myname",
-              'password' => "supersecret"
-            }
-          },
-          'disable_ssl_cert_verification' => true,
-          'url' => 'http://example.org/give-me/some-services'
-        }
-    end
-
-    it 'consumes the broker link to configure the service_instances_api' do
-      basic_auth_block = config.fetch('service_instances_api').fetch('authentication').fetch('basic')
-      expect(basic_auth_block.fetch('username')).to eq('myname')
-      expect(basic_auth_block.fetch('password')).to eq('supersecret')
-
-      expect(config.fetch('service_instances_api').fetch('url')).to eq('http://example.org/give-me/some-services')
-      expect(config.fetch('service_instances_api').fetch('disable_ssl_cert_verification')).to eq(true)
-    end
-
-    it 'does not include the root_ca_cert in the config when it is not set' do
-      expect(config.dig('service_instances_api', 'root_ca_cert')).to be_empty
-    end
-
-    it 'includes the root_ca_cert in the config when it is set' do
-      broker_link['broker']['properties']['service_instances_api']['root_ca_cert'] = 'cert'
-      expect(config.fetch('service_instances_api').fetch('root_ca_cert')).to eq('cert')
-    end
-  end
-
   context 'broker tls is configured' do
     before(:each) do
       broker_link['broker']['properties']['tls']  = {
@@ -189,7 +135,6 @@ RSpec.describe 'upgrade-all-service-instances config' do
 
     it 'uses https for the fallback uri protocol' do
       expect(config.dig('broker_api', 'url')).to eq('https://123.456.789.101:8080')
-      expect(config.dig('service_instances_api', 'url')).to eq('https://123.456.789.101:8080/mgmt/service_instances')
     end
   end
 end
