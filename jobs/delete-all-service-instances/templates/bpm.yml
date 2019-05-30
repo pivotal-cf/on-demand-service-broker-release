@@ -1,0 +1,6 @@
+processes:
+- name: delete-all-service-instances
+  executable: /var/vcap/packages/delete-all-service-instances/bin/delete-all-service-instances
+  args:
+    - -configFilePath
+    - /var/vcap/jobs/delete-all-service-instances/config/config.yml
