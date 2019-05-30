@@ -8,16 +8,4 @@ set -euo pipefail
 # http://www.apache.org/licenses/LICENSE-2.0
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
-LOG_DIR=/var/vcap/sys/log/recreate-all-service-instances
-mkdir -p $LOG_DIR
-
-STDOUT_LOG=$LOG_DIR/errand.stdout.log
-STDERR_LOG=$LOG_DIR/errand.stderr.log
-
-touch $STDOUT_LOG
-touch $STDERR_LOG
-exec 1> >(tee $STDOUT_LOG)
-exec 2> >(tee $STDERR_LOG >&2)
-
-/var/vcap/packages/recreate-all-service-instances/bin/recreate-all-service-instances \
-  -configPath /var/vcap/jobs/recreate-all-service-instances/config/config.yml
+/var/vcap/packages/bpm/bin/bpm run recreate-all-service-instances

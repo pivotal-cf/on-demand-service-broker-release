@@ -1,0 +1,6 @@
+processes:
+- name: recreate-all-service-instances
+  executable: /var/vcap/packages/recreate-all-service-instances/bin/recreate-all-service-instances
+  args:
+    - -configPath
+    - /var/vcap/jobs/recreate-all-service-instances/config/config.yml
