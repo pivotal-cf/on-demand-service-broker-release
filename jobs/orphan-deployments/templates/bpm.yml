@@ -1,0 +1,6 @@
+processes:
+- name: orphan-deployments
+  executable: /var/vcap/packages/orphan-deployments/bin/orphan-deployments
+  args:
+    - -configPath
+    - /var/vcap/jobs/orphan-deployments/config/config.yml

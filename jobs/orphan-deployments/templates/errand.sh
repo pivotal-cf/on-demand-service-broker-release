@@ -8,16 +8,4 @@
 
 set -e
 
-LOG_DIR=/var/vcap/sys/log/orphan-deployments
-mkdir -p $LOG_DIR
-
-STDOUT_LOG=$LOG_DIR/errand.stdout.log
-STDERR_LOG=$LOG_DIR/errand.stderr.log
-
-touch $STDOUT_LOG
-touch $STDERR_LOG
-exec 1> >(tee $STDOUT_LOG)
-exec 2> >(tee $STDERR_LOG >&2)
-
-/var/vcap/packages/orphan-deployments/bin/orphan-deployments \
-  -configPath /var/vcap/jobs/orphan-deployments/config/config.yml
+/var/vcap/jobs/bpm/bin/bpm run orphan-deployments
