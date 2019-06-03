@@ -25,7 +25,3 @@ properties:
 
   broker_uri:
     description: URI of broker, if a route has been registered (optional)
-
-  disable_ssl_cert_verification:
-    default: false
-    description: disable TLS certificate verification
