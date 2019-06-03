@@ -1,0 +1,6 @@
+processes:
+- name: register-broker
+  executable: /var/vcap/packages/register-broker/bin/register-broker
+  args:
+    - -configPath
+    - /var/vcap/jobs/register-broker/config/config.yml

@@ -8,16 +8,4 @@ set -e
 # http://www.apache.org/licenses/LICENSE-2.0
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
-LOG_DIR=/var/vcap/sys/log/register-broker
-mkdir -p $LOG_DIR
-
-STDOUT_LOG=$LOG_DIR/errand.stdout.log
-STDERR_LOG=$LOG_DIR/errand.stderr.log
-
-touch $STDOUT_LOG
-touch $STDERR_LOG
-exec 1> >(tee $STDOUT_LOG)
-exec 2> >(tee $STDERR_LOG >&2)
-
-/var/vcap/packages/register-broker/bin/register-broker \
-  -configPath /var/vcap/jobs/register-broker/config/config.yml
+/var/vcap/jobs/bpm/bin/bpm run register-broker

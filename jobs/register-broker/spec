@@ -11,8 +11,9 @@ packages:
   - register-broker
 
 templates:
-  errand.sh.erb: bin/run
+  errand.sh: bin/run
   config.yml.erb: config/config.yml
+  bpm.yml: config/bpm.yml
 
 consumes:
   - name: broker
