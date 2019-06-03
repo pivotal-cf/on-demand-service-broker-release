@@ -1,0 +1,6 @@
+processes:
+- name: upgrade-all-service-instances
+  executable: /var/vcap/packages/upgrade-all-service-instances/bin/upgrade-all-service-instances
+  args:
+    - -configPath
+    - /var/vcap/jobs/upgrade-all-service-instances/config/config.yml
