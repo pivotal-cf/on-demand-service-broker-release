@@ -101,10 +101,10 @@ instance_groups:
         root_ca_cert: ((cf.router.ca_cert))
         url: ((cf.api_url))
         authentication:
-          url: ((cf.uaa.url))
-          client_credentials:
-            client_id: ((cf.client_credentials.client_id))
-            secret: ((cf.client_credentials.client_secret))
+          url: ((cf.uaa.url))          
+          user_credentials:
+            username: ((cf.user_credentials.username))
+            password: ((cf.user_credentials.password))
       service_deployment: {}
       service_catalog:
         id: ((service_catalog_id))

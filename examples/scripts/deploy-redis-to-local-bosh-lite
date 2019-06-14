@@ -49,7 +49,6 @@ deploy() {
     deploy "$BASE_DIR/deployment/base_odb_manifest.yml" \
       --ops-file="$BASE_DIR/deployment/operations/redis.yml" \
       --ops-file="$BASE_DIR/deployment/operations/redis_example_service_catalog.yml" \
-      --ops-file="$BASE_DIR/deployment/operations/cf_uaa_user.yml" \
       --vars-file="$BASE_DIR/deployment/vars-files/redis-example-service-adapter-vars.yml" \
       --vars-file="$VBOX_HOME/broker-deployment-vars.yml" \
       --var=broker_deployment_name="$BOSH_DEPLOYMENT" \
