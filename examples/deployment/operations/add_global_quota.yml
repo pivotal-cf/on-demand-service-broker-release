@@ -3,5 +3,6 @@
   path: /instance_groups/name=broker/jobs/name=broker/properties/service_catalog/global_quotas?
   value:
     service_instance_limit: 1337
-    resource_limits:
-      memory: 32000
+    resources:
+      memory:
+        limit: 32000

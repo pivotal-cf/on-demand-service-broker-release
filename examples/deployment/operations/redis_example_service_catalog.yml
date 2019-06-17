@@ -7,9 +7,10 @@
       metadata:
         display_name: Redis Dedicated Instance
         bullets: []
-      resource_costs:
-        memory: 256
       quotas:
+        resources:
+          memory:
+            cost: 256
         service_instance_limit: 10
       instance_groups:
         - name: redis-server
@@ -22,11 +23,13 @@
       plan_id: redis-himem
       description: Dedicated high memory VM, no persistence, suitable for use as a cache
       cf_service_access: enable
-      resource_limits: # plan defined resource quota
-        ips: 10
-      resource_costs:
-        memory: 1024 # memory cost: from the global quota
-        ips: 1 # ip cost: from the plan quota
+      quotas:
+        resources:
+          ips:
+            limit: 10
+            cost: 1
+          memory:
+            cost: 1024
       metadata:
         display_name: Redis Dedicated High Memory VM
         bullets: []
