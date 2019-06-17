@@ -1,0 +1,258 @@
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=broker/properties/service_catalog/maintenance_info?
+  value:
+    public:
+      redis_service_version: ((service_release_version))
+      stemcell_version: "((meta.stemcell.version))"
+    private:
+      broker_password: ((broker_password))
+    version: 0.27.0
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=broker/properties/service_catalog/plans
+  value:
+    - name: dedicated-vm
+      plan_id: redis-dedicated-((uuid))
+      description: Redis Dedicated Instance
+      properties:
+        plan_secret: plansecret
+      metadata:
+        display_name: Redis Dedicated Instance
+        bullets: []
+      resource_costs:
+        memory: 256
+      quotas:
+        service_instance_limit: 100
+      instance_groups:
+        - name: redis-server
+          vm_type: ((meta.vm_type))
+          persistent_disk_type: ((small_disk_type))
+          instances: 1
+          networks: [((meta.services_subnet))]
+          azs: [((meta.az))]
+      binding_with_dns:
+        - name: "default-redis-server"
+          link_provider: "redis"
+          instance_group: "redis-server"
+          properties: {}
+    - name: dedicated-high-memory-vm
+      plan_id: redis-himem-((uuid))
+      description: Dedicated high memory VM, no persistence, suitable for use as a cache
+      cf_service_access: enable
+      metadata:
+        display_name: Redis Dedicated High Memory VM
+        bullets: []
+      properties:
+        persistence: false
+      instance_groups:
+        - name: redis-server
+          vm_type: ((meta.vm_type))
+          persistent_disk_type: ((small_disk_type))
+          instances: 1
+          networks: [((meta.services_subnet))]
+          azs: [((meta.az))]
+    - name: inactive-plan
+      plan_id: redis-inactive-((uuid))
+      description: Redis Inactive Plan
+      cf_service_access: disable
+      instance_groups:
+        - name: redis-server
+          vm_type: ((meta.vm_type))
+          persistent_disk_type: ((small_disk_type))
+          instances: 1
+          networks: [((meta.services_subnet))]
+          azs: [((meta.az))]
+    - name: lifecycle-post-deploy-plan
+      plan_id: lifecycle-post-deploy-plan-redis-((uuid))
+      description: With lifecycle post deploy errand
+      cf_service_access: enable
+      lifecycle_errands:
+        post_deploy:
+        - name: health-check
+      metadata:
+        display_name: Redis Lifecycle errand plan
+        bullets: []
+      properties:
+        persistence: false
+      instance_groups:
+        - name: redis-server
+          vm_type: ((meta.vm_type))
+          instances: 1
+          networks: [((meta.services_subnet))]
+          azs: [((meta.az))]
+        - name: health-check
+          lifecycle: errand
+          vm_type: ((meta.vm_type))
+          instances: 1
+          networks: [((meta.services_subnet))]
+          azs: [((meta.az))]
+    - name: lifecycle-colocated-post-deploy-plan
+      plan_id: lifecycle-colocated-post-deploy-plan-((uuid))
+      description: With lifecycle post deploy errand
+      cf_service_access: enable
+      lifecycle_errands:
+        post_deploy:
+        - name: health-check
+          instances: ["redis-server/0"]
+        - name: cleanup-data
+          instances: ["redis-server/0"]
+      metadata:
+        display_name: Redis Lifecycle errand plan
+        bullets: []
+      properties:
+        persistence: false
+        colocated_errand: true
+      instance_groups:
+        - name: redis-server
+          vm_type: ((meta.vm_type))
+          instances: 1
+          networks: [((meta.services_subnet))]
+          azs: [((meta.az))]
+    - name: lifecycle-colocated-pre-delete-plan
+      plan_id: lifecycle-colocated-pre-delete-plan-((uuid))
+      description: With lifecycle pre-delete errand
+      lifecycle_errands:
+        pre_delete:
+        - name: health-check
+          instances: ["redis-server/0"]
+        - name: cleanup-data
+          instances: ["redis-server/0"]
+      cf_service_access: enable
+      metadata:
+        display_name: Redis with pre-delete errand plan
+        bullets: []
+      properties:
+        persistence: false
+        colocated_errand: true
+      instance_groups:
+        - name: redis-server
+          vm_type: ((meta.vm_type))
+          instances: 1
+          networks: [((meta.services_subnet))]
+          azs: [((meta.az))]
+    - name: lifecycle-failing-health-check-plan
+      plan_id: lifecycle-failing-health-check-plan-redis-((uuid))
+      description: With a failing health check errand
+      cf_service_access: enable
+      lifecycle_errands:
+        post_deploy:
+        - name: health-check
+      metadata:
+        display_name: Redis Lifecycle errand plan
+        bullets: []
+      properties:
+        persistence: false
+        systest_errand_failure_override: health-check
+      instance_groups:
+        - name: redis-server
+          vm_type: ((meta.vm_type))
+          instances: 1
+          networks: [((meta.services_subnet))]
+          azs: [((meta.az))]
+        - name: health-check
+          lifecycle: errand
+          vm_type: ((meta.vm_type))
+          instances: 1
+          networks: [((meta.services_subnet))]
+          azs: [((meta.az))]
+    - name: lifecycle-cleanup-data-plan
+      plan_id: lifecycle-cleanup-data-plan-redis-((uuid))
+      description: With a cleanup data errand
+      lifecycle_errands:
+        pre_delete:
+        - name: cleanup-data
+      cf_service_access: enable
+      metadata:
+        display_name: Redis Lifecycle errand plan
+        bullets: []
+      properties:
+        persistence: false
+      instance_groups:
+        - name: redis-server
+          vm_type: ((meta.vm_type))
+          instances: 1
+          networks: [((meta.services_subnet))]
+          azs: [((meta.az))]
+        - name: cleanup-data
+          lifecycle: errand
+          vm_type: ((meta.vm_type))
+          instances: 1
+          networks: [((meta.services_subnet))]
+          azs: [((meta.az))]
+    - name: lifecycle-failing-cleanup-data-plan
+      plan_id: lifecycle-failing-cleanup-data-plan-redis-((uuid))
+      description: With a failing cleanup data errand
+      lifecycle_errands:
+        pre_delete:
+        - name: health-check
+        - name: cleanup-data
+      cf_service_access: enable
+      metadata:
+        display_name: Redis Lifecycle errand plan
+        bullets: []
+      properties:
+        persistence: false
+        systest_errand_failure_override: cleanup-data
+      instance_groups:
+        - name: redis-server
+          vm_type: ((meta.vm_type))
+          instances: 1
+          networks: [((meta.services_subnet))]
+          azs: [((meta.az))]
+        - name: cleanup-data
+          lifecycle: errand
+          vm_type: ((meta.vm_type))
+          instances: 1
+          networks: [((meta.services_subnet))]
+          azs: [((meta.az))]
+    - name: manual-plan
+      plan_id: redis-manual-((uuid))
+      description: Redis Manual Plan
+      cf_service_access: manual
+      instance_groups:
+        - name: redis-server
+          vm_type: ((meta.vm_type))
+          persistent_disk_type: ((small_disk_type))
+          instances: 1
+          networks: [((meta.services_subnet))]
+          azs: [((meta.az))]
+    - name: sleepy-errand
+      plan_id: sleep_errand-((uuid))
+      description: Has a colocated errand that sleeps for 180 secs
+      cf_service_access: enable
+      metadata:
+        display_name: Sleepy errand plan
+        bullets: []
+      properties:
+        persistence: false
+        systest_errand_sleep: 180
+      instance_groups:
+        - name: redis-server
+          vm_type: ((meta.vm_type))
+          instances: 1
+          networks: [((meta.services_subnet))]
+          azs: [((meta.az))]
+        - name: health-check
+          lifecycle: errand
+          vm_type: ((meta.vm_type))
+          instances: 1
+          networks: [((meta.services_subnet))]
+          azs: [((meta.az))]
+    - name: dedicated-high-memory-vm-with-features
+      plan_id: redis-with-features-((uuid))
+      description: vm with BOSH features enabled
+      cf_service_access: enable
+      metadata:
+        display_name: Redis Dedicated VM with BOSH features
+        bullets: []
+      properties:
+        persistence: false
+        use_short_dns_addresses: true
+        something_completely_different: false
+      instance_groups:
+        - name: redis-server
+          vm_type: ((meta.vm_type))
+          persistent_disk_type: ((small_disk_type))
+          instances: 1
+          networks: [((meta.services_subnet))]
+          azs: [((meta.az))]

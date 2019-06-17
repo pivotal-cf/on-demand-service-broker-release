@@ -42,3 +42,13 @@
           instances: 1
           networks: [((meta.services_subnet))]
           azs: [((meta.az))]
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=broker/properties/service_catalog/maintenance_info?
+  value:
+    public:
+      redis_service_version: ((service_release_version))
+      stemcell_version: "((meta.stemcell.version))"
+    private:
+      broker_password: ((broker_password))
+    version: 0.27.0
