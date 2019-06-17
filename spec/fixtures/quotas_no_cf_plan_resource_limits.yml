@@ -37,9 +37,11 @@ instance_groups:
                 plan_id: 34170567-e1e3-46b8-af64-bf7556563cd2 #required
                 description: Dedicated Instance #required
                 quotas:
-                  resource_limits:
-                    ips: 42
-                    unicorns: 5
+                  resources:
+                    ips:
+                      limit: 42
+                    unicorns:
+                      limit: 5
                 instance_groups: #one instance group required
                   - name: my-service-server #required
                     vm_type: small #required

@@ -184,6 +184,10 @@ if any_fields_set?(p('bosh.authentication.basic')) && any_fields_set?(p('bosh.au
   raise 'Invalid bosh config - must only specify one type of authentication'
 end
 
+def any_limit_set(quota_map)
+  !quota_map.nil? && !quota_map.select { |key| !quota_map[key]["limit"].nil? }.empty?
+end
+
 service_deployment = p('service_deployment')
 validate_releases(service_deployment)
 prepare_stemcells(service_deployment)
@@ -194,8 +198,8 @@ if p('disable_cf_startup_checks')
     raise 'Invalid quota configuration - global service instance limit requires CF to be configured'
   end
 
-  global_resource_limit = service_catalog.dig('global_quotas', 'resource_limits')
-  if global_resource_limit && any_fields_set?(global_resource_limit)
+  global_resource_limit = service_catalog.dig('global_quotas', 'resources')
+  if any_limit_set(global_resource_limit)
     raise 'Invalid quota configuration - global resource limits require CF to be configured'
   end
 end
@@ -271,7 +275,7 @@ plans.each do |plan|
       raise 'Invalid quota configuration - plan service instance limit requires CF to be configured'
     end
 
-    plan_resource_limit = plan.dig('quotas', 'resource_limits')
+    plan_resource_limit = plan.dig('quotas', 'resources')
     if plan_resource_limit && any_fields_set?(plan_resource_limit)
       raise 'Invalid quota configuration - plan resource limit requires CF to be configured'
     end

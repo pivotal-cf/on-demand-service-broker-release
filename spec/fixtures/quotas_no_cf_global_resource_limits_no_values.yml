@@ -38,7 +38,7 @@ instance_groups:
                 plan_id: 34170567-e1e3-46b8-af64-bf7556563cd2 #required
                 description: Dedicated Instance #required
                 quotas:
-                  resource_limits:
+                  resources: {}
                 instance_groups: #one instance group required
                   - name: my-service-server #required
                     vm_type: small #required

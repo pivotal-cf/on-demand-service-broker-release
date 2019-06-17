@@ -271,9 +271,14 @@ properties:
   service_catalog.global_quotas.service_instance_limit:
     description: the maximum number of instances that may be provisioned by on-demand broker
 
-  service_catalog.global_quotas.resource_limits:
-    description: hash of resource names and limit (integer) that may may be provisioned by on-demand broker
+  service_catalog.global_quotas.resources:
+    description: hash of resources that will be verified when provisioned by on-demand broker. A resource object contains "limit" as integer.
     default: {}
+    example:
+      global_quotas:
+        resources:
+          any_resource_name:
+            limit: 10
 
   service_catalog.maintenance_info.version:
     description: maintenance information version for all plans. See https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#maintenance-info

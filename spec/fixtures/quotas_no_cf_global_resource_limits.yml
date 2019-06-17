@@ -33,8 +33,9 @@ instance_groups:
             bindable: false
             plan_updatable: false
             global_quotas:
-              resource_limits:
-                widgets: 11
+              resources:
+                widgets:
+                  limit: 11
             plans: #required
               - name: dedicated-vm #required - at least one plan
                 plan_id: 34170567-e1e3-46b8-af64-bf7556563cd2 #required
