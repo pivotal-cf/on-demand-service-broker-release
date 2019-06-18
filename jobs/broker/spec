@@ -280,6 +280,10 @@ properties:
           any_resource_name:
             limit: 10
 
+  service_catalog.global_quotas.resource_limits:
+    description: deprecated property
+    default: {}
+
   service_catalog.maintenance_info.version:
     description: maintenance information version for all plans. See https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#maintenance-info
     example: 1.2.3

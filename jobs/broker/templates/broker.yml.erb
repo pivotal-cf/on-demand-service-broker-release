@@ -160,6 +160,55 @@ def service_instances_api_config
   siapi_properties
 end
 
+def prepare_global_quotas_config(catalog)
+  legacy_global_quotas = catalog.dig('global_quotas', 'resource_limits')
+
+  unless legacy_global_quotas.empty?
+    adapted_global_quotas = {}
+
+    legacy_global_quotas.each do |type, limit|
+      adapted_global_quotas[type] = { "limit" => limit}
+    end
+
+    catalog["global_quotas"].delete("resource_limits")
+    catalog["global_quotas"]["resources"] = adapted_global_quotas
+  end
+end
+
+def prepare_plan_quotas_config(plan)
+  legacy_plan_quotas_limit =  plan.dig('quotas', 'resource_limits')
+  original_resource_quota = plan.dig('quotas', 'resources') || {}
+  adapted_plan_resource_quotas = {}
+
+  unless legacy_plan_quotas_limit.nil?
+    legacy_plan_quotas_limit.each do |type, limit|
+      if adapted_plan_resource_quotas[type].nil?
+        adapted_plan_resource_quotas[type] = { "limit" => limit}
+      else
+        adapted_plan_resource_quotas[type] = adapted_plan_resource_quotas[type].merge({ "limit" => limit})
+      end
+    end
+  end
+
+  legacy_plan_quotas_costs =  plan.dig('resource_costs')
+
+  unless legacy_plan_quotas_costs.nil?
+    legacy_plan_quotas_costs.each do |type, cost|
+      if adapted_plan_resource_quotas[type].nil?
+        adapted_plan_resource_quotas[type] = { "cost" => cost}
+      else
+        adapted_plan_resource_quotas[type] = adapted_plan_resource_quotas[type].merge({ "cost" => cost})
+      end
+    end
+    plan.delete("resource_costs")
+  end
+
+  plan["quotas"] = {
+    "service_instance_limit" => plan.dig('quotas', 'service_instance_limit'),
+    "resources" => original_resource_quota.merge(adapted_plan_resource_quotas)
+  }
+end
+
 if has_values?('secure_binding_credentials.authentication.uaa')
   validate_config(p('secure_binding_credentials.authentication.uaa'), ['client_id', 'client_secret'], 'Invalid secure_binding_credentials config - must specify ')
 end
@@ -192,6 +241,8 @@ service_deployment = p('service_deployment')
 validate_releases(service_deployment)
 prepare_stemcells(service_deployment)
 
+prepare_global_quotas_config service_catalog
+
 if p('disable_cf_startup_checks')
   global_limit = service_catalog.dig('global_quotas', 'service_instance_limit')
   if global_limit != nil && global_limit > 0
@@ -203,6 +254,7 @@ if p('disable_cf_startup_checks')
     raise 'Invalid quota configuration - global resource limits require CF to be configured'
   end
 end
+
 
 def enabled_errands(errands, errand_type)
   errands.reject do |errand|
@@ -268,6 +320,8 @@ plans.each do |plan|
 
     plan['lifecycle_errands']['post_deploy'] = enabled_errands(post_deploy_errands, 'post_deploy')
   end
+
+  prepare_plan_quotas_config plan
 
   if p('disable_cf_startup_checks')
     plan_limit = plan.dig('quotas', 'service_instance_limit')

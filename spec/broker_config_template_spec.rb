@@ -602,8 +602,28 @@ RSpec.describe 'broker config templating' do
       end
     end
 
+    context 'when global resource limits are set with the deprated format' do
+      let (:manifest_file) { File.open 'spec/fixtures/quotas_no_cf_global_resource_limits_deprecated_format.yml' }
+
+      it 'templating raises an error when a global resource limit is set' do
+        expect do
+          rendered_template
+        end.to raise_error(RuntimeError, 'Invalid quota configuration - global resource limits require CF to be configured')
+      end
+    end
+
     context 'when plan resource limits are set' do
       let (:manifest_file) { File.open 'spec/fixtures/quotas_no_cf_plan_resource_limits.yml' }
+
+      it 'templating raises an error when a global resource limit is set' do
+        expect do
+          rendered_template
+        end.to raise_error(RuntimeError, 'Invalid quota configuration - plan resource limit requires CF to be configured')
+      end
+    end
+
+    context 'when plan resource limits are set with the deprecated format' do
+      let (:manifest_file) { File.open 'spec/fixtures/quotas_no_cf_plan_resource_limits_deprecated_format.yml' }
 
       it 'templating raises an error when a global resource limit is set' do
         expect do
@@ -620,6 +640,43 @@ RSpec.describe 'broker config templating' do
           rendered_template
         end.not_to raise_error
       end
+    end
+  end
+
+  describe 'when quotas are configured with the deprecated format' do
+    let (:manifest_file) {File.open 'spec/fixtures/quotas_deprecated_format.yml'}
+
+    it 'is adapted to the new format for global quotas' do
+      expectedQuotas = {
+          'ips' => {
+              'limit' => 10,
+          },
+          'nutella_jars' => {
+              'limit' => 6,
+          }
+      }
+      actualQuotas = YAML.safe_load(rendered_template).dig('service_catalog', 'global_quotas')
+      expect(actualQuotas).to_not include("resource_limits")
+      expect(actualQuotas["resources"]).to eq(expectedQuotas)
+    end
+
+    it 'is adapted to the new format for plan quotas' do
+      expectedQuotas = {
+          'ips' => {
+              'limit' => 8,
+              'cost' => 4,
+          },
+          'nutella_jars' => {
+              'limit' => 6,
+              'cost' => 2,
+          }
+      }
+      plan = YAML.safe_load(rendered_template).dig('service_catalog', 'plans')[0]
+      expect(plan).to_not include("resource_costs")
+
+      actualQuotas = plan.dig('quotas')
+      expect(actualQuotas["resources"]).to eq(expectedQuotas)
+      expect(actualQuotas).to_not include("resource_limits")
     end
   end
 
