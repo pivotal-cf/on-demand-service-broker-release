@@ -121,6 +121,22 @@ RSpec.describe 'indicator config templating' do
 
 
   describe 'plan_total_instances indicator' do
+
+    describe 'with no plan' do
+      before(:each) do
+        brokerProperties['service_catalog'].delete("plans")
+      end
+
+      it "has only the global total instances" do
+        total_instances_indicator = rendered_template["indicators"].filter {|indicator| indicator["name"].end_with? "total_instances"}
+        expect(total_instances_indicator.size).to eq 1
+
+        sections = rendered_template['layout']['sections'][0]["indicators"]
+        sections_for_total_instances = sections.filter {|s| s.end_with? "total_instances"}
+        expect(sections_for_total_instances).to contain_exactly 'global_total_instances'
+      end
+    end
+
     describe 'for first plan' do
       let(:indicator_name) {'dedicated_vm_total_instances'}
       before(:each) do
@@ -129,6 +145,30 @@ RSpec.describe 'indicator config templating' do
 
       it 'builds the right query' do
         expect(indicator['promql']).to eq('_on_demand_broker_test_redis_broker_dedicated_vm_total_instances{deployment="$deployment",source_id="$source_id"}')
+      end
+
+      describe 'thresholds' do
+        context 'when plan service instance limit is set' do
+          before(:each) do
+            brokerProperties['service_catalog']['plans'][0]['quotas'] = {
+                'service_instance_limit' => 150
+            }
+          end
+
+          it 'is configured correctly' do
+            expected_thresholds = [
+                {"level" => "critical", "gte" => 150},
+                {"level" => "warning", "gte" => 120}
+            ]
+            expect(indicator['thresholds']).to eq expected_thresholds
+          end
+        end
+
+        context 'when "service_catalog.global_quotas.service_instance_limit" is not set' do
+          it 'is empty' do
+            expect(indicator['thresholds']).to be_empty
+          end
+        end
       end
 
       describe 'documentation' do
@@ -141,6 +181,7 @@ RSpec.describe 'indicator config templating' do
         end
       end
     end
+
     describe 'for second plan' do
       let(:indicator_name) {'dedicated_high_mem_vm_total_instances'}
       before(:each) do
