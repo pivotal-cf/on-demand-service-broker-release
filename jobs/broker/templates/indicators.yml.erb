@@ -7,6 +7,7 @@
 ---
 
 <%
+require 'yaml'
 
 def global_thresholds
   if_p('service_catalog.global_quotas.service_instance_limit') do |limit|
@@ -20,6 +21,37 @@ def service_name
   return p('service_catalog.service_name').gsub("-", "_")
 end
 
+def all_plans_indicators
+  all_indicators = []
+
+  p('service_catalog.plans').each do |plan|
+    all_indicators << plan_indicator(service_name, plan['name'])
+  end
+
+  return all_indicators
+end
+
+def plan_indicator(service_name, plan_name)
+   plan_name_with_underscore = plan_name.gsub("-", "_")
+   return { "name" => "#{plan_name_with_underscore}_total_instances",
+  "promql" => "_on_demand_broker_#{service_name}_#{plan_name_with_underscore}_total_instances{deployment=\"$deployment\",source_id=\"$source_id\"}",
+  "documentation" => {
+    "title" => "#{plan_name} Instance Count",
+    "description" => "This metric indicates the total number of instances used by this plan.",
+    "thresholdNote" => "Threshold is set using the service instance limit in plan quotas if configured.",
+    "recommendedResponse" =>
+      "When this metric gets to warning or critical level you should consider deleting any unused service instances on this plan,
+      changing the plan or increase the plan service instance limit."
+  },
+  "presentation" => {
+    "chartType" => "step",
+    "currentValue" => false,
+    "frequency" => 0,
+    "labels" => ["source_id", "origin"],
+    "units" => "count"
+  },
+}
+end
 %>
 
 apiVersion: v0
@@ -49,6 +81,7 @@ indicators:
     frequency: 0
     labels: [source_id, origin]
     units: "count"
+- <%= all_plans_indicators.to_yaml %>
 
 layout:
   owner: Services Enablement
@@ -57,5 +90,4 @@ layout:
   sections:
   - title: Service Instance Quotas
     description: Indicators monitoring service instance quota
-    indicators:
-    - global_total_instances
+    indicators: <%= all_plans_indicators.map { |indicator| indicator['name']} << "global_total_instances"  %>

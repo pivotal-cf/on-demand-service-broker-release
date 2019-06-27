@@ -42,3 +42,12 @@ instance_groups:
                     instances: 1 #required
                     networks: [my-service-network] #required
                     azs: [az-north-42]
+              - name: dedicated-high-mem-vm #required - at least one plan
+                plan_id: c6438293-e7e6-46b8-af64-bf7556573cd7 #required
+                description: Dedicated Instance #required
+                instance_groups: #one instance group required
+                  - name: my-service-server #required
+                    vm_type: small #required
+                    instances: 1 #required
+                    networks: [my-service-network] #required
+                    azs: [az-north-42]

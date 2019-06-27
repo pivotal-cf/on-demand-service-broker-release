@@ -59,6 +59,18 @@ RSpec.describe 'indicator config templating' do
     expect(rendered_template['metadata']).to eq(expected_metadata)
   end
 
+  describe 'layout' do
+    it 'should be not empty' do
+      expect(rendered_template['layout']).not_to be_nil
+      expect(rendered_template['layout']['title']).not_to be_nil
+      expect(rendered_template['layout']['owner']).not_to be_nil
+      expect(rendered_template['layout']['description']).not_to be_nil
+
+      sections = rendered_template['layout']['sections']
+      expect(sections).to include a_hash_including('indicators' => include('global_total_instances', 'dedicated_vm_total_instances', 'dedicated_high_mem_vm_total_instances',))
+    end
+  end
+
   describe 'global_total_instances indicator' do
     let(:indicator_name) {'global_total_instances'}
 
@@ -105,16 +117,44 @@ RSpec.describe 'indicator config templating' do
         expect(indicator['documentation']['recommendedResponse']).not_to be_nil
       end
     end
+  end
 
-    describe 'layout' do
-      it 'should be not empty' do
-        expect(rendered_template['layout']).not_to be_nil
-        expect(rendered_template['layout']['title']).not_to be_nil
-        expect(rendered_template['layout']['owner']).not_to be_nil
-        expect(rendered_template['layout']['description']).not_to be_nil
 
-        sections = rendered_template['layout']['sections']
-        expect(sections).to include a_hash_including('indicators' => include('global_total_instances'))
+  describe 'plan_total_instances indicator' do
+    describe 'for first plan' do
+      let(:indicator_name) {'dedicated_vm_total_instances'}
+      before(:each) do
+        brokerProperties['service_catalog']['service_name'] = "test-redis-broker"
+      end
+
+      it 'builds the right query' do
+        expect(indicator['promql']).to eq('_on_demand_broker_test_redis_broker_dedicated_vm_total_instances{deployment="$deployment",source_id="$source_id"}')
+      end
+
+      describe 'documentation' do
+        it 'should be not empty' do
+          expect(indicator['documentation']).not_to be_nil
+          expect(indicator['documentation']['title']).to eq('dedicated-vm Instance Count')
+          expect(indicator['documentation']['description']).not_to be_nil
+          expect(indicator['documentation']['thresholdNote']).not_to be_nil
+          expect(indicator['documentation']['recommendedResponse']).not_to be_nil
+        end
+      end
+    end
+    describe 'for second plan' do
+      let(:indicator_name) {'dedicated_high_mem_vm_total_instances'}
+      before(:each) do
+        brokerProperties['service_catalog']['service_name'] = "test-redis-broker"
+      end
+
+      it 'builds the right query' do
+        expect(indicator['promql']).to eq('_on_demand_broker_test_redis_broker_dedicated_high_mem_vm_total_instances{deployment="$deployment",source_id="$source_id"}')
+      end
+
+      describe 'documentation' do
+        it 'should be not empty' do
+          expect(indicator['documentation']['title']).to eq('dedicated-high-mem-vm Instance Count')
+        end
       end
     end
   end
