@@ -24,7 +24,7 @@ def render_plan_indicators
   if all_plans_indicators.empty?
     ""
   else
-    "- #{all_plans_indicators.to_yaml}"
+    "#{all_plans_indicators.to_yaml.gsub("---\n", "")}"
   end
 end
 
@@ -106,4 +106,4 @@ layout:
   sections:
   - title: Service Instance Quotas
     description: Indicators monitoring service instance quota
-    indicators: <%= all_plans_indicators.map { |indicator| indicator['name']} << "global_total_instances"  %>
+    indicators: <%= ["global_total_instances"] | all_plans_indicators.map { |indicator| indicator['name']} %>

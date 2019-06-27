@@ -68,6 +68,7 @@ RSpec.describe 'indicator config templating' do
 
       sections = rendered_template['layout']['sections']
       expect(sections).to include a_hash_including('indicators' => include('global_total_instances', 'dedicated_vm_total_instances', 'dedicated_high_mem_vm_total_instances',))
+      expect(sections).to include a_hash_including('indicators' => start_with('global_total_instances'))
     end
   end
 
