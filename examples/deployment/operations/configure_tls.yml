@@ -26,3 +26,24 @@
       uris:
         - "((broker_uri))"
       server_cert_domain_san: "((broker_uri))"
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=recreate-all-service-instances/properties?
+  value:
+    broker_uri: https://((broker_uri))
+    tls:
+      ca_cert: ((cf.router.ca_cert))
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=upgrade-all-service-instances/properties?
+  value:
+    broker_uri: https://((broker_uri))
+    tls:
+      ca_cert: ((cf.router.ca_cert))
+
+- type: replace
+  path: /instance_groups/name=broker/jobs/name=orphan-deployments/properties?
+  value:
+    broker_uri: https://((broker_uri))
+    tls:
+      ca_cert: ((cf.router.ca_cert))
