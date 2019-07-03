@@ -20,7 +20,7 @@
     properties:
       auto_create_topics: true
       default_replication_factor: 1
-    - name: medium
+  - name: medium
     plan_id: kafka-medium-((uuid))
     description: A Kafka deployment with a single instance of each job and persistent disk
     instance_groups:
