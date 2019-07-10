@@ -1,0 +1,75 @@
+- type: replace
+  path: /instance_groups/name=broker/jobs/-
+  value:
+    name: telemetry-agent
+    release: telemetry-components
+    properties:
+      tls:
+        cert: ((telemetry-agent-cert.certificate))
+        private_key: ((telemetry-agent-cert.private_key))
+
+- type: replace
+  path: /instance_groups/name=telemetry-centralizer?
+  value:
+    name: telemetry-centralizer
+    vm_type: ((meta.vm_type))
+    stemcell: "((stemcell_alias))"
+    networks: [{name: ((meta.services_subnet))}]
+    azs: [((meta.az))]
+    instances: 1
+    jobs:
+      - name: telemetry-centralizer
+        release: telemetry-components
+        provides:
+          telemetry-centralizer-address:
+            as: my-custom-telemetry-centralizer-address
+        custom_provider_definitions:
+          - name: telemetry-centralizer-address
+            type: address
+        properties:
+          flush_interval: 60
+          tls:
+            ca_cert: ((telemetry-ca-cert.certificate))
+            cert: ((telemetry-centralizer-cert.certificate))
+            private_key: ((telemetry-centralizer-cert.private_key))
+          telemetry:
+            endpoint: ((telemetry_loader_endpoint))
+            api_key: ((telemetry_api_key))
+            env_type: ((telemetry_env_type))
+            iaas_type: ((telemetry_iaas_type))
+            foundation_id: ((telemetry_foundation_id))
+
+- type: replace
+  path: /variables/name=telemetry-ca-cert?
+  value:
+    name: telemetry-ca-cert
+    type: certificate
+    options:
+      is_ca: true
+      common_name: 'Telemetry CA'
+
+- type: replace
+  path: /variables/name=telemetry-centralizer-cert?
+  value:
+    name: telemetry-centralizer-cert
+    type: certificate
+    options:
+      ca: telemetry-ca-cert
+      common_name: Telemetry centralizer
+    consumes:
+      alternative_name: { from: my-custom-telemetry-centralizer-address }
+
+- type: replace
+  path: /variables/name=telemetry-agent-cert?
+  value:
+    name: telemetry-agent-cert
+    type: certificate
+    options:
+      common_name: telemetry-agent
+      ca: telemetry-ca-cert
+
+- type: replace
+  path: /releases/-
+  value:
+    name: telemetry-components
+    version: latest
