@@ -148,6 +148,16 @@ RSpec.describe 'indicator config templating' do
         expect(indicator['promql']).to eq('_on_demand_broker_test_redis_broker_dedicated_vm_total_instances{deployment="$deployment",source_id="$source_id"}')
       end
 
+      describe 'when a plan is "null"' do
+        before(:each) do
+          brokerProperties['service_catalog']['plans'][0] = nil
+        end
+
+        it 'ignores the plan' do
+          expect(rendered_template['indicators'].size).to eq 2
+        end
+      end
+
       describe 'thresholds' do
         context 'when plan service instance limit is set' do
           before(:each) do

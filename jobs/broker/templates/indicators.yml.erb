@@ -31,7 +31,7 @@ end
 def all_plans_indicators
   indicators = []
   if_p('service_catalog.plans') do |plans|
-    plans.each do |plan|
+    plans.compact.each do |plan|
       indicators << plan_indicator(plan['name'], plan['quotas'])
     end
   end
