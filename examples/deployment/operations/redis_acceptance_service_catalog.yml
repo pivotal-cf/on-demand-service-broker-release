@@ -31,6 +31,7 @@
           link_provider: "redis"
           instance_group: "redis-server"
           properties: {}
+    - null
     - name: dedicated-high-memory-vm
       plan_id: redis-himem-((uuid))
       description: Dedicated high memory VM, no persistence, suitable for use as a cache
