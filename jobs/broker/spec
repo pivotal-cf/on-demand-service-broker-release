@@ -13,7 +13,7 @@ templates:
   broker.crt.erb: certs/broker.crt
   broker.key.erb: certs/broker.key
   bpm.yml.erb: config/bpm.yml
-  indicators.yml.erb: config/indicators.yml 
+  indicators.yml.erb: config/indicators.yml
 
 packages:
   - broker
@@ -87,6 +87,10 @@ properties:
   shutdown_timeout_in_seconds:
     description: In seconds, allow the broker to close open connections before shutting down
     default: 60
+
+  enable_telemetry:
+    description: Enables telemetry logging when set to true. If true, broker id must be set.
+    default: false
 
   enable_plan_schemas:
     default: false

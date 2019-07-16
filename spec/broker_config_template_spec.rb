@@ -283,6 +283,33 @@ RSpec.describe 'broker config templating' do
     end
   end
 
+  describe 'enabling telemetry' do
+    let(:rendered_template) {
+      YAML.load(renderer.render(brokerProperties))
+    }
+
+    let(:renderer) {
+      release_path = File.join(File.dirname(__FILE__), '..')
+      release = Bosh::Template::Test::ReleaseDir.new(release_path)
+      job = release.job('broker')
+      job.template('config/broker.yml')
+    }
+
+    it 'defaults to false' do
+      expect(rendered_template["broker"]["enable_telemetry"]).to eq(false)
+    end
+
+    context 'when it is configured to true' do
+      before(:each) do
+        brokerProperties["enable_telemetry"] = true
+      end
+
+      it 'passes the appropriate configuration' do
+        expect(rendered_template["broker"]["enable_telemetry"]).to eq(true)
+      end
+    end
+  end
+
   context 'when the enable_secure_manifests flag is set to true' do
     let(:manifest_file) { File.open 'spec/fixtures/valid_resolve_bind_secrets.yml' }
 

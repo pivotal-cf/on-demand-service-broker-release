@@ -37,6 +37,7 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/serviceadapter/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/startupchecker/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/task/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/telemetry/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/clock/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/credhub-cli/credhub/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/credhub-cli/credhub/auth/*.go # gosub

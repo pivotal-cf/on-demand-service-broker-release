@@ -83,6 +83,7 @@ instance_groups:
   - name: broker
     release: ((broker_release))
     properties:
+      id: ((broker_id))
       expose_operational_errors: false
       disable_ssl_cert_verification: ((disable_ssl_cert_verification))
       startup_banner: true
@@ -101,7 +102,7 @@ instance_groups:
         root_ca_cert: ((cf.router.ca_cert))
         url: ((cf.api_url))
         authentication:
-          url: ((cf.uaa.url))          
+          url: ((cf.uaa.url))
           user_credentials:
             username: ((cf.user_credentials.username))
             password: ((cf.user_credentials.password))
