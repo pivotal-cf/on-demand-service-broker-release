@@ -83,7 +83,6 @@ instance_groups:
   - name: broker
     release: ((broker_release))
     properties:
-      id: ((broker_id))
       expose_operational_errors: false
       disable_ssl_cert_verification: ((disable_ssl_cert_verification))
       startup_banner: true
