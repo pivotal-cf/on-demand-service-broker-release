@@ -20,6 +20,7 @@
     cf_auth.delete('url')
     cf_auth.delete('client_credentials')
     cf_auth.delete('user_credentials')
+    cf['disable_ssl_cert_verification'] = link('broker').p('disable_ssl_cert_verification')
     cf
   end
 
@@ -73,7 +74,6 @@
     'broker_username' => link('broker').p('username'),
     'broker_password' => link('broker').p('password'),
     'broker_url' => broker_url,
-    'disable_ssl_cert_verification' => link('broker').p('disable_ssl_cert_verification'),
     'cf' => cf_config,
     'service_offering_id' => link('broker').p('service_catalog.id'),
     'plans' => plans
