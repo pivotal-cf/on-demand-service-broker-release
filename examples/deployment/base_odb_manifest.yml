@@ -126,6 +126,9 @@ instance_groups:
       nats:
         from: nats
         deployment: ((cf.deployment_name))
+      routing_api:
+        from: routing_api
+        deployment: ((cf.deployment_name))
     properties:
       route_registrar:
         routes:
