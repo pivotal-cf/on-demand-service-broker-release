@@ -25,6 +25,7 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/registrar/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/tools/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/lager/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/coreos/go-semver/semver/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/craigfurman/herottp/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/gorilla/mux/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pborman/uuid/*.go # gosub

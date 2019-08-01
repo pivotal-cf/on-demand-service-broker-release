@@ -34,6 +34,39 @@
     broker_address = uri
   end
 
+  def is_maintenance_info_present?
+    link('broker').if_p('service_catalog.maintenance_info.version') do
+      return true
+    end
+
+    link('broker').if_p('service_catalog.plans') do |plans|
+      return plans
+        .reject{ |plan| plan.nil? }
+        .select { |plan| !plan.is_a?(Hash) || !plan.dig('maintenance_info', 'version') }.empty?
+    end
+
+    false
+  end
+
+  def cf_config
+    cf = link('broker').p('cf')
+    cf_auth = cf['authentication']
+    client_credentials = cf_auth['client_credentials']
+    cf_auth['uaa'] = {
+      'url' => cf_auth['url'],
+      'client_credentials' => {
+        'client_id' => client_credentials['client_id'],
+        'client_secret' => client_credentials['secret']
+      },
+      'user_credentials' => cf_auth['user_credentials']
+    }
+    cf_auth.delete('url')
+    cf_auth.delete('client_credentials')
+    cf_auth.delete('user_credentials')
+    cf['disable_ssl_cert_verification'] = link('broker').p('disable_ssl_cert_verification')
+    cf
+  end
+
   config = {
     "broker_api" => {
       "url" => broker_address,
@@ -55,6 +88,8 @@
     "max_in_flight" => validated_max_in_flight,
     "canaries" => validated_canaries,
     "canary_selection_params" => p('canary_selection_params'),
+    'cf' => cf_config,
+    'maintenance_info_present' => is_maintenance_info_present?
   }
 
   config.to_yaml
