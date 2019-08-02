@@ -44,6 +44,7 @@ provides:
     - service_instances_api.authentication.basic.password
     - service_catalog.service_name
     - service_catalog.id
+    - service_catalog.maintenance_info.version
     - service_catalog.plans
     - tls.certificate
 
