@@ -6,7 +6,7 @@
   path: /instance_groups/name=broker/jobs/-
   value:
     name: telemetry-agent
-    release: telemetry-components
+    release: telemetry
     properties:
       tls:
         cert: ((telemetry-agent-cert.certificate))
@@ -23,13 +23,10 @@
     instances: 1
     jobs:
       - name: telemetry-centralizer
-        release: telemetry-components
+        release: telemetry
         provides:
           telemetry-centralizer-address:
             as: my-custom-telemetry-centralizer-address
-        custom_provider_definitions:
-          - name: telemetry-centralizer-address
-            type: address
         properties:
           flush_interval: 60
           tls:
@@ -75,5 +72,5 @@
 - type: replace
   path: /releases/-
   value:
-    name: telemetry-components
+    name: telemetry
     version: latest
