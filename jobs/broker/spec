@@ -291,10 +291,14 @@ properties:
     default: {}
 
   service_catalog.maintenance_info.version:
-    description: maintenance information version for all plans. See https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#maintenance-info
+    description: maintenance information version for all plans. See https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#maintenance-info-object
     example: 1.2.3
     default:
 
+  service_catalog.maintenance_info.description:
+    description: maintenance information description of the impact of the maintenance update for all plans. See https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#maintenance-info-object
+    default:
+  
   service_catalog.maintenance_info.public:
     description: maintenance information to be returned as plain text in the service catalog for all plans
     default: {}

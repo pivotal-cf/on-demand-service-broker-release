@@ -37,6 +37,7 @@ instance_groups:
                 global_private_key: global_private_value
               public:
                 global_key: global_value
+              description: global description
             plans: #required
               - name: dedicated-vm #required - at least one plan
                 plan_id: 34170567-e1e3-46b8-af64-bf7556563cd2 #required
@@ -47,6 +48,7 @@ instance_groups:
                     plan_private_key: plan_private_value
                   public:
                     plan_key: plan_value
+                  description: plan description
                 instance_groups: #one instance group required
                   - name: my-service-server #required
                     vm_type: small #required

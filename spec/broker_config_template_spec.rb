@@ -1461,6 +1461,9 @@ RSpec.describe 'broker config templating' do
 
         expect(config['service_catalog']['maintenance_info']['version']).to eq("1.0.0-beta+exp.sha.5114f85")
         expect(config['service_catalog']['plans'].first['maintenance_info']['version']).to eq("1.2.5+bar.555")
+
+        expect(config['service_catalog']['maintenance_info']['description']).to eq("global description")
+        expect(config['service_catalog']['plans'].first['maintenance_info']['description']).to eq("plan description")
       end
     end
 
