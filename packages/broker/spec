@@ -50,6 +50,7 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/credhub-cli/errors/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/lager/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/lager/internal/truncate/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/blang/semver/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/bmatcuk/doublestar/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/charlievieth/fs/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cheggaaa/pb/*.go # gosub
@@ -67,7 +68,6 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/uuid/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/go-socks5/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/socks5-proxy/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/coreos/go-semver/semver/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cppforlife/go-semi-semantic/version/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/craigfurman/herottp/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/dustin/go-humanize/*.go # gosub
