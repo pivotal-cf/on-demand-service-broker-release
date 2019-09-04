@@ -26,22 +26,20 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/mgmtapi/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/service/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/serviceadapter/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/clock/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/lager/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/lager/internal/truncate/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/blang/semver/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/bmatcuk/doublestar/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/charlievieth/fs/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cheggaaa/pb/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-cli/common/util/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-cli/director/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-cli/io/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-cli/uaa/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-cli/ui/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-cli/ui/fmt/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-cli/ui/table/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/crypto/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/errors/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/httpclient/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/logger/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/property/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/retrystrategy/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/system/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/uuid/*.go # gosub
@@ -49,13 +47,8 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/socks5-proxy/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cppforlife/go-semi-semantic/version/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/craigfurman/herottp/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/dustin/go-humanize/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/fatih/color/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/google/uuid/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/gorilla/mux/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/mattn/go-colorable/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/mattn/go-isatty/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/mattn/go-runewidth/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pborman/uuid/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/*.go # gosub
@@ -69,8 +62,6 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/on-demand-services-sdk/serviceadapter/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/paraphernalia/secure/tlsconfig/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pkg/errors/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/vito/go-interact/interact/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/vito/go-interact/interact/terminal/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/xeipuuv/gojsonpointer/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/xeipuuv/gojsonreference/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/xeipuuv/gojsonschema/*.go # gosub
@@ -78,10 +69,7 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/ed25519/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/ed25519/internal/edwards25519/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/ssh/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/ssh/terminal/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/net/context/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/net/proxy/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/sys/unix/*.go # gosub
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/sys/windows/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/gopkg.in/go-playground/validator.v8/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/vendor/gopkg.in/yaml.v2/*.go # gosub
