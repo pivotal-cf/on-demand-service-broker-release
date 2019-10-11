@@ -19,7 +19,7 @@
       broker_uri: https://((broker_uri))
       tls:
         ca_cert: ((cf.router.ca_cert))
-        
+
 - type: replace
   path: /instance_groups/name=broker/jobs/-
   value:
@@ -52,4 +52,9 @@
             cert: ((loggregator.tls.client.certificate))
             key: ((loggregator.tls.client.private_key))
           ca_cert: ((loggregator.tls.ca_cert))
+      metrics:
+        ca_cert: ((loggregator.metrics.tls.ca_cert))
+        cert: ((loggregator.metrics.tls.certificate))
+        key: ((loggregator.metrics.tls.private_key))
+        server_name: ((loggregator.metrics.tls.server_name))
     release: loggregator-agent
