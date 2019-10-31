@@ -15,7 +15,6 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/curve25519/*.h
   - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/poly1305/*.s
   - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/sys/unix/*.s
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/**/*.go
   - github.com/pivotal-cf/on-demand-service-broker/apiserver/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/authorizationheader/*.go # gosub
   - github.com/pivotal-cf/on-demand-service-broker/boshdirector/*.go # gosub
@@ -42,3 +41,89 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/telemetry/*.go # gosub
   - github.com/pivotal-cf/on-demand-services-sdk/bosh/*.go # gosub
   - github.com/pivotal-cf/on-demand-services-sdk/serviceadapter/*.go # gosub
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/bmatcuk/doublestar/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/charlievieth/fs/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/errors/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/logger/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/system/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-cli/common/util/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-cli/io/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/crypto/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/retrystrategy/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/nu7hatch/gouuid/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/uuid/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/net/context/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/go-socks5/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/curve25519/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/ed25519/internal/edwards25519/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/ed25519/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/internal/subtle/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/internal/chacha20/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/poly1305/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/ssh/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/socks5-proxy/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/paraphernalia/secure/tlsconfig/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/net/internal/socks/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/net/proxy/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/httpclient/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/property/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cppforlife/go-semi-semantic/version/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/gopkg.in/yaml.v2/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-cli/director/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-cli/uaa/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/blang/semver/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/craigfurman/herottp/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/authorizationheader/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/lager/internal/truncate/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/lager/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/gorilla/mux/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/v7/auth/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pkg/errors/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/v7/domain/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/v7/domain/apiresponses/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/google/uuid/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pborman/uuid/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/v7/middlewares/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/v7/utils/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/v7/handlers/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/v7/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/on-demand-services-sdk/bosh/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/gopkg.in/go-playground/validator.v8/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/on-demand-services-sdk/serviceadapter/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/config/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/boshdirector/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/boshlinks/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/brokercontext/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/cf/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/loggerfactory/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/service/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/serviceadapter/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/xeipuuv/gojsonpointer/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/xeipuuv/gojsonreference/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/xeipuuv/gojsonschema/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/broker/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/credhub-cli/credhub/auth/uaa/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/credhub-cli/credhub/auth/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/credhub-cli/credhub/credentials/values/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/credhub-cli/errors/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/credhub-cli/credhub/credentials/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/credhub-cli/credhub/credentials/generate/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/credhub-cli/credhub/permissions/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/credhub-cli/credhub/server/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/hashicorp/go-version/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/credhub-cli/credhub/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/mgmtapi/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/urfave/negroni/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/apiserver/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/broker/maintenanceinfo/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/credhub/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/credhubbroker/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/hasher/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/manifestsecrets/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/network/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/startupchecker/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/task/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/telemetry/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/brokerinitiator/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/noopservicescontroller/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/cmd/on-demand-service-broker/*.go # sync-package-specs

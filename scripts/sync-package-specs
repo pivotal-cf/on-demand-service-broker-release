@@ -6,43 +6,65 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
+function dependencies() {
+  cmd_dir="$1"
+  pushd "$cmd_dir" >/dev/null
+    go list --deps --test
+  popd >/dev/null
+}
 
-pushd $(dirname $0)/..
+function path_for_go_package() {
+  package="$1"
+  if [[ -e "src/github.com/pivotal-cf/on-demand-service-broker/vendor/$package" ]]
+  then
+    echo "github.com/pivotal-cf/on-demand-service-broker/vendor/$package"
+  elif [[ -e "src/$package" ]]
+  then
+    echo "$package"
+  fi
+}
+
+function go_package_paths_for_command() {
+  cmd_dir="$1"
+  for pkg in $(dependencies "$cmd_dir")
+  do
+    path="$(path_for_go_package "$pkg")"
+    if [[ -n "$path" ]]
+    then
+      echo "$path"
+    fi
+  done
+}
 
 function sync_package() {
-  bosh_pkg=${1}
-  shift
+  bosh_pkg="$1"
+  cmd_dir="$2"
+  echo "Updating spec for BOSH package: $bosh_pkg"
 
   (
     set -e
 
-    cd packages/${bosh_pkg}
-
     {
-      cat spec | grep -v '# gosub'
+      cat "packages/${bosh_pkg}/spec" | grep -v '# sync-package-specs'
 
-      for package in $(gosub list "$@"); do
-        repo=$(echo ${2} | cut -f1-3 -d/)
-        echo ${package} | sed -e 's/\(.*\)/  - \1\/*.go # gosub/g'
+      for path in $(go_package_paths_for_command "$cmd_dir"); do
+        echo "$path" | sed -e 's/\(.*\)/  - \1\/*.go # sync-package-specs/g'
       done
-    } > spec.new
+    } > "packages/${bosh_pkg}/spec.new"
 
-    mv spec.new spec
+    mv "packages/${bosh_pkg}/spec.new" "packages/${bosh_pkg}/spec"
   )
 }
 
-sync_package broker -app github.com/pivotal-cf/on-demand-service-broker/cmd/on-demand-service-broker
-sync_package delete-all-service-instances -app github.com/pivotal-cf/on-demand-service-broker/cmd/delete-all-service-instances
-sync_package upgrade-all-service-instances -app github.com/pivotal-cf/on-demand-service-broker/cmd/upgrade-all-service-instances
-sync_package recreate-all-service-instances -app github.com/pivotal-cf/on-demand-service-broker/cmd/recreate-all-service-instances
-sync_package collect-service-metrics -app github.com/pivotal-cf/on-demand-service-broker/cmd/collect-service-metrics
-sync_package broker-post-start -app github.com/pivotal-cf/on-demand-service-broker/cmd/broker-post-start
-sync_package orphan-deployments -app github.com/pivotal-cf/on-demand-service-broker/cmd/orphan-deployments
-sync_package delete-all-service-instances-and-deregister-broker -app github.com/pivotal-cf/on-demand-service-broker/cmd/delete-all-service-instances-and-deregister-broker
-sync_package deregister-broker -app github.com/pivotal-cf/on-demand-service-broker/cmd/deregister-broker
-sync_package register-broker -app github.com/pivotal-cf/on-demand-service-broker/cmd/register-broker
-
-
-wait
-
-popd
+pushd "$(dirname "$0")/.." >/dev/null
+  sync_package broker src/github.com/pivotal-cf/on-demand-service-broker/cmd/on-demand-service-broker
+  sync_package delete-all-service-instances src/github.com/pivotal-cf/on-demand-service-broker/cmd/delete-all-service-instances
+  sync_package upgrade-all-service-instances src/github.com/pivotal-cf/on-demand-service-broker/cmd/upgrade-all-service-instances
+  sync_package recreate-all-service-instances src/github.com/pivotal-cf/on-demand-service-broker/cmd/recreate-all-service-instances
+  sync_package collect-service-metrics src/github.com/pivotal-cf/on-demand-service-broker/cmd/collect-service-metrics
+  sync_package broker-post-start src/github.com/pivotal-cf/on-demand-service-broker/cmd/broker-post-start
+  sync_package orphan-deployments src/github.com/pivotal-cf/on-demand-service-broker/cmd/orphan-deployments
+  sync_package delete-all-service-instances-and-deregister-broker src/github.com/pivotal-cf/on-demand-service-broker/cmd/delete-all-service-instances-and-deregister-broker
+  sync_package deregister-broker src/github.com/pivotal-cf/on-demand-service-broker/cmd/deregister-broker
+  sync_package register-broker src/github.com/pivotal-cf/on-demand-service-broker/cmd/register-broker
+popd >/dev/null
