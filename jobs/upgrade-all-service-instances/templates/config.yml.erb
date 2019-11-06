@@ -49,22 +49,25 @@
   end
 
   def cf_config
-    cf = link('broker').p('cf')
-    cf_auth = cf['authentication']
-    client_credentials = cf_auth['client_credentials']
-    cf_auth['uaa'] = {
-      'url' => cf_auth['url'],
-      'client_credentials' => {
-        'client_id' => client_credentials['client_id'],
-        'client_secret' => client_credentials['secret']
-      },
-      'user_credentials' => cf_auth['user_credentials']
-    }
-    cf_auth.delete('url')
-    cf_auth.delete('client_credentials')
-    cf_auth.delete('user_credentials')
-    cf['disable_ssl_cert_verification'] = link('broker').p('disable_ssl_cert_verification')
-    cf
+    link('broker').if_p('cf') do |cf|
+      return {
+        'url' => cf['url'],
+        'root_ca_cert' => cf['root_ca_cert'],
+        'disable_ssl_cert_verification' => link('broker').p('disable_ssl_cert_verification'),
+        'authentication' => {
+          'uaa' => {
+            'url' => cf.dig('authentication', 'url'),
+            'user_credentials' => cf.dig('authentication', 'user_credentials'),
+            'client_credentials' => {
+              'client_id' => cf.dig('authentication', 'client_credentials', 'client_id'),
+              'client_secret' => cf.dig('authentication', 'client_credentials', 'secret')
+            }
+          }
+        }
+      }
+    end
+
+    nil
   end
 
   config = {
@@ -90,7 +93,7 @@
     "canary_selection_params" => p('canary_selection_params'),
     'cf' => cf_config,
     'maintenance_info_present' => is_maintenance_info_present?
-  }
+  }.compact
 
   config.to_yaml
 %>

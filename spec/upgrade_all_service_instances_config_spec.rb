@@ -169,6 +169,11 @@ RSpec.describe 'upgrade-all-service-instances config' do
       expect(config.fetch('cf').fetch('disable_ssl_cert_verification')).to eq(true)
     end
 
+    it 'ignores CF API when it is not set' do
+      broker_link["broker"]["properties"]["cf"]= nil
+      expect(config).to_not have_key("cf")
+    end
+
     context 'maintenance_info_present' do
       let(:broker_link_properties) { broker_link['broker']['properties'] }
 
