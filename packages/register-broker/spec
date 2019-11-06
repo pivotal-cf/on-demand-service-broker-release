@@ -2,7 +2,7 @@
 name: register-broker
 
 dependencies:
-  - golang-1-linux
+  - golang-1.12-linux
 
 files:
   - github.com/pivotal-cf/on-demand-service-broker/cmd/register-broker/*.go # gosub
