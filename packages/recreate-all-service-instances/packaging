@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
 # This program and the accompanying materials are made available under the terms of the under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -8,11 +10,8 @@ set -e
 
 source /var/vcap/packages/golang-1-linux/bosh/compile.env
 
-mkdir -p ${BOSH_INSTALL_TARGET}/src
-cp -a . ${BOSH_INSTALL_TARGET}/src
+export GOBIN="${BOSH_INSTALL_TARGET}/bin"
 
-export GOPATH=$GOPATH:$BOSH_INSTALL_TARGET
-
-go install github.com/pivotal-cf/on-demand-service-broker/cmd/recreate-all-service-instances
-
-rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg
+pushd github.com/pivotal-cf/on-demand-service-broker/cmd/recreate-all-service-instances
+  go install -mod=vendor
+popd

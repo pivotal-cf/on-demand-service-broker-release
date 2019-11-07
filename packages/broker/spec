@@ -11,6 +11,8 @@ dependencies:
 - golang-1-linux
 
 files:
+  - github.com/pivotal-cf/on-demand-service-broker/go.mod
+  - github.com/pivotal-cf/on-demand-service-broker/go.sum
   - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/curve25519/*.s
   - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/curve25519/*.h
   - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/poly1305/*.s
