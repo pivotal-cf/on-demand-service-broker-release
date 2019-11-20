@@ -4,14 +4,20 @@
 # You may obtain a copy of the License at
 # http://www.apache.org/licenses/LICENSE-2.0
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
----
-
 <%
 require 'yaml'
 
 def global_thresholds
   if_p('service_catalog.global_quotas.service_instance_limit') do |limit|
-    return "[{level: critical, gte: #{limit}}, {level: warning, gte: #{(limit * 0.8).to_i}}]"
+    return [{
+      "level" => "critical",
+      "operator" => "gte",
+      "value" => limit
+    }, {
+      "level" => "warning",
+      "operator" => "gte",
+      "value" => (limit * 0.8).to_i
+    }]
   end
   return []
 end
@@ -20,16 +26,29 @@ def service_name
   return p('service_catalog.service_name').gsub("-", "_")
 end
 
-def render_plan_indicators
-  if all_plans_indicators.empty?
-    ""
-  else
-    "#{all_plans_indicators.to_yaml.gsub("---\n", "")}"
-  end
-end
+def all_indicators
 
-def all_plans_indicators
-  indicators = []
+  indicators = [{
+    "name" => "global_total_instances",
+    "promql" => "_on_demand_broker_#{service_name}_total_instances{deployment=\"$deployment\",source_id=\"$source_id\"}",
+    "thresholds" => global_thresholds,
+    "documentation" => {
+      "title" => "Global Service Instance Count",
+      "description" => "This metric indicates the total number of instances used across all plans.",
+      "thresholdNote" => "Threshold is set using the service instance limit in global quotas if configured.",
+      "recommendedResponse" =>
+        "When this metric gets to warning or critical level you should consider deleting any unused service instances,
+        or increase the global service instance limit."
+    },
+    "presentation" => {
+      "chartType" => "step",
+      "currentValue" => "false",
+      "frequency" => 0,
+      "labels" => ["source_id", "origin"],
+      "units" => "count",
+    }
+  }]
+
   if_p('service_catalog.plans') do |plans|
     plans.compact.each do |plan|
       indicators << plan_indicator(plan['name'], plan['quotas'])
@@ -44,7 +63,10 @@ def plan_indicator(plan_name, plan_quota)
    thresholds = []
    if !plan_quota.nil? && !plan_quota['service_instance_limit'].nil?
       limit = plan_quota['service_instance_limit']
-      thresholds = [{"level" => "critical", "gte" => limit}, {"level" => "warning" , "gte" => (limit * 0.8).to_i}]
+      thresholds = [
+          {"level" => "critical", "operator" => "gte", "value" => limit},
+          {"level" => "warning" , "operator" => "gte", "value" => (limit * 0.8).to_i}
+      ]
    end
    plan_name_with_underscore = plan_name.gsub("-", "_")
 
@@ -68,42 +90,38 @@ def plan_indicator(plan_name, plan_quota)
   },
 }
 end
+
+def whole_doc
+  return {
+  "apiVersion" => "indicatorprotocol.io/v1",
+  "kind" => "IndicatorDocument",
+  "metadata" => {
+    "labels" => {
+      "deployment" => "#{spec.deployment}",
+      "source_id" => "#{spec.deployment}"
+    },
+  },
+
+  "spec" => {
+    "product" => {
+      "name" => "#{spec.deployment}",
+      "version" => "1.0.0"
+    },
+    "indicators" => all_indicators,
+    "layout" => {
+      "owner" => "Services Enablement",
+      "title" => "On Demand Broker Monitoring",
+      "description" => "This topic explains how to monitor the On Demand Broker Indicators",
+      "sections" => [{
+        "title" => "Service Instance Quotas",
+        "description" => "Indicators monitoring service instance quota",
+        "indicators" => all_indicators.map { |indicator| indicator["name"] }
+      }]
+    }
+  }
+}.to_yaml
+
+end
 %>
 
-apiVersion: v0
-
-product:
-  name: <%= spec.deployment %>
-  version: 1.0.0
-
-metadata:
-  deployment: <%= spec.deployment %>
-  source_id: <%= spec.deployment %>
-
-indicators:
-- name: global_total_instances
-  promql: _on_demand_broker_<%= service_name %>_total_instances{deployment="$deployment",source_id="$source_id"}
-  thresholds: <%= global_thresholds %>
-  documentation:
-    title: Global Service Instance Count
-    description: This metric indicates the total number of instances used across all plans.
-    thresholdNote: Threshold is set using the service instance limit in global quotas if configured.
-    recommendedResponse: |
-      When this metric gets to warning or critical level you should consider deleting any unused service instances,
-      or increase the global service instance limit.
-  presentation:
-    chartType: step
-    currentValue: false
-    frequency: 0
-    labels: [source_id, origin]
-    units: "count"
-<%= render_plan_indicators %>
-
-layout:
-  owner: Services Enablement
-  title: On Demand Broker Monitoring
-  description: This topic explains how to monitor the On Demand Broker Indicators
-  sections:
-  - title: Service Instance Quotas
-    description: Indicators monitoring service instance quota
-    indicators: <%= ["global_total_instances"] | all_plans_indicators.map { |indicator| indicator['name']} %>
+<%= whole_doc %>

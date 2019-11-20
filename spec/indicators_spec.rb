@@ -33,7 +33,7 @@ RSpec.describe 'indicator config templating' do
   }
 
   let(:indicator) {
-    rendered_template['indicators'].filter {|i| i['name'] == indicator_name}[0]
+    rendered_template['spec']['indicators'].filter {|i| i['name'] == indicator_name}[0]
   }
 
   before(:all) do
@@ -48,7 +48,7 @@ RSpec.describe 'indicator config templating' do
         "name" => "my-deployment",
         "version" => "1.0.0"
     }
-    expect(rendered_template['product']).to eq(expected_product)
+    expect(rendered_template['spec']['product']).to eq(expected_product)
   end
 
   it 'sets `metadata` correctly' do
@@ -56,17 +56,17 @@ RSpec.describe 'indicator config templating' do
         "deployment" => "my-deployment",
         "source_id" => "my-deployment",
     }
-    expect(rendered_template['metadata']).to eq(expected_metadata)
+    expect(rendered_template['metadata']['labels']).to eq(expected_metadata)
   end
 
   describe 'layout' do
     it 'should be not empty' do
-      expect(rendered_template['layout']).not_to be_nil
-      expect(rendered_template['layout']['title']).not_to be_nil
-      expect(rendered_template['layout']['owner']).not_to be_nil
-      expect(rendered_template['layout']['description']).not_to be_nil
+      expect(rendered_template['spec']['layout']).not_to be_nil
+      expect(rendered_template['spec']['layout']['title']).not_to be_nil
+      expect(rendered_template['spec']['layout']['owner']).not_to be_nil
+      expect(rendered_template['spec']['layout']['description']).not_to be_nil
 
-      sections = rendered_template['layout']['sections']
+      sections = rendered_template['spec']['layout']['sections']
       expect(sections).to include a_hash_including('indicators' => include('global_total_instances', 'dedicated_vm_total_instances', 'dedicated_high_mem_vm_total_instances',))
       expect(sections).to include a_hash_including('indicators' => start_with('global_total_instances'))
     end
@@ -95,8 +95,8 @@ RSpec.describe 'indicator config templating' do
 
         it 'is configured correctly' do
           expected_thresholds = [
-              {"level" => "critical", "gte" => 200},
-              {"level" => "warning", "gte" => (200 * 0.8).to_i}
+              {"level" => "critical", "operator" => "gte", "value" => 200},
+              {"level" => "warning", "operator" => "gte", "value" => (200 * 0.8).to_i}
           ]
           expect(indicator['thresholds']).to eq expected_thresholds
         end
@@ -129,10 +129,10 @@ RSpec.describe 'indicator config templating' do
       end
 
       it "has only the global total instances" do
-        total_instances_indicator = rendered_template["indicators"].filter {|indicator| indicator["name"].end_with? "total_instances"}
+        total_instances_indicator = rendered_template['spec']["indicators"].filter {|indicator| indicator["name"].end_with? "total_instances"}
         expect(total_instances_indicator.size).to eq 1
 
-        sections = rendered_template['layout']['sections'][0]["indicators"]
+        sections = rendered_template['spec']['layout']['sections'][0]["indicators"]
         sections_for_total_instances = sections.filter {|s| s.end_with? "total_instances"}
         expect(sections_for_total_instances).to contain_exactly 'global_total_instances'
       end
@@ -154,7 +154,7 @@ RSpec.describe 'indicator config templating' do
         end
 
         it 'ignores the plan' do
-          expect(rendered_template['indicators'].size).to eq 2
+          expect(rendered_template['spec']['indicators'].size).to eq 2
         end
       end
 
@@ -168,8 +168,8 @@ RSpec.describe 'indicator config templating' do
 
           it 'is configured correctly' do
             expected_thresholds = [
-                {"level" => "critical", "gte" => 150},
-                {"level" => "warning", "gte" => 120}
+                {"level" => "critical", "operator" => "gte", "value" => 150},
+                {"level" => "warning", "operator" => "gte", "value" => 120}
             ]
             expect(indicator['thresholds']).to eq expected_thresholds
           end
