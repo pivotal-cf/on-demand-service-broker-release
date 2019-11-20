@@ -118,7 +118,6 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/urfave/negroni/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/apiserver/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/broker/decider/*.go # sync-package-specs
-  - github.com/pivotal-cf/on-demand-service-broker/broker/maintenanceinfo/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/credhub/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/credhubbroker/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/hasher/*.go # sync-package-specs
