@@ -68,6 +68,7 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/on-demand-services-sdk/serviceadapter/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/config/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/boshdirector/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/broker/decider/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/brokercontext/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/cf/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/loggerfactory/*.go # sync-package-specs

@@ -69,6 +69,7 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-cli/director/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-cli/uaa/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/boshdirector/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/broker/decider/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/brokercontext/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/loggerfactory/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/service/*.go # sync-package-specs
