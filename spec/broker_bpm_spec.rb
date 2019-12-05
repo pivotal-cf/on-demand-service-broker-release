@@ -45,6 +45,7 @@ RSpec.describe 'broker bpm templating' do
       expected = {
         'processes' => [{
           'name' => 'broker',
+          'env' => {'GODEBUG' => 'tls13=0'},
           'executable' => '/var/vcap/packages/broker/bin/on-demand-service-broker',
           'args' => [
             '-configFilePath',
