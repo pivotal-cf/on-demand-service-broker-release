@@ -19,6 +19,7 @@ end
 bpm_config = {
   'processes' => [{
     'name' => 'broker',
+    'env' => {'GODEBUG' => 'tls13=0'},
     'executable' => '/var/vcap/packages/broker/bin/on-demand-service-broker',
     'args' => [
       '-configFilePath',
