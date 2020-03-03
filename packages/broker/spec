@@ -55,12 +55,13 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/uuid/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/net/context/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/go-socks5/*.go # sync-package-specs
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/curve25519/*.go # sync-package-specs
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/ed25519/internal/edwards25519/*.go # sync-package-specs
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/ed25519/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/internal/subtle/*.go # sync-package-specs
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/internal/chacha20/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/chacha20/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/curve25519/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/ed25519/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/poly1305/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/blowfish/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/ssh/internal/bcrypt_pbkdf/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/golang.org/x/crypto/ssh/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/socks5-proxy/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/paraphernalia/secure/tlsconfig/*.go # sync-package-specs
