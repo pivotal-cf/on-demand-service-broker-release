@@ -161,80 +161,39 @@ RSpec.describe 'broker config templating' do
     end
   end
 
-  context 'when the manifest enables secure binding properties but is missing client ID' do
-    let(:manifest_file) { File.open 'spec/fixtures/invalid_credhub_missing_uaa_client_id.yml' }
+  describe 'secure bindings' do
+    context 'enabled but missing client ID' do
+      let(:manifest_file) { File.open 'spec/fixtures/invalid_credhub_missing_uaa_client_id.yml' }
 
-    it 'templating raises an error' do
-      expect do
-        rendered_template
-      end.to raise_error(RuntimeError, 'Invalid secure_binding_credentials config - must specify client_id')
-    end
-  end
-
-  context 'when the manifest enables secure binding properties but is missing client secret' do
-    let(:manifest_file) { File.open 'spec/fixtures/invalid_credhub_missing_uaa_client_secret.yml' }
-
-    it 'templating raises an error' do
-      expect do
-        rendered_template
-      end.to raise_error(RuntimeError, 'Invalid secure_binding_credentials config - must specify client_secret')
-    end
-  end
-
-  describe 'credhub link' do
-    let(:manifest_file) { File.open 'spec/fixtures/valid_credhub.yml' }
-
-    context 'when secure_binding_credentials is enabled but there is no credhub link' do
       it 'templating raises an error' do
         expect do
           rendered_template
-        end.to raise_error(RuntimeError, 'secure_binding_credentials is enabled, but no CredHub link was provided')
+        end.to raise_error(RuntimeError, 'Invalid secure_binding_credentials config - must specify client_id')
       end
     end
 
-    context 'when credhub link is provided' do
-      let(:links) do
-        [{
-          'credhub' => {
-            'instances' => [],
-            'properties' => {
-              'credhub' => {
-                'port' => 8844,
-                'ca_certificate' => 'credhub_ca_cert',
-                'internal_url' => 'my.credhub.internal'
-              }
-            }
-          }
-        }]
+    context 'enabled but is missing client secret' do
+      let(:manifest_file) { File.open 'spec/fixtures/invalid_credhub_missing_uaa_client_secret.yml' }
+
+      it 'templating raises an error' do
+        expect do
+          rendered_template
+        end.to raise_error(RuntimeError, 'Invalid secure_binding_credentials config - must specify client_secret')
       end
+    end
 
-      it 'includes the credhub properties' do
-        expect(YAML.safe_load(rendered_template).fetch('credhub')).to eq(
-          'api_url' => 'https://my.credhub.internal:8844',
-          'ca_cert' => 'credhub_ca_cert',
-          'client_id' => 'credhub_id',
-          'client_secret' => 'credhub_password',
-          'internal_uaa_ca_cert' => "--- INTERNAL UAA CA CERT ---\n"
-        )
-      end
+    describe 'credhub link' do
+      let(:manifest_file) { File.open 'spec/fixtures/valid_credhub.yml' }
 
-      context 'but secure binding is disabled' do
-        let(:manifest_file) { File.open 'spec/fixtures/valid_disabled_credhub.yml' }
-
-        it 'does not include the credhub properties in the broker config' do
-          expect(YAML.safe_load(rendered_template)).not_to have_key('credhub')
+      context 'when secure_binding_credentials is enabled but there is no credhub link' do
+        it 'templating raises an error' do
+          expect do
+            rendered_template
+          end.to raise_error(RuntimeError, 'secure_binding_credentials is enabled, but no CredHub link was provided')
         end
       end
 
-      context 'but the manifest does not contain secure binding properties' do
-        let(:manifest_file) { File.open 'spec/fixtures/valid-mandatory-broker-config.yml' }
-
-        it 'does not include the credhub properties in the broker config' do
-          expect(YAML.safe_load(rendered_template)).not_to have_key('credhub')
-        end
-      end
-
-      context 'and credhub.internal_url includes the protocol' do
+      context 'when credhub link is provided' do
         let(:links) do
           [{
             'credhub' => {
@@ -243,42 +202,85 @@ RSpec.describe 'broker config templating' do
                 'credhub' => {
                   'port' => 8844,
                   'ca_certificate' => 'credhub_ca_cert',
-                  'internal_url' => 'https://my.credhub.internal'
+                  'internal_url' => 'my.credhub.internal'
                 }
               }
             }
           }]
         end
 
-        it 'includes the correct credhub.api_url' do
-          expect(YAML.safe_load(rendered_template).dig('credhub', 'api_url')).to eq(
-            'https://my.credhub.internal:8844',
+        it 'includes the credhub properties' do
+          expect(YAML.safe_load(rendered_template).fetch('credhub')).to eq(
+            'api_url' => 'https://my.credhub.internal:8844',
+            'ca_cert' => 'credhub_ca_cert',
+            'client_id' => 'credhub_id',
+            'client_secret' => 'credhub_password',
+            'internal_uaa_ca_cert' => "--- INTERNAL UAA CA CERT ---\n"
           )
         end
-      end
-    end
 
-    context 'when credhub link is provided but set to empty' do
-      let(:manifest_file) { File.open 'spec/fixtures/valid_credhub.yml' }
-      let(:links) do
-        [{
-          'credhub' => {
-            'instances' => [],
-            'properties' => {
+        context 'but secure binding is disabled' do
+          let(:manifest_file) { File.open 'spec/fixtures/valid_disabled_credhub.yml' }
+
+          it 'does not include the credhub properties in the broker config' do
+            expect(YAML.safe_load(rendered_template)).not_to have_key('credhub')
+          end
+        end
+
+        context 'but the manifest does not contain secure binding properties' do
+          let(:manifest_file) { File.open 'spec/fixtures/valid-mandatory-broker-config.yml' }
+
+          it 'does not include the credhub properties in the broker config' do
+            expect(YAML.safe_load(rendered_template)).not_to have_key('credhub')
+          end
+        end
+
+        context 'and credhub.internal_url includes the protocol' do
+          let(:links) do
+            [{
               'credhub' => {
-                'port' => '',
-                'ca_certificate' => '',
-                'internal_url' => ''
+                'instances' => [],
+                'properties' => {
+                  'credhub' => {
+                    'port' => 8844,
+                    'ca_certificate' => 'credhub_ca_cert',
+                    'internal_url' => 'https://my.credhub.internal'
+                  }
+                }
+              }
+            }]
+          end
+
+          it 'includes the correct credhub.api_url' do
+            expect(YAML.safe_load(rendered_template).dig('credhub', 'api_url')).to eq(
+              'https://my.credhub.internal:8844',
+            )
+          end
+        end
+      end
+
+      context 'when credhub link is provided but set to empty' do
+        let(:manifest_file) { File.open 'spec/fixtures/valid_credhub.yml' }
+        let(:links) do
+          [{
+            'credhub' => {
+              'instances' => [],
+              'properties' => {
+                'credhub' => {
+                  'port' => '',
+                  'ca_certificate' => '',
+                  'internal_url' => ''
+                }
               }
             }
-          }
-        }]
-      end
+          }]
+        end
 
-      it 'raises an error' do
-        expect do
-          rendered_template
-        end.to raise_error(RuntimeError, 'Secure service binding is enabled but CredHub link is empty')
+        it 'raises an error' do
+          expect do
+            rendered_template
+          end.to raise_error(RuntimeError, 'Secure service binding is enabled but CredHub link is empty')
+        end
       end
     end
   end
@@ -310,83 +312,244 @@ RSpec.describe 'broker config templating' do
     end
   end
 
-  context 'when the enable_secure_manifests flag is set to true' do
-    let(:manifest_file) { File.open 'spec/fixtures/valid_resolve_bind_secrets.yml' }
+  describe 'secure manifests' do
+    context 'when the enable_secure_manifests flag is set to true' do
+      let(:manifest_file) { File.open 'spec/fixtures/valid_resolve_bind_secrets.yml' }
 
-    it 'includes the enable_secure_manifests flag as true in the config' do
-      expect(rendered_template).to include 'enable_secure_manifests: true'
-      yml = YAML.safe_load(rendered_template)
-      expect(yml).to have_key 'bosh_credhub'
-      expect(yml['bosh_credhub']).to include(
-        'url' => 'https://bosh_credhub_url:8844/api/',
-        'root_ca_cert' => 'CERT',
-        'authentication' => {
-          'uaa' => {
-            'client_credentials' => {
-              'client_id' => 'credhub_id',
-              'client_secret' => 'credhub_password'
+      it 'includes the enable_secure_manifests flag as true in the config' do
+        expect(rendered_template).to include 'enable_secure_manifests: true'
+        yml = YAML.safe_load(rendered_template)
+        expect(yml).to have_key 'bosh_credhub'
+        expect(yml['bosh_credhub']).to include(
+          'url' => 'https://bosh_credhub_url:8844/api/',
+          'root_ca_cert' => 'CERT',
+          'authentication' => {
+            'uaa' => {
+              'client_credentials' => {
+                'client_id' => 'credhub_id',
+                'client_secret' => 'credhub_password'
+              }
             }
           }
-        }
-      )
+        )
+      end
+    end
+
+    context 'when the enable_secure_manifests flag is true, but use_stdin is false' do
+      let(:manifest_file) { File.open 'spec/fixtures/invalid_secure_manifests_enabled_but_use_stdin_false.yml' }
+
+      it 'fails with an error' do
+        expect do
+          rendered_template
+        end.to raise_error(RuntimeError, 'enable_secure_manifests requires use_stdin to be enabled')
+      end
+    end
+
+    context 'when the enable_secure_manifests flag is set to true but we do not have bosh_credhub config' do
+      let(:manifest_file) { File.open 'spec/fixtures/invalid_resolve_bind_secrets.yml' }
+
+      it 'fails with an error' do
+        expect do
+          rendered_template
+        end.to raise_error(RuntimeError, 'enable_secure_manifests requires bosh_credhub_api to be configured, but bosh_credhub_api error: not configured')
+      end
+    end
+
+    context 'bosh_credhub_api is missing keys' do
+      let(:manifest_file) { File.open 'spec/fixtures/invalid_resolve_bind_secrets-missing_api_ca_cert.yml' }
+
+      it 'fails with an error' do
+        expect do
+          rendered_template
+        end.to raise_error(RuntimeError, 'enable_secure_manifests requires bosh_credhub_api to be configured, but bosh_credhub_api error: missing root_ca_cert')
+      end
+    end
+
+    context 'bosh_credhub_api is missing authentication' do
+      let(:manifest_file) { File.open 'spec/fixtures/invalid_resolve_bind_secrets_missing_authentication.yml' }
+
+      it 'fails with an error' do
+        expect do
+          rendered_template
+        end.to raise_error(RuntimeError, 'enable_secure_manifests requires bosh_credhub_api to be configured, but bosh_credhub_api error: missing authentication configuration')
+      end
+    end
+
+    context 'bosh_credhub_api is missing deep keys' do
+      let(:manifest_file) { File.open 'spec/fixtures/invalid_resolve_bind_secrets_missing_client_id.yml' }
+
+      it 'fails with an error' do
+        expect do
+          rendered_template
+        end.to raise_error(RuntimeError, 'enable_secure_manifests requires bosh_credhub_api to be configured, but bosh_credhub_api error: missing authentication.uaa.client_credentials.client_id')
+      end
     end
   end
 
-  context 'when the enable_secure_manifests flag is true, but use_stdin is false' do
-    let(:manifest_file) { File.open 'spec/fixtures/invalid_secure_manifests_enabled_but_use_stdin_false.yml' }
+  describe 'service catalog' do
+    context 'when the manifest contains only mandatory service catalog properties' do
+      let(:manifest_file) { File.open 'spec/fixtures/valid-mandatory-broker-config.yml' }
 
-    it 'fails with an error' do
-      expect do
-        rendered_template
-      end.to raise_error(RuntimeError, 'enable_secure_manifests requires use_stdin to be enabled')
+      it 'sets the value of disable_ssl_cert_verification to false' do
+        expect(rendered_template).to include 'disable_ssl_cert_verification: false'
+      end
+    end
+
+    context 'when the manifest is missing mandatory service catalog property' do
+      %w[id service_name service_description bindable plan_updatable].each do |missing_field|
+        context "when #{missing_field} is absent" do
+          let(:manifest_file) do
+            generate_test_manifest do |yaml|
+              yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog'].delete(missing_field)
+            end
+          end
+
+          it 'templating raises an error' do
+            expect do
+              rendered_template
+            end.to raise_error(RuntimeError, "Invalid service_catalog config - must specify #{missing_field}")
+          end
+        end
+
+        context "when #{missing_field} is empty string" do
+          let(:manifest_file) do
+            generate_test_manifest do |yaml|
+              yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog'][missing_field] = ''
+            end
+          end
+
+          it 'templating raises an error' do
+            expect do
+              rendered_template
+            end.to raise_error(RuntimeError, "Invalid service_catalog config - must specify #{missing_field}")
+          end
+        end
+      end
+    end
+
+    context 'when the manifest contains optional service catalog properties' do
+      let(:manifest_file) { File.open 'spec/fixtures/valid-optional-broker-config.yml' }
+
+      context 'and startup banner is configured' do
+        it 'templates without error' do
+          rendered_template
+          expect(rendered_template).to include('startup_banner: true')
+        end
+      end
+
+      context 'and service_instance_limit is set' do
+        it 'templates without error' do
+          rendered_template
+          expect(rendered_template).to include('service_instance_limit: 42')
+        end
+      end
+    end
+
+    context 'when the manifest specifies a value for metadata.shareable' do
+      let(:manifest_file) { File.open 'spec/fixtures/valid-shareable-config.yml' }
+
+      it 'sets the value correctly' do
+        expect(rendered_template).to include 'shareable: true'
+      end
+    end
+
+    context 'when the manifest has arbitrary service metadata' do
+      let(:manifest_file) { File.open 'spec/fixtures/valid-service-metadata.yml' }
+
+      it 'sets the value correctly' do
+        expect(rendered_template).to include 'yolo: false'
+      end
     end
   end
 
-  context 'when the enable_secure_manifests flag is set to true but we do not have bosh_credhub config' do
-    let(:manifest_file) { File.open 'spec/fixtures/invalid_resolve_bind_secrets.yml' }
+  describe 'service plans validation' do
+    context 'when the manifest has no plans property' do
+      let(:manifest_file) do
+        generate_test_manifest do |yaml|
+          yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog'].delete('plans')
+        end
+      end
 
-    it 'fails with an error' do
-      expect do
-        rendered_template
-      end.to raise_error(RuntimeError, 'enable_secure_manifests requires bosh_credhub_api to be configured, but bosh_credhub_api error: not configured')
+      it 'templating raises an error' do
+        expect do
+          rendered_template
+        end.to raise_error(RuntimeError, 'Invalid service_catalog config - must specify plans')
+      end
     end
-  end
 
-  context 'bosh_credhub_api is missing keys' do
-    let(:manifest_file) { File.open 'spec/fixtures/invalid_resolve_bind_secrets-missing_api_ca_cert.yml' }
+    context 'when the manifest has 0 plans' do
+      let(:manifest_file) do
+        generate_test_manifest do |yaml|
+          yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog']['plans'] = []
+        end
+      end
 
-    it 'fails with an error' do
-      expect do
-        rendered_template
-      end.to raise_error(RuntimeError, 'enable_secure_manifests requires bosh_credhub_api to be configured, but bosh_credhub_api error: missing root_ca_cert')
+      it 'templating raises an error' do
+        expect do
+          rendered_template
+        end.to raise_error(RuntimeError, 'Invalid service_catalog config - must specify plans')
+      end
     end
-  end
 
-  context 'bosh_credhub_api is missing authentication' do
-    let(:manifest_file) { File.open 'spec/fixtures/invalid_resolve_bind_secrets_missing_authentication.yml' }
+    context 'when the manifest only has nil plans' do
+      let(:manifest_file) do
+        generate_test_manifest do |yaml|
+          yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog']['plans'] = [nil, nil]
+        end
+      end
 
-    it 'fails with an error' do
-      expect do
-        rendered_template
-      end.to raise_error(RuntimeError, 'enable_secure_manifests requires bosh_credhub_api to be configured, but bosh_credhub_api error: missing authentication configuration')
+      it 'templating raises an error' do
+        expect do
+          rendered_template
+        end.to raise_error(RuntimeError, 'Invalid service_catalog config - must specify plans')
+      end
     end
-  end
 
-  context 'bosh_credhub_api is missing deep keys' do
-    let(:manifest_file) { File.open 'spec/fixtures/invalid_resolve_bind_secrets_missing_client_id.yml' }
+    context 'when the manifest also has nil plans' do
+      let(:manifest_file) do
+        generate_test_manifest do |yaml|
+          plan = yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog']['plans'][0]
+          yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog']['plans'] = [nil, plan, nil]
+        end
+      end
 
-    it 'fails with an error' do
-      expect do
-        rendered_template
-      end.to raise_error(RuntimeError, 'enable_secure_manifests requires bosh_credhub_api to be configured, but bosh_credhub_api error: missing authentication.uaa.client_credentials.client_id')
+      it 'filters out nil plans' do
+        config = YAML.safe_load(rendered_template)
+        expect(config.fetch('service_catalog').fetch('plans').length).to eq(1)
+        expect(config.fetch('service_catalog').fetch('plans')[0].fetch('name')).to eq('dedicated-vm')
+      end
     end
-  end
 
-  context 'when the manifest contains only mandatory service catalog properties' do
-    let(:manifest_file) { File.open 'spec/fixtures/valid-mandatory-broker-config.yml' }
+    context 'when the manifest is missing mandatory plan fields' do
+      %w[name plan_id description instance_groups].each do |missing_field|
+        context ": #{missing_field}" do
+          let(:manifest_file) do
+            generate_test_manifest do |yaml|
+              yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog']['plans'].first.delete(missing_field)
+            end
+          end
 
-    it 'sets the value of disable_ssl_cert_verification to false' do
-      expect(rendered_template).to include 'disable_ssl_cert_verification: false'
+          it 'templating raises an error' do
+            expect do
+              rendered_template
+            end.to raise_error(RuntimeError, "Invalid plan config - must specify #{missing_field}")
+          end
+        end
+      end
+    end
+
+    context 'when the manifest has 0 instance groups for a plan' do
+      let(:manifest_file) do
+        generate_test_manifest do |yaml|
+          yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog']['plans'].first['instance_groups'] = []
+        end
+      end
+
+      it 'templating raises an error' do
+        expect do
+          rendered_template
+        end.to raise_error(RuntimeError, 'Invalid plan config - must specify instance_groups')
+      end
     end
   end
 
@@ -403,143 +566,6 @@ RSpec.describe 'broker config templating' do
 
     it 'sets the value of disable_bosh_configs to true' do
       expect(rendered_template).to include 'disable_bosh_configs: true'
-    end
-  end
-
-  context 'when the manifest specifies a value for metadata.shareable' do
-    let(:manifest_file) { File.open 'spec/fixtures/valid-shareable-config.yml' }
-
-    it 'sets the value correctly' do
-      expect(rendered_template).to include 'shareable: true'
-    end
-  end
-
-  context 'when the manifest has arbitrary service metadata' do
-    let(:manifest_file) { File.open 'spec/fixtures/valid-service-metadata.yml' }
-
-    it 'sets the value correctly' do
-      expect(rendered_template).to include 'yolo: false'
-    end
-  end
-
-  context 'when the manifest is missing mandatory service catalog property' do
-    %w[id service_name service_description bindable plan_updatable].each do |missing_field|
-      context "when #{missing_field} is absent" do
-        let(:manifest_file) do
-          generate_test_manifest do |yaml|
-            yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog'].delete(missing_field)
-          end
-        end
-
-        it 'templating raises an error' do
-          expect do
-            rendered_template
-          end.to raise_error(RuntimeError, "Invalid service_catalog config - must specify #{missing_field}")
-        end
-      end
-
-      context "when #{missing_field} is empty string" do
-        let(:manifest_file) do
-          generate_test_manifest do |yaml|
-            yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog'][missing_field] = ''
-          end
-        end
-
-        it 'templating raises an error' do
-          expect do
-            rendered_template
-          end.to raise_error(RuntimeError, "Invalid service_catalog config - must specify #{missing_field}")
-        end
-      end
-    end
-  end
-
-  context 'when the manifest has no plans property' do
-    let(:manifest_file) do
-      generate_test_manifest do |yaml|
-        yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog'].delete('plans')
-      end
-    end
-
-    it 'templating raises an error' do
-      expect do
-        rendered_template
-      end.to raise_error(RuntimeError, 'Invalid service_catalog config - must specify plans')
-    end
-  end
-
-  context 'when the manifest has 0 plans' do
-    let(:manifest_file) do
-      generate_test_manifest do |yaml|
-        yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog']['plans'] = []
-      end
-    end
-
-    it 'templating raises an error' do
-      expect do
-        rendered_template
-      end.to raise_error(RuntimeError, 'Invalid service_catalog config - must specify plans')
-    end
-  end
-
-  context 'when the manifest only has nil plans' do
-    let(:manifest_file) do
-      generate_test_manifest do |yaml|
-        yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog']['plans'] = [nil, nil]
-      end
-    end
-
-    it 'templating raises an error' do
-      expect do
-        rendered_template
-      end.to raise_error(RuntimeError, 'Invalid service_catalog config - must specify plans')
-    end
-  end
-
-  context 'when the manifest also has nil plans' do
-    let(:manifest_file) do
-      generate_test_manifest do |yaml|
-        plan = yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog']['plans'][0]
-        yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog']['plans'] = [nil, plan, nil]
-      end
-    end
-
-    it 'filters out nil plans' do
-      config = YAML.safe_load(rendered_template)
-      expect(config.fetch('service_catalog').fetch('plans').length).to eq(1)
-      expect(config.fetch('service_catalog').fetch('plans')[0].fetch('name')).to eq('dedicated-vm')
-    end
-  end
-
-  context 'when the manifest is missing mandatory plan fields' do
-    %w[name plan_id description instance_groups].each do |missing_field|
-      context ": #{missing_field}" do
-        let(:manifest_file) do
-          generate_test_manifest do |yaml|
-            yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog']['plans'].first.delete(missing_field)
-          end
-        end
-
-        it 'templating raises an error' do
-          expect do
-            rendered_template
-          end.to raise_error(RuntimeError, "Invalid plan config - must specify #{missing_field}")
-        end
-      end
-    end
-  end
-
-  context 'when the manifest has 0 instance groups for a plan' do
-    let(:manifest_file) do
-      generate_test_manifest do |yaml|
-        yaml['instance_groups'][0]['jobs'][0]['properties']['service_catalog']['plans'].first['instance_groups'] = []
-      end
-    end
-
-    it 'templating raises an error' do
-      expect do
-        rendered_template
-      end.to raise_error(RuntimeError, 'Invalid plan config - must specify instance_groups')
     end
   end
 
@@ -580,130 +606,114 @@ RSpec.describe 'broker config templating' do
     end
   end
 
-  context 'when the manifest contains optional service catalog properties' do
-    let(:manifest_file) { File.open 'spec/fixtures/valid-optional-broker-config.yml' }
+  describe 'quotas' do
+    describe 'quotas when cf is not configured - i.e. cf startup checks disabled' do
+      context 'when global service instance limit quota is set' do
+        let(:manifest_file) { File.open 'spec/fixtures/quotas_no_cf_global_instances.yml' }
 
-    context 'and startup banner is configured' do
-      it 'templates without error' do
-        rendered_template
-        expect(rendered_template).to include('startup_banner: true')
+        it 'templating raises an error when a global instance limit is set' do
+          expect do
+            rendered_template
+          end.to raise_error(RuntimeError, 'Invalid quota configuration - global service instance limit requires CF to be configured')
+        end
+      end
+
+      context 'when a plan service instance limit quota is set' do
+        let(:manifest_file) { File.open 'spec/fixtures/quotas_no_cf_plan_instances.yml' }
+
+        it 'templating raises an error when a plan instance limit is set' do
+          expect do
+            rendered_template
+          end.to raise_error(RuntimeError, 'Invalid quota configuration - plan service instance limit requires CF to be configured')
+        end
+      end
+
+      context 'when global resource limits are set' do
+        let (:manifest_file) { File.open 'spec/fixtures/quotas_no_cf_global_resource_limits.yml' }
+
+        it 'templating raises an error when a global resource limit is set' do
+          expect do
+            rendered_template
+          end.to raise_error(RuntimeError, 'Invalid quota configuration - global resource limits require CF to be configured')
+        end
+      end
+
+      context 'when global resource limits are set with the deprated format' do
+        let (:manifest_file) { File.open 'spec/fixtures/quotas_no_cf_global_resource_limits_deprecated_format.yml' }
+
+        it 'templating raises an error when a global resource limit is set' do
+          expect do
+            rendered_template
+          end.to raise_error(RuntimeError, 'Invalid quota configuration - global resource limits require CF to be configured')
+        end
+      end
+
+      context 'when plan resource limits are set' do
+        let (:manifest_file) { File.open 'spec/fixtures/quotas_no_cf_plan_resource_limits.yml' }
+
+        it 'templating raises an error when a global resource limit is set' do
+          expect do
+            rendered_template
+          end.to raise_error(RuntimeError, 'Invalid quota configuration - plan resource limit requires CF to be configured')
+        end
+      end
+
+      context 'when plan resource limits are set with the deprecated format' do
+        let (:manifest_file) { File.open 'spec/fixtures/quotas_no_cf_plan_resource_limits_deprecated_format.yml' }
+
+        it 'templating raises an error when a global resource limit is set' do
+          expect do
+            rendered_template
+          end.to raise_error(RuntimeError, 'Invalid quota configuration - plan resource limit requires CF to be configured')
+        end
+      end
+
+      context 'when global resource limit block is present but no values are present' do
+        let (:manifest_file) { File.open 'spec/fixtures/quotas_no_cf_global_resource_limits_no_values.yml' }
+
+        it 'succeeds' do
+          expect do
+            rendered_template
+          end.not_to raise_error
+        end
       end
     end
 
-    context 'and service_instance_limit is set' do
-      it 'templates without error' do
-        rendered_template
-        expect(rendered_template).to include('service_instance_limit: 42')
-      end
-    end
-  end
+    describe 'when quotas are configured with the deprecated format' do
+      let (:manifest_file) {File.open 'spec/fixtures/quotas_deprecated_format.yml'}
 
-  describe 'quotas when cf is not configured - i.e. cf startup checks disabled' do
-    context 'when global service instance limit quota is set' do
-      let(:manifest_file) { File.open 'spec/fixtures/quotas_no_cf_global_instances.yml' }
-
-      it 'templating raises an error when a global instance limit is set' do
-        expect do
-          rendered_template
-        end.to raise_error(RuntimeError, 'Invalid quota configuration - global service instance limit requires CF to be configured')
-      end
-    end
-
-    context 'when a plan service instance limit quota is set' do
-      let(:manifest_file) { File.open 'spec/fixtures/quotas_no_cf_plan_instances.yml' }
-
-      it 'templating raises an error when a plan instance limit is set' do
-        expect do
-          rendered_template
-        end.to raise_error(RuntimeError, 'Invalid quota configuration - plan service instance limit requires CF to be configured')
-      end
-    end
-
-    context 'when global resource limits are set' do
-      let (:manifest_file) { File.open 'spec/fixtures/quotas_no_cf_global_resource_limits.yml' }
-
-      it 'templating raises an error when a global resource limit is set' do
-        expect do
-          rendered_template
-        end.to raise_error(RuntimeError, 'Invalid quota configuration - global resource limits require CF to be configured')
-      end
-    end
-
-    context 'when global resource limits are set with the deprated format' do
-      let (:manifest_file) { File.open 'spec/fixtures/quotas_no_cf_global_resource_limits_deprecated_format.yml' }
-
-      it 'templating raises an error when a global resource limit is set' do
-        expect do
-          rendered_template
-        end.to raise_error(RuntimeError, 'Invalid quota configuration - global resource limits require CF to be configured')
-      end
-    end
-
-    context 'when plan resource limits are set' do
-      let (:manifest_file) { File.open 'spec/fixtures/quotas_no_cf_plan_resource_limits.yml' }
-
-      it 'templating raises an error when a global resource limit is set' do
-        expect do
-          rendered_template
-        end.to raise_error(RuntimeError, 'Invalid quota configuration - plan resource limit requires CF to be configured')
-      end
-    end
-
-    context 'when plan resource limits are set with the deprecated format' do
-      let (:manifest_file) { File.open 'spec/fixtures/quotas_no_cf_plan_resource_limits_deprecated_format.yml' }
-
-      it 'templating raises an error when a global resource limit is set' do
-        expect do
-          rendered_template
-        end.to raise_error(RuntimeError, 'Invalid quota configuration - plan resource limit requires CF to be configured')
-      end
-    end
-
-    context 'when global resource limit block is present but no values are present' do
-      let (:manifest_file) { File.open 'spec/fixtures/quotas_no_cf_global_resource_limits_no_values.yml' }
-
-      it 'succeeds' do
-        expect do
-          rendered_template
-        end.not_to raise_error
-      end
-    end
-  end
-
-  describe 'when quotas are configured with the deprecated format' do
-    let (:manifest_file) {File.open 'spec/fixtures/quotas_deprecated_format.yml'}
-
-    it 'is adapted to the new format for global quotas' do
-      expectedQuotas = {
+      it 'is adapted to the new format for global quotas' do
+        expectedQuotas = {
           'ips' => {
-              'limit' => 10,
+            'limit' => 10,
           },
           'nutella_jars' => {
-              'limit' => 6,
+            'limit' => 6,
           }
-      }
-      actualQuotas = YAML.safe_load(rendered_template).dig('service_catalog', 'global_quotas')
-      expect(actualQuotas).to_not include("resource_limits")
-      expect(actualQuotas["resources"]).to eq(expectedQuotas)
-    end
+        }
+        actualQuotas = YAML.safe_load(rendered_template).dig('service_catalog', 'global_quotas')
+        expect(actualQuotas).to_not include("resource_limits")
+        expect(actualQuotas["resources"]).to eq(expectedQuotas)
+      end
 
-    it 'is adapted to the new format for plan quotas' do
-      expectedQuotas = {
+      it 'is adapted to the new format for plan quotas' do
+        expectedQuotas = {
           'ips' => {
-              'limit' => 8,
-              'cost' => 4,
+            'limit' => 8,
+            'cost' => 4,
           },
           'nutella_jars' => {
-              'limit' => 6,
-              'cost' => 2,
+            'limit' => 6,
+            'cost' => 2,
           }
-      }
-      plan = YAML.safe_load(rendered_template).dig('service_catalog', 'plans')[0]
-      expect(plan).to_not include("resource_costs")
+        }
+        plan = YAML.safe_load(rendered_template).dig('service_catalog', 'plans')[0]
+        expect(plan).to_not include("resource_costs")
 
-      actualQuotas = plan.dig('quotas')
-      expect(actualQuotas["resources"]).to eq(expectedQuotas)
-      expect(actualQuotas).to_not include("resource_limits")
+        actualQuotas = plan.dig('quotas')
+        expect(actualQuotas["resources"]).to eq(expectedQuotas)
+        expect(actualQuotas).to_not include("resource_limits")
+      end
     end
   end
 
@@ -960,7 +970,7 @@ RSpec.describe 'broker config templating' do
 
         it 'raises an error' do
           expect { rendered_template }.to(
-              raise_error(RuntimeError, 'Invalid service_deployment stemcell config - must specify version')
+            raise_error(RuntimeError, 'Invalid service_deployment stemcell config - must specify version')
           )
         end
       end
@@ -976,7 +986,7 @@ RSpec.describe 'broker config templating' do
 
       it 'raises an error' do
         expect { rendered_template }.to(
-            raise_error(RuntimeError, 'Invalid service_deployment config - at least one stemcell must be specified')
+          raise_error(RuntimeError, 'Invalid service_deployment config - at least one stemcell must be specified')
         )
       end
     end
@@ -986,7 +996,7 @@ RSpec.describe 'broker config templating' do
         generate_test_manifest do |yaml|
           yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcells'] = []
           yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcell'] = {
-              'os' => 'ubuntu-trusty', 'version' => 2311
+            'os' => 'ubuntu-trusty', 'version' => 2311
           }
           yaml
         end
@@ -1004,7 +1014,7 @@ RSpec.describe 'broker config templating' do
           generate_test_manifest do |yaml|
             yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcells'] = []
             yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcell'] = {
-                'os' => nil, 'version' => 2311
+              'os' => nil, 'version' => 2311
             }
             yaml
           end
@@ -1022,7 +1032,7 @@ RSpec.describe 'broker config templating' do
           generate_test_manifest do |yaml|
             yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcells'] = []
             yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcell'] = {
-                'os' => 'ubuntu-xenial', 'version' => nil
+              'os' => 'ubuntu-xenial', 'version' => nil
             }
             yaml
           end
