@@ -298,7 +298,7 @@ properties:
   service_catalog.maintenance_info.description:
     description: maintenance information description of the impact of the maintenance update for all plans. See https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#maintenance-info-object
     default:
-  
+
   service_catalog.maintenance_info.public:
     description: maintenance information to be returned as plain text in the service catalog for all plans
     default: {}
@@ -311,4 +311,8 @@ properties:
     description: the service plans to be presented to Cloud Foundry
 
   startup_banner:
+    default: false
+
+  support_backup_agent_binding:
+    description: If the service adapter supports backup agent URL bindings, set this flag to true
     default: false

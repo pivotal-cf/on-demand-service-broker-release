@@ -1539,6 +1539,46 @@ RSpec.describe 'broker config templating' do
       end
     end
   end
+
+  describe 'backup agent URL binding support' do
+    context 'when not set' do
+      let(:manifest_file) do
+        generate_test_manifest do |yaml|
+          yaml['instance_groups'][0]['jobs'][0]['properties'].delete('support_backup_agent_binding')
+        end
+      end
+
+      it 'defaults to false' do
+        expect(rendered_template).to include 'support_backup_agent_binding: false'
+      end
+    end
+
+    context 'when disabled' do
+      let(:manifest_file) do
+        generate_test_manifest do |yaml|
+          yaml['instance_groups'][0]['jobs'][0]['properties']['support_backup_agent_binding'] = false
+        end
+      end
+
+      it 'is set to false' do
+        config = YAML.safe_load(rendered_template)
+        expect(config.dig('broker', 'support_backup_agent_binding')).to eq(false)
+      end
+    end
+
+    context 'when enabled' do
+      let(:manifest_file) do
+        generate_test_manifest do |yaml|
+          yaml['instance_groups'][0]['jobs'][0]['properties']['support_backup_agent_binding'] = true
+        end
+      end
+
+      it 'is set to trie' do
+        config = YAML.safe_load(rendered_template)
+        expect(config.dig('broker', 'support_backup_agent_binding')).to eq(true)
+      end
+    end
+  end
 end
 
 def generate_test_manifest
