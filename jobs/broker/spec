@@ -129,20 +129,20 @@ properties:
   cf.root_ca_cert:
     description: CF Root CA certificate for broker to trust (optional)
 
-  cf.authentication.url:
+  cf.uaa.url:
     description: UAA URL for Cloud Foundry
 
-  cf.authentication.client_credentials.client_id:
+  cf.uaa.authentication.client_credentials.client_id:
     description: UAA client ID with cloud_controller.read authority
 
-  cf.authentication.client_credentials.secret:
+  cf.uaa.authentication.client_credentials.client_secret:
     description: UAA client secret
 
-  cf.authentication.user_credentials.username:
-    description: CF admin username
+  cf.uaa.authentication.user_credentials.username:
+    description: CF Admin username
 
-  cf.authentication.user_credentials.password:
-    description: CF admin password
+  cf.uaa.authentication.user_credentials.password:
+    description: CF Admin password
 
   service_instances_api.url:
     description: "service instances API provider URL"
@@ -316,3 +316,6 @@ properties:
   support_backup_agent_binding:
     description: If the service adapter supports backup agent URL bindings, set this flag to true
     default: false
+
+  cf.authentication:
+    description: (Deprecated) UAA authentication object. See cf.uaa.

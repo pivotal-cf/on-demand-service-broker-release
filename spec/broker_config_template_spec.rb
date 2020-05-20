@@ -717,55 +717,39 @@ RSpec.describe 'broker config templating' do
     end
   end
 
-  describe 'cf authentication' do
-    context 'when both user and client credentials are provided' do
-      let(:manifest_file) { File.open 'spec/fixtures/invalid_has_both_client_and_user_cf_auth.yml' }
-
-      it 'templating raises an error' do
-        expect do
-          rendered_template
-        end.to raise_error(RuntimeError, 'Invalid CF authentication config - must specify either client or user credentials')
-      end
-    end
-
-    context 'basic auth for CF' do
-      let(:manifest_file) { File.open 'spec/fixtures/valid-cf-basic-auth.yml' }
-
-      it 'succeeds' do
-        config = YAML.safe_load(rendered_template)
-        expected = {
-          'url' => 'cf-url',
-          'root_ca_cert' => nil,
+  describe 'cf uaa' do
+    let(:cf_config) do
+      {
+        'url' => 'cf-url',
+        'root_ca_cert' => 'a-cert',
+        'uaa' => {
+          'url' => 'cf-uaa-url',
           'authentication' => {
-            'uaa' => {
-              'url' => 'cf-uaa-url',
-              'client_credentials' => {
-                'client_id' => nil,
-                'client_secret' => nil
-              },
-              'user_credentials' => {
-                'username' => 'cf-user',
-                'password' => 'cf-pass'
-              }
+            'client_credentials' => {
+              'client_id' => 'id',
+              'client_secret' => 'secret',
             }
           }
         }
-        expect(config.fetch('cf')).to eq(expected)
+      }
+    end
+
+    let(:manifest_file) do
+      generate_test_manifest do |m|
+        properties = m['instance_groups'][0]['jobs'][0]['properties']
+        properties['cf'] = cf_config
       end
     end
 
-    context 'UAA configuration for CF' do
-      let(:manifest_file) { File.open 'spec/fixtures/valid-cf-uaa.yml' }
-
+    context 'when client creds are configured' do
       it 'succeeds' do
         config = YAML.safe_load(rendered_template)
         expected = {
-
           'url' => 'cf-url',
-          'root_ca_cert' => nil,
-          'authentication' => {
-            'uaa' => {
-              'url' => 'cf-uaa-url',
+          'root_ca_cert' => 'a-cert',
+          'uaa' => {
+            'url' => 'cf-uaa-url',
+            'authentication' => {
               'client_credentials' => {
                 'client_id' => 'id',
                 'client_secret' => 'secret'
@@ -778,6 +762,114 @@ RSpec.describe 'broker config templating' do
           }
         }
         expect(config.fetch('cf')).to eq(expected)
+      end
+    end
+
+    context 'when user creds are configured' do
+      before do
+        cf_config['uaa']['authentication'] = {
+          'user_credentials' => {
+            'username' => 'foo',
+            'password' => 'bar'
+          }
+        }
+      end
+
+      it 'succeeds' do
+        config = YAML.safe_load(rendered_template)
+        expected = {
+          'url' => 'cf-url',
+          'root_ca_cert' => 'a-cert',
+          'uaa' => {
+            'url' => 'cf-uaa-url',
+            'authentication' => {
+              'client_credentials' => { 'client_id' => nil, 'client_secret' => nil },
+              'user_credentials' => { 'username' => 'foo', 'password' => 'bar' }
+            }
+          }
+        }
+        expect(config.fetch('cf')).to eq(expected)
+      end
+    end
+
+    context 'when both user and client credentials are configured' do
+      before do
+        cf_config['uaa']['authentication']['user_credentials'] = {
+          'username' => 'foo',
+          'password' => 'bar'
+        }
+      end
+
+      it 'templating raises an error' do
+        expect do
+          rendered_template
+        end.to raise_error(RuntimeError, 'Invalid CF authentication config - must specify either client or user credentials')
+      end
+    end
+
+    context 'deprecated configuration' do
+      context 'when both user and client credentials are provided' do
+        let(:manifest_file) { File.open 'spec/fixtures/invalid_has_both_client_and_user_cf_auth.yml' }
+
+        it 'templating raises an error' do
+          expect do
+            rendered_template
+          end.to raise_error(RuntimeError, 'Invalid CF authentication config - must specify either client or user credentials')
+        end
+      end
+
+      context 'basic auth for CF' do
+        let(:manifest_file) { File.open 'spec/fixtures/valid-deprecated-cf-basic-auth.yml' }
+
+        it 'succeeds' do
+          config = YAML.safe_load(rendered_template)
+          expected = {
+            'url' => 'cf-url',
+            'root_ca_cert' => nil,
+            'uaa' => {
+              'url' => 'cf-uaa-url',
+              'authentication' => {
+                'client_credentials' => {
+                  'client_id' => nil,
+                  'client_secret' => nil
+                },
+                'user_credentials' => {
+                  'username' => 'cf-user',
+                  'password' => 'cf-pass'
+                }
+              }
+            }
+          }
+          expect(config.fetch('cf')).to eq(expected)
+        end
+      end
+
+      context 'UAA configuration for CF' do
+        let(:manifest_file) {
+          File.open 'spec/fixtures/valid-deprecated-cf-uaa.yml'
+        }
+
+        it 'succeeds' do
+          config = YAML.safe_load(rendered_template)
+          expected = {
+            'url' => 'cf-url',
+            'root_ca_cert' => nil,
+            'uaa' => {
+              'url' => 'cf-uaa-url',
+              'authentication' => {
+                'client_credentials' => {
+                  'client_id' => 'id',
+                  'client_secret' => 'secret'
+                },
+                'user_credentials' => {
+                  'username' => nil,
+                  'password' => nil
+                }
+              }
+            }
+          }
+          expect(config.fetch('cf')).to eq(expected)
+        end
       end
     end
   end

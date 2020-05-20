@@ -336,8 +336,16 @@ plans.each do |plan|
   end
 end
 
-if has_values?("cf.authentication.client_credentials") && has_values?("cf.authentication.user_credentials")
-  raise "Invalid CF authentication config - must specify either client or user credentials"
+if_p("cf.authentication") do |_|
+  client = p('cf.authentication')['client_credentials']
+  user = p('cf.authentication')['user_credentials']
+  unless client.nil? || user.nil?
+    raise 'Invalid CF authentication config - must specify either client or user credentials'
+  end
+end
+
+if has_values?('cf.uaa.authentication.client_credentials') && has_values?('cf.uaa.authentication.user_credentials')
+  raise 'Invalid CF authentication config - must specify either client or user credentials'
 end
 
 def normalise_bosh_authentication(bosh)
@@ -356,21 +364,36 @@ def bosh_config
   bosh
 end
 
+def normalise_cf_authentication(cf)
+  cf_auth = cf['authentication'].clone
+  unless cf_auth.nil?
+    client_id = cf_auth.dig('client_credentials', 'client_id')
+    client_secret = cf_auth.dig('client_credentials', 'secret')
+    username = cf_auth.dig('user_credentials', 'username')
+    password = cf_auth.dig('user_credentials','password')
+
+    url = cf_auth['url']
+    obj = {
+      'url' => url,
+      'authentication' => {
+        'client_credentials' => {
+          'client_id' => client_id,
+          'client_secret' => client_secret
+        },
+        'user_credentials' => {
+          'password' => password,
+          'username' => username
+        }
+      }
+    }
+    cf['uaa'] = obj
+  end
+  cf.delete('authentication')
+end
+
 def cf_config
   cf = p('cf')
-  cf_auth = cf['authentication']
-  client_credentials = cf_auth['client_credentials']
-  cf_auth['uaa'] = {
-    'url' => cf_auth['url'],
-    'client_credentials' => {
-      'client_id' => client_credentials['client_id'],
-      'client_secret' => client_credentials['secret']
-    },
-    'user_credentials' => cf_auth['user_credentials']
-  }
-  cf_auth.delete('url')
-  cf_auth.delete('client_credentials')
-  cf_auth.delete('user_credentials')
+  normalise_cf_authentication(cf)
   cf
 end
 
