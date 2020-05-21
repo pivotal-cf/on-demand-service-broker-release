@@ -10,9 +10,9 @@ require 'tempfile'
 RSpec.describe 'register-broker config' do
   let(:renderer) do
     merged_context = BoshEmulator.director_merge(
-        YAML.load_file(manifest_file.path),
-        'register-broker',
-        [broker_link]
+      YAML.load_file(manifest_file.path),
+      'register-broker',
+      [broker_link]
     )
 
     Bosh::Template::Renderer.new(context: merged_context.to_json)
@@ -24,52 +24,54 @@ RSpec.describe 'register-broker config' do
 
   let(:broker_link) do
     {
-        'broker' => {
-            'instances' => [{
-                                'address' => '111.22.233.123'
-                            }],
-            'properties' => {
-                'username' => "foo",
-                'password' => "bar",
-                'port' => '3333',
-                'disable_ssl_cert_verification' => true,
-                'cf' => {
-                    'url' => 'https://api.cf-app.com',
-                    'root_ca_cert' => 'cert',
-                    'authentication' => {
-                        'url' => 'https://uaa.cf-app.com',
-                        'client_credentials' => {
-                            'client_id' => 'some_client_id',
-                            'secret' => 'some_secret'
-                        },
-                        'user_credentials' => {
-                            'username' => 'some-username',
-                            'password' => 'some-password'
-                        }
-                    }
+      'broker' => {
+        'instances' => [{
+          'address' => '111.22.233.123'
+        }],
+        'properties' => {
+          'username' => "foo",
+          'password' => "bar",
+          'port' => '3333',
+          'disable_ssl_cert_verification' => true,
+          'cf' => {
+            'url' => 'https://api.cf-app.com',
+            'root_ca_cert' => 'cert',
+            'uaa' => {
+              'url' => 'https://uaa.cf-app.com',
+              'authentication' => {
+                'client_credentials' => {
+                  'client_id' => 'some_client_id',
+                  'client_secret' => 'some_secret'
                 },
-                'service_catalog' => {
-                    'id' => 'service-catalog-id',
-                    'plans' => [
-                        nil, {
-                        'name' => 'enabled-plan',
-                        'cf_service_access' => 'enable'
-                    }, {
-                            'name' => 'disabled-plan',
-                            'cf_service_access' => 'disable'
-                        }, {
-                            'name' => 'org-restricted-plan',
-                            'cf_service_access' => 'org-restricted',
-                            'service_access_org' => 'some-org'
-                        }, {
-                            'name' => 'manual-plan',
-                            'cf_service_access' => 'manual'
-                        }, {
-                            'name' => 'other-plan'
-                        }]
+                'user_credentials' => {
+                  'username' => 'some-username',
+                  'password' => 'some-password'
                 }
+              }
             }
+          },
+          'service_catalog' => {
+            'id' => 'service-catalog-id',
+            'plans' => [
+              nil, {
+                'name' => 'enabled-plan',
+                'cf_service_access' => 'enable'
+              }, {
+                'name' => 'disabled-plan',
+                'cf_service_access' => 'disable'
+              }, {
+                'name' => 'org-restricted-plan',
+                'cf_service_access' => 'org-restricted',
+                'service_access_org' => 'some-org'
+              }, {
+                'name' => 'manual-plan',
+                'cf_service_access' => 'manual'
+              }, {
+                'name' => 'other-plan'
+              }]
+          }
         }
+      }
     }
   end
 
@@ -80,11 +82,11 @@ RSpec.describe 'register-broker config' do
   it 'includes CF configuration' do
     expect(config.dig('cf', 'url')).to eq('https://api.cf-app.com')
     expect(config.dig('cf', 'root_ca_cert')).to eq('cert')
-    expect(config.dig('cf', 'authentication', 'uaa', 'url')).to eq('https://uaa.cf-app.com')
-    expect(config.dig('cf', 'authentication', 'uaa', 'client_credentials', 'client_id')).to eq('some_client_id')
-    expect(config.dig('cf', 'authentication', 'uaa', 'client_credentials', 'client_secret')).to eq('some_secret')
-    expect(config.dig('cf', 'authentication', 'uaa', 'user_credentials', 'username')).to eq('some-username')
-    expect(config.dig('cf', 'authentication', 'uaa', 'user_credentials', 'password')).to eq('some-password')
+    expect(config.dig('cf', 'uaa', 'url')).to eq('https://uaa.cf-app.com')
+    expect(config.dig('cf', 'uaa', 'authentication', 'client_credentials', 'client_id')).to eq('some_client_id')
+    expect(config.dig('cf', 'uaa', 'authentication', 'client_credentials', 'client_secret')).to eq('some_secret')
+    expect(config.dig('cf', 'uaa', 'authentication', 'user_credentials', 'username')).to eq('some-username')
+    expect(config.dig('cf', 'uaa', 'authentication', 'user_credentials', 'password')).to eq('some-password')
     expect(config.dig('cf', 'disable_ssl_cert_verification')).to be_truthy
   end
 
@@ -117,28 +119,28 @@ RSpec.describe 'register-broker config' do
 
   it 'fails when "service_access_org" is set but "cf_service_access" is not "org-restricted"' do
     broker_link['broker']['properties']['service_catalog']['plans'] = [{
-                                                                           'name' => 'a-plan',
-                                                                           'cf_service_access' => 'enable',
-                                                                           'service_access_org' => 'cabana'
-                                                                       }]
+      'name' => 'a-plan',
+      'cf_service_access' => 'enable',
+      'service_access_org' => 'cabana'
+    }]
 
     expect {config}.to raise_error('Unexpected "service_access_org" for plan "a-plan". "service_access_org" is only valid for org-restricted plans.')
   end
 
   it 'fails when "cf_service_access" is set to "org-restricted" and a "service_access_org" is not set' do
     broker_link['broker']['properties']['service_catalog']['plans'] = [{
-                                                                           'name' => 'a-plan',
-                                                                           'cf_service_access' => 'org-restricted',
-                                                                       }]
+      'name' => 'a-plan',
+      'cf_service_access' => 'org-restricted',
+    }]
 
     expect {config}.to raise_error('Unexpected "service_access_org" for plan "a-plan". "service_access_org" must be set for org-restricted plans.')
   end
 
   it 'fails when "cf_service_access" is not valid' do
     broker_link['broker']['properties']['service_catalog']['plans'] = [{
-                                                                           'name' => 'a-plan',
-                                                                           'cf_service_access' => 'invalid',
-                                                                       }]
+      'name' => 'a-plan',
+      'cf_service_access' => 'invalid',
+    }]
 
     expect {config}.to raise_error('Unexpected "cf_service_access: invalid" for plan "a-plan". "cf_service_access" must be one of: enable, disable, org-restricted, manual.')
   end

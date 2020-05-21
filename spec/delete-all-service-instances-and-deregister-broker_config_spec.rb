@@ -39,15 +39,17 @@ RSpec.describe 'delete-all-service-instances-and-deregister-broker config' do
             'cf' => {
               'url' => 'https://api.cf-app.com',
               'root_ca_cert' => 'cert',
-              'authentication' => {
+              'uaa' => {
                 'url' => 'https://uaa.cf-app.com',
-                'client_credentials' => {
-                  'client_id' => 'some_client_id',
-                  'secret' => 'some_secret'
-                },
-                'user_credentials' => {
-                  'username' => 'some-username',
-                  'password' => 'some-password'
+                'authentication' => {
+                  'client_credentials' => {
+                    'client_id' => 'some_client_id',
+                    'client_secret' => 'some_secret'
+                  },
+                  'user_credentials' => {
+                    'username' => 'some-username',
+                    'password' => 'some-password'
+                  }
                 }
               }
             }
@@ -79,17 +81,17 @@ RSpec.describe 'delete-all-service-instances-and-deregister-broker config' do
     end
 
     it 'sets the cf authentication url' do
-      expect(config.fetch('cf').fetch('authentication').fetch('uaa').fetch('url')).to eq('https://uaa.cf-app.com')
+      expect(config.dig('cf', 'uaa', 'url')).to eq('https://uaa.cf-app.com')
     end
 
     it 'sets the cf authentication client_credentials' do
-      expect(config.fetch('cf').fetch('authentication').fetch('uaa').fetch('client_credentials').fetch('client_id')).to eq('some_client_id')
-      expect(config.fetch('cf').fetch('authentication').fetch('uaa').fetch('client_credentials').fetch('client_secret')).to eq('some_secret')
+      expect(config.dig('cf', 'uaa', 'authentication', 'client_credentials', 'client_id')).to eq('some_client_id')
+      expect(config.dig('cf', 'uaa', 'authentication', 'client_credentials', 'client_secret')).to eq('some_secret')
     end
 
     it 'sets the cf authentication user_credentials' do
-      expect(config.fetch('cf').fetch('authentication').fetch('uaa').fetch('user_credentials').fetch('username')).to eq('some-username')
-      expect(config.fetch('cf').fetch('authentication').fetch('uaa').fetch('user_credentials').fetch('password')).to eq('some-password')
+      expect(config.dig('cf', 'uaa', 'authentication', 'user_credentials', 'username')).to eq('some-username')
+      expect(config.dig('cf', 'uaa', 'authentication', 'user_credentials', 'password')).to eq('some-password')
     end
 
     context 'when the polling is not configured' do

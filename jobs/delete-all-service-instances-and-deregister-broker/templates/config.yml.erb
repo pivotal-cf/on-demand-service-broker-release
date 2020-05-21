@@ -5,21 +5,36 @@
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
 <%=
+  def normalise_cf_authentication(cf)
+    cf_auth = cf['authentication'].clone
+    unless cf_auth.nil?
+      client_id = cf_auth.dig('client_credentials', 'client_id')
+      client_secret = cf_auth.dig('client_credentials', 'secret')
+      username = cf_auth.dig('user_credentials', 'username')
+      password = cf_auth.dig('user_credentials','password')
+
+      url = cf_auth['url']
+      obj = {
+        'url' => url,
+        'authentication' => {
+          'client_credentials' => {
+            'client_id' => client_id,
+            'client_secret' => client_secret
+          },
+          'user_credentials' => {
+            'password' => password,
+            'username' => username
+          }
+        }
+      }
+      cf['uaa'] = obj
+    end
+    cf.delete('authentication')
+  end
+
   def cf_config
     cf = link('broker').p('cf')
-    cf_auth = cf['authentication']
-    client_credentials = cf_auth['client_credentials']
-    cf_auth['uaa'] = {
-      'url' => cf_auth['url'],
-      'client_credentials' => {
-        'client_id' => client_credentials['client_id'],
-        'client_secret' => client_credentials['secret']
-      },
-      'user_credentials' => cf_auth['user_credentials']
-    }
-    cf_auth.delete('url')
-    cf_auth.delete('client_credentials')
-    cf_auth.delete('user_credentials')
+    normalise_cf_authentication(cf)
     cf
   end
 

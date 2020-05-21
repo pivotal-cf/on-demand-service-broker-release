@@ -32,11 +32,12 @@ provides:
     - disable_ssl_cert_verification
     - cf.url
     - cf.root_ca_cert
-    - cf.authentication.url
-    - cf.authentication.client_credentials.client_id
-    - cf.authentication.client_credentials.secret
-    - cf.authentication.user_credentials.username
-    - cf.authentication.user_credentials.password
+    - cf.uaa.url
+    - cf.uaa.authentication.client_credentials.client_id
+    - cf.uaa.authentication.client_credentials.client_secret
+    - cf.uaa.authentication.user_credentials.username
+    - cf.uaa.authentication.user_credentials.password
+    - cf.authentication
     - service_instances_api.url
     - service_instances_api.root_ca_cert
     - service_instances_api.disable_ssl_cert_verification
