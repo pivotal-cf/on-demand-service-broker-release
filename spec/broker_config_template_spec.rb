@@ -792,6 +792,44 @@ RSpec.describe 'broker config templating' do
       end
     end
 
+    context 'when client_definition is provided' do
+      let(:client_definition) {
+        {
+          'scopes' => 'scope1',
+          'resource_ids' => 'some-resource-id',
+          'authorized_grant_types' => 'some-authorization',
+          'authorities' => 'some-authority,another-authority',
+        }
+      }
+
+      before do
+        cf_config['uaa']['client_definition'] = client_definition
+      end
+
+      it 'makes to the generated config' do
+        config = YAML.safe_load(rendered_template)
+        expect(config.dig('cf', 'uaa', 'client_definition')).to eq(client_definition)
+      end
+
+      context 'but invalid properties are set' do
+        let(:client_definition) {
+          {
+            'scope' => 'scope1',
+            'resource_ids' => 'some-resource-id',
+            'authorized_grant_types' => 'some-authorization',
+            'authorities' => 'some-authority,another-authority',
+            'client_secret' => 'not supported'
+          }
+        }
+
+        it 'raises an error' do
+          expect do
+            rendered_template
+          end.to raise_error(RuntimeError, 'Invalid client_definition config - valid properties are: scopes, authorities, authorized_grant_types, resource_ids')
+        end
+      end
+    end
+
     context 'when both user and client credentials are configured' do
       before do
         cf_config['uaa']['authentication']['user_credentials'] = {

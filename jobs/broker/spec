@@ -145,6 +145,14 @@ properties:
   cf.uaa.authentication.user_credentials.password:
     description: CF Admin password
 
+  cf.uaa.client_definition:
+    description: Client to be created by the broker during provision. See example below for valid fields.
+    example: |
+      scope: <comma separated list of scopes>
+      resource_ids: <comma separated list of resource ids>
+      authorized_grant_types: <comma separated list of grant types>
+      authorities: <comma separated list of authorities>
+
   service_instances_api.url:
     description: "service instances API provider URL"
 
