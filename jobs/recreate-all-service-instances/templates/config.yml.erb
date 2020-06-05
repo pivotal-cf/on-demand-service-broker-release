@@ -12,6 +12,13 @@
     p('attempt_limit')
   end
 
+  def validated_max_in_flight()
+    if p('max_in_flight') <= 0
+      raise 'Invalid recreate_all_service_instances.max_in_flight - must be greater or equal 1'
+    end
+    p('max_in_flight')
+  end
+
   broker_link = link('broker')
 
   brokerCert = broker_link.p('tls.certificate', '')
@@ -43,7 +50,7 @@
     "attempt_interval" => p('attempt_interval_seconds'),
     "attempt_limit" => validated_attempt_limit,
     "request_timeout" => p('request_timeout'),
-    "max_in_flight" => 1,
+    "max_in_flight" => validated_max_in_flight,
     "canaries" => 0,
     "canary_selection_params" => {},
   }

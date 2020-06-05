@@ -84,6 +84,7 @@ RSpec.describe 'recreate-all-service-instances config' do
       expect(config.fetch('attempt_interval')).to eq(36)
       expect(config.fetch('attempt_limit')).to eq(42)
       expect(config.fetch('request_timeout')).to eq(300)
+      expect(config.fetch('max_in_flight')).to eq(5)
     end
 
     it 'configures the broker api correctly' do
@@ -99,6 +100,17 @@ RSpec.describe 'recreate-all-service-instances config' do
         expect { rendered_template }.to raise_error(
           RuntimeError,
           'Invalid recreate_all_service_instances.attempt_limit - must be greater or equal 1'
+        )
+      end
+    end
+
+    describe 'max_in_flight property' do
+      let(:manifest_file) { File.open 'spec/fixtures/recreate_all_invalid_max_in_flight.yml' }
+
+      it 'fails when it is less or equal zero' do
+        expect { rendered_template }.to raise_error(
+          RuntimeError,
+          'Invalid recreate_all_service_instances.max_in_flight - must be greater or equal 1'
         )
       end
     end

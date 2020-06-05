@@ -13,6 +13,7 @@ instance_groups:
       attempt_interval_seconds: 36
       polling_interval_seconds: 101
       request_timeout: 300
+      max_in_flight: 5
       tls:
         ca_cert: 'cert'
         disable_ssl_cert_verification: true
