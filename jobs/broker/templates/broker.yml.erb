@@ -397,6 +397,9 @@ def normalise_cf_authentication(cf)
     cf['uaa']['client_definition'].keys.each do |k|
       raise "Invalid client_definition config - valid properties are: #{valid_props.join(", ")}" unless valid_props.include? k
     end
+
+    client_id = cf.dig('uaa', 'authentication', 'client_credentials', 'client_id')
+    raise 'Invalid uaa config: client_definition is set, but uaa client_credentials is not' if client_id.nil? || client_id.empty?
   end
 end
 

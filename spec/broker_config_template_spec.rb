@@ -727,7 +727,7 @@ RSpec.describe 'broker config templating' do
           'authentication' => {
             'client_credentials' => {
               'client_id' => 'id',
-              'client_secret' => 'secret',
+              'client_secret' => 'secret'
             }
           }
         }
@@ -826,6 +826,21 @@ RSpec.describe 'broker config templating' do
           expect do
             rendered_template
           end.to raise_error(RuntimeError, 'Invalid client_definition config - valid properties are: scopes, authorities, authorized_grant_types, resource_ids')
+        end
+      end
+
+      context 'but uaa is configured with user credentials' do
+        before do
+          cf_config['uaa']['authentication'] = { 'user_credentials' => {
+            'username' => 'foo',
+            'password' => 'bar'
+          }}
+        end
+
+        it 'raises an error' do
+          expect do
+            rendered_template
+          end.to raise_error(RuntimeError, 'Invalid uaa config: client_definition is set, but uaa client_credentials is not')
         end
       end
     end
