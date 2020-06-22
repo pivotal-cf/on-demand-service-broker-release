@@ -393,7 +393,7 @@ def normalise_cf_authentication(cf)
   if cf['uaa']['client_definition'].nil?
     cf['uaa'].delete('client_definition')
   else
-    valid_props = %w{scopes authorities authorized_grant_types resource_ids}
+    valid_props = %w{scopes authorities authorized_grant_types resource_ids name}
     cf['uaa']['client_definition'].keys.each do |k|
       raise "Invalid client_definition config - valid properties are: #{valid_props.join(", ")}" unless valid_props.include? k
     end

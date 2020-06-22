@@ -152,6 +152,7 @@ properties:
       resource_ids: <comma separated list of resource ids>
       authorized_grant_types: <comma separated list of grant types>
       authorities: <comma separated list of authorities>
+      name: <name>
 
   service_instances_api.url:
     description: "service instances API provider URL"
