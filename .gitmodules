@@ -2,7 +2,7 @@
 	path = src/github.com/pivotal-cf/brokerapi
 	url = https://github.com/pivotal-cf/brokerapi.git
 	pushurl = git@github.com:pivotal-cf/brokerapi.git
-	branch = master
+	branch = main
 [submodule "src/github.com/pivotal-cf/on-demand-service-broker"]
 	path = src/github.com/pivotal-cf/on-demand-service-broker
 	url = https://github.com/pivotal-cf/on-demand-service-broker.git
