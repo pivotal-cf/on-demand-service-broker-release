@@ -28,4 +28,4 @@
 	path = src/github.com/pivotal-cf/on-demand-services-sdk
 	url = https://github.com/pivotal-cf/on-demand-services-sdk.git
 	pushurl = git@github.com:pivotal-cf/on-demand-services-sdk.git
-	branch = master
+	branch = main
