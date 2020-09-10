@@ -76,7 +76,7 @@ properties:
     description: the matching private key
 
   disable_ssl_cert_verification:
-    description: Disable SSL certificate verification by the broker when communicating with CF. DO NOT USE IN PRODUCTION
+    description: Disable SSL certificate verification by the broker when communicating with any CF component. DO NOT USE IN PRODUCTION
     default: false
 
   disable_cf_startup_checks:
