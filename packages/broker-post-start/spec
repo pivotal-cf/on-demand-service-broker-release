@@ -18,16 +18,16 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/lager/internal/truncate/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/lager/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/gorilla/mux/*.go # sync-package-specs
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/v7/auth/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/v8/auth/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pkg/errors/*.go # sync-package-specs
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/v7/domain/*.go # sync-package-specs
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/v7/domain/apiresponses/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/v8/domain/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/v8/domain/apiresponses/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/google/uuid/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pborman/uuid/*.go # sync-package-specs
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/v7/middlewares/*.go # sync-package-specs
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/v7/utils/*.go # sync-package-specs
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/v7/handlers/*.go # sync-package-specs
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/v7/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/v8/middlewares/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/v8/utils/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/v8/handlers/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/v8/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/on-demand-services-sdk/bosh/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/gopkg.in/go-playground/validator.v8/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/gopkg.in/yaml.v2/*.go # sync-package-specs
