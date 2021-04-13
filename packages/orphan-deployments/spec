@@ -24,7 +24,7 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/v8/domain/apiresponses/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/google/uuid/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pborman/uuid/*.go # sync-package-specs
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/blang/semver/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/blang/semver/v4/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/bmatcuk/doublestar/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/charlievieth/fs/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/cloudfoundry/bosh-utils/errors/*.go # sync-package-specs

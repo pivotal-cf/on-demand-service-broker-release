@@ -7,7 +7,7 @@ dependencies:
 files:
   - github.com/pivotal-cf/on-demand-service-broker/go.mod
   - github.com/pivotal-cf/on-demand-service-broker/go.sum
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/blang/semver/*.go # sync-package-specs
+  - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/blang/semver/v4/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/craigfurman/herottp/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pkg/errors/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/cf/*.go # sync-package-specs
