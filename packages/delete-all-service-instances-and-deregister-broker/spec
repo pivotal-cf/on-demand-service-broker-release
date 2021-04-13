@@ -21,7 +21,6 @@ files:
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pkg/errors/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/cf/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/authorizationheader/*.go # sync-package-specs
-  - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/lager/internal/truncate/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/code.cloudfoundry.org/lager/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/gorilla/mux/*.go # sync-package-specs
   - github.com/pivotal-cf/on-demand-service-broker/vendor/github.com/pivotal-cf/brokerapi/v8/auth/*.go # sync-package-specs
