@@ -7,7 +7,7 @@
 	path = src/github.com/pivotal-cf/on-demand-service-broker
 	url = https://github.com/pivotal-cf/on-demand-service-broker.git
 	pushurl = git@github.com:pivotal-cf/on-demand-service-broker.git
-	branch = master
+	branch = main
 [submodule "examples/redis-example-service-adapter-release"]
 	path = examples/redis-example-service-adapter-release
 	url = https://github.com/pivotal-cf-experimental/redis-example-service-adapter-release.git
