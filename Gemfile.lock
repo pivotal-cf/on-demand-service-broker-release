@@ -4,7 +4,7 @@ GEM
     bosh-template (2.2.1)
       semi_semantic (~> 1.2.0)
     diff-lcs (1.4.4)
-    rake (13.0.4)
+    rake (13.0.5)
     rspec (3.10.0)
       rspec-core (~> 3.10.0)
       rspec-expectations (~> 3.10.0)
