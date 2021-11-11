@@ -124,13 +124,18 @@ instance_groups:
   - name: route_registrar
     release: routing
     consumes:
-      nats:
-        from: nats
+      nats-tls:
+        from: nats-tls
         deployment: ((cf.deployment_name))
       routing_api:
         from: routing_api
         deployment: ((cf.deployment_name))
     properties:
+      nats:
+        tls:
+          enabled: true
+          client_cert: ((/bosh-lite/cf/nats_client_cert.certificate))
+          client_key: ((/bosh-lite/cf/nats_client_cert.private_key))
       route_registrar:
         routes:
           - name: ((broker_route_name))
