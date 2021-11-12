@@ -134,8 +134,8 @@ instance_groups:
       nats:
         tls:
           enabled: true
-          client_cert: ((/bosh-lite/cf/nats_client_cert.certificate))
-          client_key: ((/bosh-lite/cf/nats_client_cert.private_key))
+          client_cert: ((nats.tls.certificate))
+          client_key: ((nats.tls.private_key))
       route_registrar:
         routes:
           - name: ((broker_route_name))
