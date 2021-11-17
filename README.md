@@ -25,6 +25,15 @@ Once you have an ODB integration completed for your service you may wish to crea
 
 - See [CONTRIBUTING](CONTRIBUTING.md) 
 
+### Tests
+
+You can run the bats tests for the release using these commands
+
+```
+bundle install
+bundle exec rake
+```
+
 ## Releases and versioning
 
 - The on-demand services SDK is pre-1.0.0 and uses semantic versioning. 
