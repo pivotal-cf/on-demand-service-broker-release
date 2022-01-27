@@ -8,6 +8,8 @@ jobs:
   automerge:
     name: Merge Dependabot Pull Pequest
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
       - name: Merge
