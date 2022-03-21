@@ -57,6 +57,13 @@ addons:
           deployment: ((cf.deployment_name))
           network: ((meta.services_subnet))
           domain: bosh
+      - domain: credhub.service.cf.internal
+        targets:
+          - query: '*'
+            instance_group: credhub
+            deployment: ((cf.deployment_name))
+            network: ((meta.services_subnet))
+            domain: bosh
 
 instance_groups:
 - name: broker
