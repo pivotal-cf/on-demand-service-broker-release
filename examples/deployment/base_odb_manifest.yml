@@ -12,6 +12,8 @@ releases:
   version: ((service_adapter_version))
 - name: routing
   version: latest
+- name: bosh-dns-aliases
+  version: latest
 - name: loggregator
   version: latest
 - name: bpm
@@ -27,6 +29,34 @@ addons:
   jobs:
   - name: bpm
     release: bpm
+
+- name: bosh-dns-aliases
+  jobs:
+  - name: bosh-dns-aliases
+    release: bosh-dns-aliases
+    properties:
+      aliases:
+      - domain: routing-api.service.cf.internal
+        targets:
+        - query: '*'
+          instance_group: api
+          deployment: ((cf.deployment_name))
+          network: ((meta.services_subnet))
+          domain: bosh
+      - domain: nats.service.cf.internal
+        targets:
+        - query: '*'
+          instance_group: nats
+          deployment: ((cf.deployment_name))
+          network: ((meta.services_subnet))
+          domain: bosh
+      - domain: _.nats.service.cf.internal
+        targets:
+        - query: '_'
+          instance_group: nats
+          deployment: ((cf.deployment_name))
+          network: ((meta.services_subnet))
+          domain: bosh
 
 instance_groups:
 - name: broker
