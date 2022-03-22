@@ -71,6 +71,13 @@ addons:
             deployment: ((cf.deployment_name))
             network: ((meta.services_subnet))
             domain: bosh
+      - domain: log-cache.service.cf.internal
+        targets:
+          - query: '*'
+            instance_group: log-cache
+            deployment: ((cf.deployment_name))
+            network: ((meta.services_subnet))
+            domain: bosh
 
 instance_groups:
 - name: broker
