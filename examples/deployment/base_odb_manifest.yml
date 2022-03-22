@@ -64,6 +64,13 @@ addons:
             deployment: ((cf.deployment_name))
             network: ((meta.services_subnet))
             domain: bosh
+      - domain: uaa.service.cf.internal
+        targets:
+          - query: '*'
+            instance_group: uaa
+            deployment: ((cf.deployment_name))
+            network: ((meta.services_subnet))
+            domain: bosh
 
 instance_groups:
 - name: broker
