@@ -13,5 +13,4 @@ source /var/vcap/packages/golang-1-linux/bosh/compile.env
 export GOBIN="${BOSH_INSTALL_TARGET}/bin"
 
 pushd github.com/pivotal-cf/on-demand-service-broker/cmd/collect-service-metrics
-  go install -mod=vendor
-popd
+  go install -mod=vendor -buildvcs=false
