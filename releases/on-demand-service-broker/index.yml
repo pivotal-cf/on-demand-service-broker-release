@@ -139,6 +139,8 @@ builds:
     version: 0.17.1
   e140b5ae-3520-48bb-b85f-556b3286d791:
     version: 0.15.0-pre-alpha-1
+  e4a72e52-d7b0-48bb-4351-cd79e99a9886:
+    version: 0.42.5
   ea3c2788-061c-40fc-8b1c-45f653be36ad:
     version: 0.15.1
   ebea42aa-0546-4dbd-8fc7-be37e2840d46:
