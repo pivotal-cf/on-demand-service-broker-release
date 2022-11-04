@@ -12,10 +12,13 @@ releases:
   version: ((service_adapter_version))
 - name: routing
   version: latest
+  url: https://bosh.io/d/github.com/cloudfoundry/routing-release
 - name: loggregator
   version: latest
+  url: https://bosh.io/d/github.com/cloudfoundry/loggregator-release
 - name: bpm
   version: latest
+  url: https://bosh.io/d/github.com/cloudfoundry/bpm-release
 
 stemcells:
 - alias: &stemcell_alias ((stemcell_alias))
