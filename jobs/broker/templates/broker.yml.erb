@@ -70,7 +70,7 @@ def validate_releases(service_deployment)
   service_deployment['releases'].each do |r|
     validate_config(r, required_release_keys, "Invalid service_deployment.releases config - must specify ")
 
-    if r['version'] =~ /latest$/
+    if r['version'].to_s =~ /latest$/
       raise "You must configure the exact release and stemcell versions in broker.service_deployment. " +
         "ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported."
     end
@@ -103,7 +103,7 @@ end
 def validate_stemcell(stemcell)
   required_stemcell_keys = %w{os version}
   validate_config(stemcell, required_stemcell_keys, "Invalid service_deployment stemcell config - must specify ")
-  if stemcell['version'] =~ /latest$/
+  if stemcell['version'].to_s =~ /latest$/
     raise "You must configure the exact release and stemcell versions in broker.service_deployment. " +
       "ODB requires exact versions to detect pending changes as part of the 'cf update-service' workflow. For example, latest and 3112.latest are not supported."
   end

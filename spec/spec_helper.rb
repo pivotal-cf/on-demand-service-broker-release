@@ -12,7 +12,7 @@ require 'yaml'
 module Psych
   def self.load_file filename, fallback = false
     File.open(filename, 'r:bom|utf-8') { |f|
-      self.safe_load f, [], [], false, filename
+      self.safe_load f, filename: filename
     }
   end
 end
