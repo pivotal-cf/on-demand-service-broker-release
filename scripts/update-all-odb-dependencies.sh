@@ -13,7 +13,7 @@ for module in $(git submodule | awk '{print $2}'); do
   (
     cd $module
     git fetch
-    git reset --hard origin/master
+    git reset --hard origin/main
     git submodule update --init --recursive
   )
 done
