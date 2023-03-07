@@ -799,7 +799,8 @@ RSpec.describe 'broker config templating' do
           'resource_ids' => 'some-resource-id',
           'authorized_grant_types' => 'some-authorization',
           'authorities' => 'some-authority,another-authority',
-          'name' => 'some-name'
+          'name' => 'some-name',
+          'allowpublic' => true,
         }
       }
 
@@ -826,7 +827,7 @@ RSpec.describe 'broker config templating' do
         it 'raises an error' do
           expect do
             rendered_template
-          end.to raise_error(RuntimeError, 'Invalid client_definition config - valid properties are: scopes, authorities, authorized_grant_types, resource_ids, name')
+          end.to raise_error(RuntimeError, 'Invalid client_definition config - valid properties are: scopes, authorities, authorized_grant_types, resource_ids, allowpublic, name')
         end
       end
 
