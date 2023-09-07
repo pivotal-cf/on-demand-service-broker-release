@@ -127,6 +127,8 @@ builds:
     version: 0.15.0-alpha-1
   bd5f5009-a34a-42e5-9f26-52f8078621dd:
     version: 0.15.0-alpha-2
+  bf656c72-aacd-43d1-433a-f3ea4a42593b:
+    version: 0.43.3
   c03057f7-7707-4890-9a46-a9c0c1b5ea6f:
     version: 0.15.2
   c20ec477-ee36-4eb4-5eac-816157a832eb:
