@@ -9,6 +9,5 @@ final_name: on-demand-service-broker
 blobstore:
   provider: s3
   options:
-    bucket_name: on-demand-service-broker-bosh-release-blobs
-    region: eu-west-1
-    endpoint: https://s3-eu-west-1.amazonaws.com
+    bucket_name: on-demand-broker-release-blobs
+    region: us-east-1
