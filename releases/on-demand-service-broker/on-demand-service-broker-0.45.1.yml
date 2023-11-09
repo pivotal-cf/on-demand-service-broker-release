@@ -1,0 +1,143 @@
+name: on-demand-service-broker
+version: 0.45.1
+commit_hash: b0f408b
+uncommitted_changes: false
+jobs:
+- name: broker
+  version: 9761605c53aaf1f82d2826c856156130d98bfb110bcf0aed5069100435b6395a
+  fingerprint: 9761605c53aaf1f82d2826c856156130d98bfb110bcf0aed5069100435b6395a
+  sha1: sha256:b8c8427e853fa9496499387b975c380b0a58807cd69960f70f83ff13ac6f7bae
+  packages:
+  - broker
+  - broker-post-start
+  - broker_utils
+- name: delete-all-service-instances
+  version: 65e366c2b24546a2899c9cb46606b117942aec096ad173ba7a2da18bb18341cb
+  fingerprint: 65e366c2b24546a2899c9cb46606b117942aec096ad173ba7a2da18bb18341cb
+  sha1: sha256:fd9e62922980e2821b0c2eeb3d7ac2439e559f177c29a49135607bee382c77db
+  packages:
+  - delete-all-service-instances
+- name: delete-all-service-instances-and-deregister-broker
+  version: a6343a9f6c7d11ffb13f98e215d40e9cc7bbf7eac2674e5b5c982837cbc82e2e
+  fingerprint: a6343a9f6c7d11ffb13f98e215d40e9cc7bbf7eac2674e5b5c982837cbc82e2e
+  sha1: sha256:f393cfd0acb5164ae58d44e1c3ed3f3ccfa966d59fde4a7c5ba38cd40e15ebbb
+  packages:
+  - delete-all-service-instances-and-deregister-broker
+- name: deregister-broker
+  version: f1479fcf66d5b61ea48534c5d6d6fc2cfcb22ae7cabd9d33ca062159fffedfe1
+  fingerprint: f1479fcf66d5b61ea48534c5d6d6fc2cfcb22ae7cabd9d33ca062159fffedfe1
+  sha1: sha256:3e071a0218d293bf6ca92de4eab6bd7a45f0a228fa5f64f2c6cdc67e4a2cd059
+  packages:
+  - deregister-broker
+- name: orphan-deployments
+  version: 0cef6b0d79009e0f65df781ddc2bbf77ae35417c11a73982ef12f80aeb637616
+  fingerprint: 0cef6b0d79009e0f65df781ddc2bbf77ae35417c11a73982ef12f80aeb637616
+  sha1: sha256:0feaa00c04deeb4b876ca67df671236c652416150329c03aa81a2d99aa108fdb
+  packages:
+  - orphan-deployments
+- name: recreate-all-service-instances
+  version: 5eb039e671c16d09a802346b74e098d1f594a6def07a722e98bb1f901fca1c23
+  fingerprint: 5eb039e671c16d09a802346b74e098d1f594a6def07a722e98bb1f901fca1c23
+  sha1: sha256:7836e73d4e03deb36ccdf50a675f4aa13736930aed8218cfe4e1eed7081b1645
+  packages:
+  - broker_utils
+  - recreate-all-service-instances
+- name: register-broker
+  version: db59c78e338f52d551f0894a0ab205a3294f5530c253238dcf170d2ae4d49ae3
+  fingerprint: db59c78e338f52d551f0894a0ab205a3294f5530c253238dcf170d2ae4d49ae3
+  sha1: sha256:7197ce92c7686681825caef794155c37f024aed801a54ef7db5c1b439c5cce0d
+  packages:
+  - register-broker
+- name: service-metrics-adapter
+  version: d55cfd99880d92c956d62f478db5f8b0daf294890d2ee403da529e682ce7c10d
+  fingerprint: d55cfd99880d92c956d62f478db5f8b0daf294890d2ee403da529e682ce7c10d
+  sha1: sha256:c0966061fe83536b99caeed6fd8080d74456dd36bb92f941200690436b448323
+  packages:
+  - collect-service-metrics
+- name: upgrade-all-service-instances
+  version: bad3ae86a967eb4684b97027dc22f70393e2ba8299283f8adca792e59f516193
+  fingerprint: bad3ae86a967eb4684b97027dc22f70393e2ba8299283f8adca792e59f516193
+  sha1: sha256:708a57c1901c61999655cbbf0f9dc9001b2f9d82e5d3813a1998702b61c41481
+  packages:
+  - broker_utils
+  - upgrade-all-service-instances
+packages:
+- name: broker
+  version: 2b77903885a07ea0618b577191613d2eee41566cded09a345e5f493a2ea086ae
+  fingerprint: 2b77903885a07ea0618b577191613d2eee41566cded09a345e5f493a2ea086ae
+  sha1: sha256:12cf50dd05c146b7a894b51a6a2f3a5b54fde49ed1999a2198ee3c56895b150a
+  dependencies:
+  - golang-1-linux
+- name: broker-post-start
+  version: 3a677e7ed400c4a8060639988d86f1ad1616c641630de713bee80415b54499e8
+  fingerprint: 3a677e7ed400c4a8060639988d86f1ad1616c641630de713bee80415b54499e8
+  sha1: sha256:b57bbf08956ea33f2bb8172c8c8aafc289e9402721bdcadc6ba56cd21d1163bc
+  dependencies:
+  - golang-1-linux
+- name: broker_utils
+  version: 6d20792e6926d2d4345a52434343b24acb6713c5d4b45a29b53d711b0111cf79
+  fingerprint: 6d20792e6926d2d4345a52434343b24acb6713c5d4b45a29b53d711b0111cf79
+  sha1: sha256:3d4a7713eede9beb518af6aa1454baba242a7912b8ec8c8f9d9465b84c0432aa
+  dependencies: []
+- name: collect-service-metrics
+  version: 58e3746faadb3d2a554e6d85b99b809fd07f32c31efca4452b821bd09761b53d
+  fingerprint: 58e3746faadb3d2a554e6d85b99b809fd07f32c31efca4452b821bd09761b53d
+  sha1: sha256:7c73064e234f4266f388e5f33a3b5c21cbcfea9fa7cd2f28f2bfce5d552f2577
+  dependencies:
+  - golang-1-linux
+- name: common
+  version: b91c3a00ca93a9def4be4beec1496b011a399f4d6c62a752c2fde542ea449237
+  fingerprint: b91c3a00ca93a9def4be4beec1496b011a399f4d6c62a752c2fde542ea449237
+  sha1: sha256:d877d3a1172232892856aaed1e457636b49d990816f995bd4d69da2e09861c48
+  dependencies: []
+- name: delete-all-service-instances
+  version: 29adc8a5d04bc38d5f7d15e592cf2c37b87b22765133c6619f19be98418c9fd6
+  fingerprint: 29adc8a5d04bc38d5f7d15e592cf2c37b87b22765133c6619f19be98418c9fd6
+  sha1: sha256:8876236acbdb82a3b15224d126d7e1baf3345d6ac0d2ce05e5c89d5b977af3e3
+  dependencies:
+  - golang-1-linux
+- name: delete-all-service-instances-and-deregister-broker
+  version: 1c96ff9484bb8021ae13abe61ba47bd7f0636f39f16063f1677204d226446b2e
+  fingerprint: 1c96ff9484bb8021ae13abe61ba47bd7f0636f39f16063f1677204d226446b2e
+  sha1: sha256:b9464f77617e3c10da04693c0f9e3523ce7e383c6a9298c4ca9ad2543f722eb9
+  dependencies:
+  - golang-1-linux
+- name: deregister-broker
+  version: a8af25847efeb870215ea7fa74ef28173e839ce9f7bcdbcb8ca1b57e49259972
+  fingerprint: a8af25847efeb870215ea7fa74ef28173e839ce9f7bcdbcb8ca1b57e49259972
+  sha1: sha256:f215f6fdc94797ce9d2b06182ef996ffb18de0cc0e2ca1d8457da3388580bf63
+  dependencies:
+  - golang-1-linux
+- name: golang-1-linux
+  version: 48a59edbcdab872874d3b1851402c38b62fbf4a70ebfbd055a9d63865f021a69
+  fingerprint: 48a59edbcdab872874d3b1851402c38b62fbf4a70ebfbd055a9d63865f021a69
+  sha1: sha256:74d221407b944acb8eca4210fe808b0515f7a7b7a7919d51f65630bfffd22046
+  dependencies: []
+- name: orphan-deployments
+  version: c646c5f76809ea28b8b9d37fcd4a5eeb1b2a34fee1a71eaa1b83f44a217f9b02
+  fingerprint: c646c5f76809ea28b8b9d37fcd4a5eeb1b2a34fee1a71eaa1b83f44a217f9b02
+  sha1: sha256:afbc40c537d96cb5e78ff1530534107b8d1feeb3cfff4c7d2ed78a56b59a2746
+  dependencies:
+  - golang-1-linux
+- name: recreate-all-service-instances
+  version: e2e856b6602a6534f9b009440efa9fdeff0b237065f0123de52d49da8f82850b
+  fingerprint: e2e856b6602a6534f9b009440efa9fdeff0b237065f0123de52d49da8f82850b
+  sha1: sha256:00f86d816f77db5ee47cd774ddf3fe221126b31a43475bd4f56bd1450e825356
+  dependencies:
+  - golang-1-linux
+- name: register-broker
+  version: 534ef1d0719b710fe1951b14be4ace4fd975d7649b863faf67aaee3a8eb27924
+  fingerprint: 534ef1d0719b710fe1951b14be4ace4fd975d7649b863faf67aaee3a8eb27924
+  sha1: sha256:3ffeef88cc20baf792d0e11930c633bf2834fff8683d829c59d2dbc18064eb2b
+  dependencies:
+  - golang-1-linux
+- name: upgrade-all-service-instances
+  version: 8944b7bb8ff205f84e9e6dc91a8ec4719244e34539f71c69df0262ec642875c0
+  fingerprint: 8944b7bb8ff205f84e9e6dc91a8ec4719244e34539f71c69df0262ec642875c0
+  sha1: sha256:150d69a6b0bd69e16ad5f766ba92dc76b444afe3c30045ff91d5dc72363d281b
+  dependencies:
+  - golang-1-linux
+license:
+  version: 4d1f302ff69097486c873a2080a222f3c0108727c20ee2ea748387e0f791a8db
+  fingerprint: 4d1f302ff69097486c873a2080a222f3c0108727c20ee2ea748387e0f791a8db
+  sha1: sha256:5605e63affc62a26e78bbe43c5b680185161ddab4f488760118b102df226fdcc
