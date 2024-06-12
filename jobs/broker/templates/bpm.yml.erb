@@ -25,11 +25,14 @@ bpm_config = {
       '-configFilePath',
       '/var/vcap/jobs/broker/config/broker.yml'
       ],
+    'additional_volumes' => [],
     'unsafe' => {
       'unrestricted_volumes' => unrestricted_volumes
     }
   }]
 }
+
+bpm_config['processes'][0]['additional_volumes'] << {'path' => '/var/vcap/data/broker/manifest', 'writable' => true}
 
 bpm_config.to_yaml
 %>

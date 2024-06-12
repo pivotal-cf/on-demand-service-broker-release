@@ -327,5 +327,9 @@ properties:
     description: If the service adapter supports backup agent URL bindings, set this flag to true
     default: false
 
+  enable_persist_manifest:
+    description: If true, the broker will record manifests in /var/vcap/data/manifests/
+    default: false
+
   cf.authentication:
     description: (Deprecated) UAA authentication object. See cf.uaa.
