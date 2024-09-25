@@ -217,6 +217,9 @@ properties:
       - os: ubuntu
         version: 1234
 
+  service_deployment.stemcell.name:
+    description: stemcell name to use for every job in the service deployment
+
   service_deployment.stemcell.os:
     description: stemcell OS to use for every job in the service deployment
 
