@@ -1143,7 +1143,7 @@ RSpec.describe 'broker config templating' do
         generate_test_manifest do |yaml|
           yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcells'] = []
           yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcell'] = {
-            'os' => 'ubuntu-trusty', 'version' => 2311
+            'os' => 'ubuntu-trusty', 'version' => "2311", 'name' => 'bosh-warden-boshlite-ubuntu-trusty-go_agent',
           }
           yaml
         end
@@ -1152,7 +1152,7 @@ RSpec.describe 'broker config templating' do
 
       it 'generates the config with "stemcells"' do
         obj = YAML.load(rendered_template)
-        expect(obj['service_deployment']['stemcells']).to eq([{"os"=>"ubuntu-trusty", "version"=>2311}])
+        expect(obj['service_deployment']['stemcells']).to eq([{"os"=>"ubuntu-trusty", "version"=>"2311", "name" => "bosh-warden-boshlite-ubuntu-trusty-go_agent"}])
         expect(obj['service_deployment']['stemcell']).to be_nil
       end
 
