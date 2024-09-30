@@ -1179,7 +1179,7 @@ RSpec.describe 'broker config templating' do
           generate_test_manifest do |yaml|
             yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcells'] = []
             yaml['instance_groups'][0]['jobs'][0]['properties']['service_deployment']['stemcell'] = {
-              'os' => 'ubuntu-xenial', 'version' => nil
+              'os' => 'ubuntu-jammy', 'version' => nil
             }
             yaml
           end
