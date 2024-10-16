@@ -95,6 +95,7 @@ def prepare_stemcells(service_deployment)
     raise 'Invalid service_deployment config - at least one stemcell must be specified'
   end
 
+  service_deployment['stemcells'].map! { |stemcell| stemcell.compact }
   service_deployment['stemcells'].each do |stemcell|
     validate_stemcell stemcell
   end
