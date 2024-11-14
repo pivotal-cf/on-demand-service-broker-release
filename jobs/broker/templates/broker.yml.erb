@@ -475,6 +475,7 @@ config = {
     "enable_secure_manifests" => p('enable_secure_manifests'),
     "enable_telemetry" => p('enable_telemetry'),
     "support_backup_agent_binding" => p('support_backup_agent_binding'),
+    "skip_check_for_pending_changes" => p('skip_check_for_pending_changes'),
   }.merge(tls_config),
   "bosh" => bosh_config,
   "cf" => cf_config,

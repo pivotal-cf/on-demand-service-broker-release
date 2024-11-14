@@ -327,5 +327,15 @@ properties:
     description: If the service adapter supports backup agent URL bindings, set this flag to true
     default: false
 
+  skip_check_for_pending_changes:
+    description: >
+      If true, the broker will allow updates to a service instance with pending changes that would otherwise require an
+      upgrade.
+      This enables `cf update-service -c '{}'` to effectively update an instance even if the current manifest does not
+      match the view of the service adapter.
+      When false (the default), attempts to update a service instance whose manifest would change results in an error:
+      "The service broker has been updated, and this service instance is out of date. Please contact your operator"
+    default: false
+
   cf.authentication:
     description: (Deprecated) UAA authentication object. See cf.uaa.
