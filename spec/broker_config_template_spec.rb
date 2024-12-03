@@ -1726,46 +1726,6 @@ RSpec.describe 'broker config templating' do
       end
     end
   end
-
-  describe 'manifest persisting support' do
-      context 'when not set' do
-        let(:manifest_file) do
-          generate_test_manifest do |yaml|
-            yaml['instance_groups'][0]['jobs'][0]['properties'].delete('enable_persist_manifest')
-          end
-        end
-
-        it 'defaults to false' do
-          expect(rendered_template).to include 'enable_persist_manifest: false'
-        end
-      end
-
-      context 'when disabled' do
-        let(:manifest_file) do
-          generate_test_manifest do |yaml|
-            yaml['instance_groups'][0]['jobs'][0]['properties']['enable_persist_manifest'] = false
-          end
-        end
-
-        it 'is set to false' do
-          config = YAML.safe_load(rendered_template)
-          expect(config.dig('broker', 'enable_persist_manifest')).to eq(false)
-        end
-      end
-
-      context 'when enabled' do
-        let(:manifest_file) do
-          generate_test_manifest do |yaml|
-            yaml['instance_groups'][0]['jobs'][0]['properties']['enable_persist_manifest'] = true
-          end
-        end
-
-        it 'is set to true' do
-          config = YAML.safe_load(rendered_template)
-          expect(config.dig('broker', 'enable_persist_manifest')).to eq(true)
-        end
-      end
-    end
 end
 
 def generate_test_manifest

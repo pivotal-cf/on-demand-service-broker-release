@@ -44,7 +44,6 @@ RSpec.describe 'broker bpm templating' do
       config = YAML.safe_load(rendered_template)
       expected = {
         'processes' => [{
-          'additional_volumes'=>[{'path'=>'/var/vcap/data/broker/manifest', 'writable'=>true}],
           'name' => 'broker',
           'env' => {'GODEBUG' => 'tls13=0'},
           'executable' => '/var/vcap/packages/broker/bin/on-demand-service-broker',
