@@ -49,6 +49,8 @@ builds:
     version: 0.17.0-alpha1
   46061ad3-7a9b-4569-ac95-d1710d7b9399:
     version: 0.7.0
+  486f2cc8-5931-4213-62e2-9b94779daa7e:
+    version: 0.48.1
   4bfa29a8-9f50-4753-a3c2-29f4d6af9eea:
     version: 0.16.1
   4c0c9dfc-9cdf-45e4-5289-f399513836c0:
