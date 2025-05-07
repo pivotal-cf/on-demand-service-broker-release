@@ -1,0 +1,8 @@
+---
+applications:
+  - name: ((app_name))
+    health-check-type: process
+    buildpacks: [go_buildpack]
+    env:
+      USERNAME: ((username))
+      PASSWORD: ((password))
