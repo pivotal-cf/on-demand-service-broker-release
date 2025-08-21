@@ -163,6 +163,8 @@ builds:
     version: 0.8.0
   c51b8cba-14c7-4de9-4c5b-7d779f982b6a:
     version: 0.20.0-alpha.2
+  c80c5afd-f3e0-4475-78cb-8d9272c716f5:
+    version: 0.49.3
   ca20bfc8-7718-4c0b-6566-47954ccb04ab:
     version: 0.42.7
   cb7ffb58-4f98-4b9c-42e8-4e228a973863:
