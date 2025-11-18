@@ -16,9 +16,10 @@ releases:
 - name: loggregator
   version: latest
   url: https://bosh.io/d/github.com/cloudfoundry/loggregator-release
-- name: bpm
-  version: latest
-  url: https://bosh.io/d/github.com/cloudfoundry/bpm-release
+- name: "bpm"
+  version: "1.4.20"
+  url: "https://bosh.io/d/github.com/cloudfoundry/bpm-release?v=1.4.20"
+  sha1: sha256:1984129b352cd414e29a7dcffcf076049a776afa511cd44b587065f6e618cc6d
 
 stemcells:
 - alias: &stemcell_alias ((stemcell_alias))
